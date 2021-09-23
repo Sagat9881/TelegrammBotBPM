@@ -20,7 +20,7 @@
     <bpmn:startEvent id="Event_10u8qrm" name="Получение update&#39;а от TelegramBotAPI">
       <bpmn:outgoing>Flow_1nc4s0s</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:exclusiveGateway id="Gateway_1iehuk3" name="Это команда?">
+    <bpmn:exclusiveGateway id="Gateway_1iehuk3" name="Это команда?" default="Flow_17luu96">
       <bpmn:incoming>Flow_1nc4s0s</bpmn:incoming>
       <bpmn:outgoing>Flow_17luu96</bpmn:outgoing>
       <bpmn:outgoing>Flow_0hr41p2</bpmn:outgoing>
@@ -39,12 +39,11 @@
       <bpmn:incoming>Flow_17luu96</bpmn:incoming>
       <bpmn:outgoing>Flow_13r94ng</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_17luu96" name="нет" sourceRef="Gateway_1iehuk3" targetRef="Activity_0v8l2vv">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">S(Input).startsWith("/");</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_17luu96" name="нет" sourceRef="Gateway_1iehuk3" targetRef="Activity_0v8l2vv" />
     <bpmn:sequenceFlow id="Flow_13r94ng" sourceRef="Activity_0v8l2vv" targetRef="Event_0525git" />
     <bpmn:sequenceFlow id="Flow_0hr41p2" name="да" sourceRef="Gateway_1iehuk3" targetRef="Activity_0e553tc">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">S(Input).startsWith("/");</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">S(Input).stringValue().startsWith("/");
+</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0a8sbli" sourceRef="Activity_0e553tc" targetRef="Event_0zow9lg" />
     <bpmn:scriptTask id="Activity_19kxajp" name="Обработка входящего сообщения" scriptFormat="JavaScript" camunda:resultVariable="isCommand">

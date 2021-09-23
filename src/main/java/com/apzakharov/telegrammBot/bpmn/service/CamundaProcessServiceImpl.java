@@ -37,7 +37,6 @@ public class CamundaProcessServiceImpl implements CamundaProcessService {
         Map<String,Object> user = (Map<String,Object>)delegateExecution.getVariable("User");
         return (Long) user.get("chatID");
 
-
             }
 
 

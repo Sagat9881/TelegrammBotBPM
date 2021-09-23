@@ -9,7 +9,8 @@ public class ProcessCommand implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        Long chatID = camundaProcessService.getChatID(delegateExecution);
+//        Long chatID = camundaProcessService.getChatID(delegateExecution);
+        Long chatID = (Long) delegateExecution.getVariable("ChatID");
         camundaProcessService.sendMessage("Тестовая заглушка работы сценария ответа на работу команды",chatID);
     }
 }
