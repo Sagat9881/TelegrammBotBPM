@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Map;
+
 @Component
 public class ProcessAnswer implements JavaDelegate {
 
@@ -19,9 +21,7 @@ public class ProcessAnswer implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        User user = (User) delegateExecution.getVariable("User");
-        Long chatID = user.getChatId();
-
+        Long chatID = camundaProcessService.getChatID(delegateExecution);
 
         String inputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
         camundaProcessService.sendMessage(inputText, chatID);

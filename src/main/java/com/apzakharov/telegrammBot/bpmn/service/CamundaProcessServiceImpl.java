@@ -9,6 +9,8 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 @Service
 public class CamundaProcessServiceImpl implements CamundaProcessService {
     RestTemplate template;
@@ -32,9 +34,9 @@ public class CamundaProcessServiceImpl implements CamundaProcessService {
     @Override
     public Long getChatID(DelegateExecution delegateExecution) {
 
-        User user = (User) delegateExecution.getVariable("User");
+        Map<String,Object> user = (Map<String,Object>)delegateExecution.getVariable("User");
+        return (Long) user.get("chatID");
 
-        return user.getChatId();
 
             }
 

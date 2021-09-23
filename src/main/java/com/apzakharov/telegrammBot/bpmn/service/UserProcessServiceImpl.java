@@ -29,7 +29,7 @@ public class UserProcessServiceImpl implements UserProcessService {
     public void processStart(@Nonnull BotContext contex) throws Exception {
 
         User user = contex.getUser();
-        String chatID = user.getChatId().toString();
+        Long chatID = user.getChatId();
         String input = contex.getInput();
 //        Integer stateID = user.getStateId();
 
@@ -44,11 +44,11 @@ public class UserProcessServiceImpl implements UserProcessService {
 //          после чего у этого инстанса получаем URL соотвествующего bpmn-процесса.
 
 
-            Map<String, ProcessVariable> variables =  new HashMap<>();
+            Map<String, Object> variables =  new HashMap<>();
 
-            variables.put("User",new ProcessVariable(JSON_TYPE_STRING, objectMapper.writeValueAsString(user)));
-            variables.put("ChatID",new ProcessVariable(JSON_TYPE_STRING, chatID));
-            variables.put("Input",new ProcessVariable(JSON_TYPE_STRING, input));
+            variables.put("User", objectMapper.writeValueAsString(user));
+            variables.put("ChatID", chatID);
+            variables.put("Input", input);
 
             ProcessStartRequestBody processBody = new ProcessStartRequestBody();
             processBody.setVariables(variables);
