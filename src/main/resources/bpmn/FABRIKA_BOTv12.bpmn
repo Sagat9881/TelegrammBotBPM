@@ -1,0 +1,1332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0bek491" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <bpmn:collaboration id="Collaboration_1wr8dxg">
+    <bpmn:participant id="Participant_0l8e47r" name="Фабрика выпуска" processRef="Fabrika_Process" />
+  </bpmn:collaboration>
+  <bpmn:process id="Fabrika_Process" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_0fn4hso">
+      <bpmn:lane id="Lane_1hwwk80" name="Сервис получение readme">
+        <bpmn:flowNodeRef>Activity_1cftyni</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_16dz3vr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_19mv5dw</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1aphsjt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_155mjs4</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0vk52ab" name="Сервис &#34;Проверка автотестов&#34;">
+        <bpmn:flowNodeRef>Gateway_11464fn</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0ig68j3</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1uxgyxh" name="Сервис &#34;Проверка итерации в squash&#34;">
+        <bpmn:flowNodeRef>Activity_0mrmv26</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1nz3r1g</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_05bsifl</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1krjahi" name="&#10;Сервис &#34;Поиск проекта и этапа для задачи по выпуску&#34;">
+        <bpmn:flowNodeRef>Gateway_07fqp9u</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0t0dxdd</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_077tr5d" name="Сервис &#10;происк кандидата на выпуск douuserreleases">
+        <bpmn:flowNodeRef>GetCandidateList</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1q2rd0u</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0mfdpio</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0vqxaq1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1czklz6" name="ЧатБот">
+        <bpmn:flowNodeRef>Activity_1owd1gv</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_186estz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1e192gz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1uoiw0s</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1xnxiqz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_02j9snm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0csl83z</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1awwzp7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0nphoax</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0e8fq4i</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1ug8oe6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_16z25pq</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_19avbdj</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0006snt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0gucikg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0xs92db</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_02r2016</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1mbwhhv</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1jmomr4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_15xect0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0k988sn</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_124vybm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0cr7d8f</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0c7cg6n</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1xz0hmz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0obfw3z</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0ic6j90</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0vkoorj</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0q9nman</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0ni5cp8</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_10sltr1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1io5cdh</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1ulk6um" name="Сервис &#34;Проверка выпускаемых задач&#34;">
+        <bpmn:flowNodeRef>Gateway_1ihokah</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0bhmndi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_10k95zq</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0ho0j7q</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0trkaev" name="Сервис запуска Pipline">
+        <bpmn:flowNodeRef>Activity_1ljcy0l</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:userTask id="Activity_1owd1gv" name="Получить кандидата на выпуск из списка" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_ARCHIVE_FROM_LIST</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:script scriptFormat="JavaScript">response;</camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">CHOICE_QUESTION</camunda:inputParameter>
+          <camunda:outputParameter name="candidate">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0co8631</bpmn:incoming>
+      <bpmn:outgoing>Flow_13ouyyi</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_186estz" name="запросить номер проекта" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_PROJECT</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:outputParameter name="project">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_05h9vgu</bpmn:incoming>
+      <bpmn:incoming>Flow_1og5hnx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1flgws3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1e192gz" name="запросить номер этапа" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_STAGE</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="project">${project}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="stage">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1flgws3</bpmn:incoming>
+      <bpmn:outgoing>Flow_134gjee</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1uoiw0s" name="введены верные &#10;project и stage ?">
+      <bpmn:incoming>Flow_13hfv9z</bpmn:incoming>
+      <bpmn:outgoing>Flow_1og5hnx</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0sa1cz8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_0mrmv26" name="Проверить успешность squash">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://dousquashutils.doref-dou.qrunner.diasoft.ru/dousquashutils/checkiteration?name=${candidate}</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="squash">${response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0sa1cz8</bpmn:incoming>
+      <bpmn:incoming>Flow_0yfgi5w</bpmn:incoming>
+      <bpmn:incoming>Flow_1mmtlnc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fpvere</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_1xnxiqz" name="запросить подтверждение " camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_PROJECT_STAGE_CONFIRM</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="project">${project}</camunda:entry>
+              <camunda:entry key="stage">${stage}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_134gjee</bpmn:incoming>
+      <bpmn:outgoing>Flow_13hfv9z</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_02j9snm" name="Выпускаем кандидата">
+      <bpmn:incoming>Flow_1bezmlv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0witv5d</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1m70uex</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_07fqp9u" name="project и stage определен?">
+      <bpmn:incoming>Flow_0niwfws</bpmn:incoming>
+      <bpmn:outgoing>Flow_05h9vgu</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0yfgi5w</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_0t0dxdd" name="Поиск проекта/project и этапа/stage задачи ЗАГЛУШКА " camunda:expression="${true}">
+      <bpmn:incoming>Flow_1m70uex</bpmn:incoming>
+      <bpmn:incoming>Flow_13ouyyi</bpmn:incoming>
+      <bpmn:outgoing>Flow_0niwfws</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="GetCandidateList" name="Получить список всех кандидатов на выпуск">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://douuserreleases.doref-dou.qrunner.diasoft.ru/douuserreleases/releasecandidates?latestOnly=false&amp;user=${username}&amp;size=20&amp;page=${page}</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="response">
+              <camunda:script scriptFormat="JavaScript">S(response);</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0witv5d</bpmn:incoming>
+      <bpmn:outgoing>Flow_0co8631</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_0csl83z" name="Передать ссылку на readme" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Ваш readme готов, можно посмотреть 
+${readme}</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1wyuo2f</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tuolbs</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1ihokah" name="Задачи в конечных состояниях?">
+      <bpmn:incoming>Flow_1fravdw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qjbotz</bpmn:outgoing>
+      <bpmn:outgoing>Flow_16hylby</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_1nz3r1g" name="тесты &#10;в squash">
+      <bpmn:incoming>Flow_1fpvere</bpmn:incoming>
+      <bpmn:outgoing>Flow_0f5umzy</bpmn:outgoing>
+      <bpmn:outgoing>Flow_08j00vw</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1awwzp7">
+      <bpmn:incoming>Flow_0ub0q16</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_0nphoax" name="Остановить выпуск?">
+      <bpmn:incoming>Flow_136zv8i</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ub0q16</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1o10yol</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_11464fn" name="автотесты успешные">
+      <bpmn:incoming>Flow_0k756y2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xgbxe5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hqxh0t</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_0e8fq4i" name="Вопрос &#34;Остановить выпуск или проверить еще раз?&#34;" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_STOP_FABRIKA_CONFIRM</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="message">Проверка пройденных автотестов вернула: ${autotest_description}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0xgbxe5</bpmn:incoming>
+      <bpmn:outgoing>Flow_136zv8i</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_0ig68j3" name="Проверить успешность автотестов ЗАГЛУШКА" camunda:expression="${true}">
+      <bpmn:incoming>Flow_1o10yol</bpmn:incoming>
+      <bpmn:incoming>Flow_08j00vw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k756y2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1ug8oe6">
+      <bpmn:incoming>Flow_1pjsocw</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_16z25pq" name="Пожелать удачи!" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Выпуск ${candidate} прерван !
+До новых встерч!
+Для начала выпуска напишите "хочу выпуск".</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_173ewcv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pjsocw</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_19avbdj" name="Остановить выпуск?">
+      <bpmn:incoming>Flow_0v2fxtb</bpmn:incoming>
+      <bpmn:outgoing>Flow_173ewcv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1l2w72x</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_0006snt" name="Ожидайте!" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Внимание! Продождаем выпуск ${candidate} без проверки документации.
+Ожидайте формирования readme</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1l2w72x</bpmn:incoming>
+      <bpmn:outgoing>Flow_15pouyr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_0gucikg" name="Вопрос &#34;Остановить выпуск или продолжить без проверки?&#34;" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_STOP_FABRIKA_CONFIRM</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="message">Остановите выпуск и проверьте документацию!</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_05lh2no</bpmn:incoming>
+      <bpmn:outgoing>Flow_0v2fxtb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0xs92db" name="Докуентация проверена">
+      <bpmn:incoming>Flow_158fhg4</bpmn:incoming>
+      <bpmn:outgoing>Flow_05lh2no</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1vl98iv</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_02r2016" name="Вопрос &#34;проверена ли документация?&#34;" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_CHECK_DOC_CONFIRM</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="message">${candidate}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0hqxh0t</bpmn:incoming>
+      <bpmn:outgoing>Flow_158fhg4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1mbwhhv" name="Ожидайте!" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Ожидайте формирования readme</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1vl98iv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m6dltt</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1jmomr4" name="Ожидайте!" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Запускаю pipeline выпуска ${candidate}
+Пожалуйста, ожидайте..</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0tuolbs</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kh9q5c</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_15xect0" name="Передать ссылку на задание/сборку" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">pipeline выпуска ${candidate} запущен!
+Ссылка на задание/сборку в Jenkins:
+${pipeline.stringValue()}
+
+По окончании задания/сборки ожидайте шаблон письма. 
+Его необходимо оформить и отправить на Горячую линию: supportfo@diasoft.ru</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1d7wd03</bpmn:incoming>
+      <bpmn:outgoing>Flow_18xfda5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0k988sn">
+      <bpmn:incoming>Flow_18xfda5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_0bhmndi" name="Проверить выпускаемые задачи">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://doureleasetaskcheck.doref-dou.qrunner.diasoft.ru/dqdoureleasetaskcheck/v1/status?archivename=${candidate}</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="tasks_status">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("status").numberValue();</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="tasks_description">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("description").stringValue();</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15pouyr</bpmn:incoming>
+      <bpmn:incoming>Flow_1m6dltt</bpmn:incoming>
+      <bpmn:incoming>Flow_1sf1ssr</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fravdw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_124vybm" name="Остановить выпуск?">
+      <bpmn:incoming>Flow_0875gcr</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sf1ssr</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0bm2mfp</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_0cr7d8f" name="Есть задачи в не конечных состояниях" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_STOP_FABRIKA_CONFIRM</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="message">Проверка выпускаемых задач вернула: ${tasks_description}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0qjbotz</bpmn:incoming>
+      <bpmn:outgoing>Flow_0875gcr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_0c7cg6n" name="Пожелать удачи!" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Выпуск ${candidate} прерван !
+До новых встерч!
+Для начала выпуска напишите "хочу выпуск".</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0bm2mfp</bpmn:incoming>
+      <bpmn:outgoing>Flow_12dr4fs</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_1xz0hmz">
+      <bpmn:incoming>Flow_12dr4fs</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_10k95zq" name="Проверить выпускаемые задачи ЗАГЛУШКА" camunda:expression="${true}" />
+    <bpmn:serviceTask id="Activity_1cftyni" name="Сформировать readme">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://doureadmefiller.doref-dou.qrunner.diasoft.ru/doureadmefiller/get-readme?endArchive=${candidate}</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="readme">${response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16hylby</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wyuo2f</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1ljcy0l" name="Запустить Pipline выпуска">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://doujenkinsutils.doref-dou.qrunner.diasoft.ru/makejob</camunda:inputParameter>
+            <camunda:inputParameter name="payload">{"call_user":"${username}","mode": "14","multibranch_release":"${candidate}"}</camunda:inputParameter>
+            <camunda:outputParameter name="pipeline">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("jobList").elements().get(0).prop("link");</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1kh9q5c</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d7wd03</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_05bsifl" name="Поиск проекта/project и этапа/stage задачи по кандидату">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://doureleasearchiveinfo.doref-dou.qrunner.diasoft.ru/dqdoureleasearchiveinfo/v1/info?archivename=${candidate}</camunda:inputParameter>
+            <camunda:outputParameter name="project">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("ProjectNumber").numberValue();</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0ho0j7q" name="Проверить успешность автотестов">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://doujenkinsbuild.doref-dou.qrunner.diasoft.ru/doujenkinsbuild/v1/autoteststatus?archiveName=${candidate}</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="autotest_status">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("status").numberValue();</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="autotest_description">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("description").stringValue();</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_0obfw3z" name="Вопрос &#34;Остановить выпуск ?&#34;" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_STOP_FABRIKA_CONFIRM</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="message">${squash}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0f5umzy</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kj055y</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0ic6j90" name="Остановить выпуск?">
+      <bpmn:incoming>Flow_1kj055y</bpmn:incoming>
+      <bpmn:outgoing>Flow_1s9csdp</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1mmtlnc</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_0vkoorj" name="Пожелать удачи!" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">Выпуск ${candidate} прерван !
+До новых встреч!
+
+Для начала выпуска напишите "хочу выпуск"</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1s9csdp</bpmn:incoming>
+      <bpmn:outgoing>Flow_1494o3z</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0q9nman">
+      <bpmn:incoming>Flow_1494o3z</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_16dz3vr" name="НУ и ?" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">
+            <camunda:script scriptFormat="JavaScript">response;</camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1gxyofk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_19mv5dw" name="НУ и ?" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">
+            <camunda:list>
+              <camunda:value>${response}</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gxyofk</bpmn:incoming>
+      <bpmn:outgoing>Flow_1desr2m</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1aphsjt" name="НУ и 2 ?" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">ну и 2 ?</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1desr2m</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mxjlzd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_155mjs4">
+      <bpmn:incoming>Flow_0mxjlzd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_0ni5cp8" name="Получить подтверждение предлагаемого кандидата" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">GET_DEFAULT_MODULE_CHOICE</camunda:inputParameter>
+          <camunda:inputParameter name="type">QUESTION</camunda:inputParameter>
+          <camunda:inputParameter name="message_parameters">
+            <camunda:map>
+              <camunda:entry key="module_name">${candidate.stringValue()}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="payload">${payload}</camunda:outputParameter>
+          <camunda:outputParameter name="candidate">${candidate.stringValue()}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vsue39</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bezmlv</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1q2rd0u" name="Получить основного кандидата на выпуск">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://douuserreleases.doref-dou.qrunner.diasoft.ru/douuserreleases/releasecandidates?latestOnly=true&amp;user=${username}&amp;forReadme=true&amp;returnBuiltReadme=false&amp;returnAsString=false</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="candidate">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("releaseName");</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0x8ffj1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vsue39</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_0mfdpio" name="есть контент?">
+      <bpmn:incoming>Flow_0ptsx66</bpmn:incoming>
+      <bpmn:outgoing>Flow_0x8ffj1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1eusj1r</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_0vqxaq1" name="Получить основного кандидата на выпуск">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://douuserreleases.doref-dou.qrunner.diasoft.ru/douuserreleases/releasecandidates?latestOnly=true&amp;user=${username}&amp;forReadme=true&amp;returnBuiltReadme=false&amp;returnAsString=false</camunda:inputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vmgfax</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ptsx66</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_10sltr1" name="Отправить информацию об отсутствии вариантов" camunda:candidateUsers="diabot">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="message">в Вашей команде нет элементов к выпуску. 
+Будьте счастливы!</camunda:inputParameter>
+          <camunda:inputParameter name="type">NOTIFY</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1eusj1r</bpmn:incoming>
+      <bpmn:outgoing>Flow_08tofl7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_1io5cdh">
+      <bpmn:incoming>Flow_08tofl7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0vmgfax</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1eusj1r" name="нет" sourceRef="Gateway_0mfdpio" targetRef="Activity_10sltr1">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statusCode&gt;200}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0x8ffj1" name="да" sourceRef="Gateway_0mfdpio" targetRef="Activity_1q2rd0u">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statusCode&lt;=200}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ptsx66" sourceRef="Activity_0vqxaq1" targetRef="Gateway_0mfdpio" />
+    <bpmn:sequenceFlow id="Flow_0vsue39" sourceRef="Activity_1q2rd0u" targetRef="Activity_0ni5cp8" />
+    <bpmn:sequenceFlow id="Flow_1vl98iv" name="да" sourceRef="Gateway_0xs92db" targetRef="Activity_1mbwhhv">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0f5umzy" name="не успешные" sourceRef="Gateway_1nz3r1g" targetRef="Activity_0obfw3z">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statusCode&gt;200}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1kj055y" sourceRef="Activity_0obfw3z" targetRef="Gateway_0ic6j90" />
+    <bpmn:sequenceFlow id="Flow_1s9csdp" name="да" sourceRef="Gateway_0ic6j90" targetRef="Activity_0vkoorj">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_08j00vw" name="успешные" sourceRef="Gateway_1nz3r1g" targetRef="Activity_0ig68j3">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statusCode&lt;=200}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0k756y2" sourceRef="Activity_0ig68j3" targetRef="Gateway_11464fn" />
+    <bpmn:sequenceFlow id="Flow_0xgbxe5" name="не успешные" sourceRef="Gateway_11464fn" targetRef="Activity_0e8fq4i">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1o10yol" name="нет" sourceRef="Gateway_0nphoax" targetRef="Activity_0ig68j3">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= 'нет' }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_136zv8i" sourceRef="Activity_0e8fq4i" targetRef="Gateway_0nphoax" />
+    <bpmn:sequenceFlow id="Flow_0ub0q16" name="да" sourceRef="Gateway_0nphoax" targetRef="Event_1awwzp7">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0hqxh0t" name="успешные" sourceRef="Gateway_11464fn" targetRef="Activity_02r2016">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05lh2no" name="нет" sourceRef="Gateway_0xs92db" targetRef="Activity_0gucikg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_158fhg4" sourceRef="Activity_02r2016" targetRef="Gateway_0xs92db" />
+    <bpmn:sequenceFlow id="Flow_1mmtlnc" name="нет" sourceRef="Gateway_0ic6j90" targetRef="Activity_0mrmv26">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= 'нет' }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1fpvere" sourceRef="Activity_0mrmv26" targetRef="Gateway_1nz3r1g" />
+    <bpmn:sequenceFlow id="Flow_0sa1cz8" name="да" sourceRef="Gateway_1uoiw0s" targetRef="Activity_0mrmv26">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0yfgi5w" name="Определено" sourceRef="Gateway_07fqp9u" targetRef="Activity_0mrmv26">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1og5hnx" name="нет" sourceRef="Gateway_1uoiw0s" targetRef="Activity_186estz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= 'нет' }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_13hfv9z" sourceRef="Activity_1xnxiqz" targetRef="Gateway_1uoiw0s" />
+    <bpmn:sequenceFlow id="Flow_134gjee" sourceRef="Activity_1e192gz" targetRef="Activity_1xnxiqz" />
+    <bpmn:sequenceFlow id="Flow_1flgws3" sourceRef="Activity_186estz" targetRef="Activity_1e192gz" />
+    <bpmn:sequenceFlow id="Flow_05h9vgu" name="Не определено" sourceRef="Gateway_07fqp9u" targetRef="Activity_186estz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0niwfws" sourceRef="Activity_0t0dxdd" targetRef="Gateway_07fqp9u" />
+    <bpmn:sequenceFlow id="Flow_0vmgfax" sourceRef="StartEvent_1" targetRef="Activity_0vqxaq1" />
+    <bpmn:sequenceFlow id="Flow_08tofl7" sourceRef="Activity_10sltr1" targetRef="Event_1io5cdh" />
+    <bpmn:sequenceFlow id="Flow_0witv5d" name="&#34;нет&#34;" sourceRef="Gateway_02j9snm" targetRef="GetCandidateList">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= 'нет' }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1m70uex" name="&#34;да&#34;" sourceRef="Gateway_02j9snm" targetRef="Activity_0t0dxdd">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0co8631" sourceRef="GetCandidateList" targetRef="Activity_1owd1gv" />
+    <bpmn:sequenceFlow id="Flow_1bezmlv" sourceRef="Activity_0ni5cp8" targetRef="Gateway_02j9snm" />
+    <bpmn:sequenceFlow id="Flow_13ouyyi" sourceRef="Activity_1owd1gv" targetRef="Activity_0t0dxdd" />
+    <bpmn:sequenceFlow id="Flow_1fravdw" sourceRef="Activity_0bhmndi" targetRef="Gateway_1ihokah" />
+    <bpmn:sequenceFlow id="Flow_0qjbotz" name="нет" sourceRef="Gateway_1ihokah" targetRef="Activity_0cr7d8f">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${tasks_status&gt;0}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0875gcr" sourceRef="Activity_0cr7d8f" targetRef="Gateway_124vybm" />
+    <bpmn:sequenceFlow id="Flow_1sf1ssr" name="нет" sourceRef="Gateway_124vybm" targetRef="Activity_0bhmndi">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0bm2mfp" name="да" sourceRef="Gateway_124vybm" targetRef="Activity_0c7cg6n">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_16hylby" name="да" sourceRef="Gateway_1ihokah" targetRef="Activity_1cftyni">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${tasks_status&lt;1}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1wyuo2f" sourceRef="Activity_1cftyni" targetRef="Activity_0csl83z" />
+    <bpmn:sequenceFlow id="Flow_0tuolbs" sourceRef="Activity_0csl83z" targetRef="Activity_1jmomr4" />
+    <bpmn:sequenceFlow id="Flow_1494o3z" sourceRef="Activity_0vkoorj" targetRef="Event_0q9nman" />
+    <bpmn:sequenceFlow id="Flow_12dr4fs" sourceRef="Activity_0c7cg6n" targetRef="Event_1xz0hmz" />
+    <bpmn:sequenceFlow id="Flow_0v2fxtb" sourceRef="Activity_0gucikg" targetRef="Gateway_19avbdj" />
+    <bpmn:sequenceFlow id="Flow_173ewcv" name="да" sourceRef="Gateway_19avbdj" targetRef="Activity_16z25pq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &lt; "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1l2w72x" name="нет" sourceRef="Gateway_19avbdj" targetRef="Activity_0006snt">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload &gt;= "нет"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1pjsocw" sourceRef="Activity_16z25pq" targetRef="Event_1ug8oe6" />
+    <bpmn:sequenceFlow id="Flow_1d7wd03" sourceRef="Activity_1ljcy0l" targetRef="Activity_15xect0" />
+    <bpmn:sequenceFlow id="Flow_15pouyr" sourceRef="Activity_0006snt" targetRef="Activity_0bhmndi" />
+    <bpmn:sequenceFlow id="Flow_1m6dltt" sourceRef="Activity_1mbwhhv" targetRef="Activity_0bhmndi" />
+    <bpmn:sequenceFlow id="Flow_1kh9q5c" sourceRef="Activity_1jmomr4" targetRef="Activity_1ljcy0l" />
+    <bpmn:sequenceFlow id="Flow_18xfda5" sourceRef="Activity_15xect0" targetRef="Event_0k988sn" />
+    <bpmn:sequenceFlow id="Flow_1gxyofk" sourceRef="Activity_16dz3vr" targetRef="Activity_19mv5dw" />
+    <bpmn:sequenceFlow id="Flow_1desr2m" sourceRef="Activity_19mv5dw" targetRef="Activity_1aphsjt" />
+    <bpmn:sequenceFlow id="Flow_0mxjlzd" sourceRef="Activity_1aphsjt" targetRef="Event_155mjs4" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1wr8dxg">
+      <bpmndi:BPMNShape id="Participant_0l8e47r_di" bpmnElement="Participant_0l8e47r" isHorizontal="true">
+        <dc:Bounds x="133" y="90" width="4623" height="1090" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1hwwk80_di" bpmnElement="Lane_1hwwk80" isHorizontal="true">
+        <dc:Bounds x="163" y="910" width="4593" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0vk52ab_di" bpmnElement="Lane_0vk52ab" isHorizontal="true">
+        <dc:Bounds x="163" y="660" width="4593" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1uxgyxh_di" bpmnElement="Lane_1uxgyxh" isHorizontal="true">
+        <dc:Bounds x="163" y="540" width="4593" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1krjahi_di" bpmnElement="Lane_1krjahi" isHorizontal="true">
+        <dc:Bounds x="163" y="420" width="4593" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_077tr5d_di" bpmnElement="Lane_077tr5d" isHorizontal="true">
+        <dc:Bounds x="163" y="90" width="4593" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1czklz6_di" bpmnElement="Lane_1czklz6" isHorizontal="true">
+        <dc:Bounds x="163" y="210" width="4593" height="210" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1ulk6um_di" bpmnElement="Lane_1ulk6um" isHorizontal="true">
+        <dc:Bounds x="163" y="780" width="4593" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0trkaev_di" bpmnElement="Lane_0trkaev" isHorizontal="true">
+        <dc:Bounds x="163" y="1050" width="4593" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1eusj1r_di" bpmnElement="Flow_1eusj1r">
+        <di:waypoint x="483" y="175" />
+        <di:waypoint x="483" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="489" y="172" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0x8ffj1_di" bpmnElement="Flow_0x8ffj1">
+        <di:waypoint x="508" y="150" />
+        <di:waypoint x="573" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="535" y="132" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ptsx66_di" bpmnElement="Flow_0ptsx66">
+        <di:waypoint x="423" y="150" />
+        <di:waypoint x="458" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vsue39_di" bpmnElement="Flow_0vsue39">
+        <di:waypoint x="623" y="190" />
+        <di:waypoint x="623" y="260" />
+        <di:waypoint x="699" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vl98iv_di" bpmnElement="Flow_1vl98iv">
+        <di:waypoint x="2996" y="315" />
+        <di:waypoint x="2996" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3010" y="303" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0f5umzy_di" bpmnElement="Flow_0f5umzy">
+        <di:waypoint x="1826" y="575" />
+        <di:waypoint x="1826" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1822" y="539" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kj055y_di" bpmnElement="Flow_1kj055y">
+        <di:waypoint x="1876" y="290" />
+        <di:waypoint x="1978" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1s9csdp_di" bpmnElement="Flow_1s9csdp">
+        <di:waypoint x="2028" y="290" />
+        <di:waypoint x="2113" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2037" y="263" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08j00vw_di" bpmnElement="Flow_08j00vw">
+        <di:waypoint x="1826" y="625" />
+        <di:waypoint x="1826" y="720" />
+        <di:waypoint x="2406" y="720" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1830" y="663" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k756y2_di" bpmnElement="Flow_0k756y2">
+        <di:waypoint x="2506" y="720" />
+        <di:waypoint x="2541" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xgbxe5_di" bpmnElement="Flow_0xgbxe5">
+        <di:waypoint x="2566" y="695" />
+        <di:waypoint x="2566" y="320" />
+        <di:waypoint x="2586" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2493" y="663" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1o10yol_di" bpmnElement="Flow_1o10yol">
+        <di:waypoint x="2736" y="295" />
+        <di:waypoint x="2736" y="250" />
+        <di:waypoint x="2456" y="250" />
+        <di:waypoint x="2456" y="680" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2707" y="233" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_136zv8i_di" bpmnElement="Flow_136zv8i">
+        <di:waypoint x="2686" y="320" />
+        <di:waypoint x="2711" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ub0q16_di" bpmnElement="Flow_0ub0q16">
+        <di:waypoint x="2761" y="320" />
+        <di:waypoint x="2778" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2760" y="293" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hqxh0t_di" bpmnElement="Flow_0hqxh0t">
+        <di:waypoint x="2591" y="720" />
+        <di:waypoint x="2882" y="720" />
+        <di:waypoint x="2882" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2633" y="733" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05lh2no_di" bpmnElement="Flow_05lh2no">
+        <di:waypoint x="3021" y="290" />
+        <di:waypoint x="3066" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3036" y="273" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_158fhg4_di" bpmnElement="Flow_158fhg4">
+        <di:waypoint x="2932" y="290" />
+        <di:waypoint x="2971" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2814" y="312" width="7" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mmtlnc_di" bpmnElement="Flow_1mmtlnc">
+        <di:waypoint x="2003" y="265" />
+        <di:waypoint x="2003" y="230" />
+        <di:waypoint x="1710" y="230" />
+        <di:waypoint x="1710" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1984" y="233" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fpvere_di" bpmnElement="Flow_1fpvere">
+        <di:waypoint x="1760" y="600" />
+        <di:waypoint x="1801" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sa1cz8_di" bpmnElement="Flow_0sa1cz8">
+        <di:waypoint x="1582" y="335" />
+        <di:waypoint x="1582" y="580" />
+        <di:waypoint x="1660" y="580" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1594" y="359" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yfgi5w_di" bpmnElement="Flow_0yfgi5w">
+        <di:waypoint x="1192" y="505" />
+        <di:waypoint x="1192" y="600" />
+        <di:waypoint x="1660" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1204" y="573" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1og5hnx_di" bpmnElement="Flow_1og5hnx">
+        <di:waypoint x="1582" y="285" />
+        <di:waypoint x="1582" y="230" />
+        <di:waypoint x="1192" y="230" />
+        <di:waypoint x="1192" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1533" y="213" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13hfv9z_di" bpmnElement="Flow_13hfv9z">
+        <di:waypoint x="1522" y="310" />
+        <di:waypoint x="1557" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_134gjee_di" bpmnElement="Flow_134gjee">
+        <di:waypoint x="1382" y="310" />
+        <di:waypoint x="1422" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1flgws3_di" bpmnElement="Flow_1flgws3">
+        <di:waypoint x="1242" y="310" />
+        <di:waypoint x="1282" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05h9vgu_di" bpmnElement="Flow_05h9vgu">
+        <di:waypoint x="1192" y="455" />
+        <di:waypoint x="1192" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1196" y="393" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0niwfws_di" bpmnElement="Flow_0niwfws">
+        <di:waypoint x="1057" y="480" />
+        <di:waypoint x="1167" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vmgfax_di" bpmnElement="Flow_0vmgfax">
+        <di:waypoint x="281" y="150" />
+        <di:waypoint x="323" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08tofl7_di" bpmnElement="Flow_08tofl7">
+        <di:waypoint x="483" y="310" />
+        <di:waypoint x="483" y="332" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0witv5d_di" bpmnElement="Flow_0witv5d">
+        <di:waypoint x="872" y="235" />
+        <di:waypoint x="872" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="840" y="226" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m70uex_di" bpmnElement="Flow_1m70uex">
+        <di:waypoint x="872" y="285" />
+        <di:waypoint x="872" y="480" />
+        <di:waypoint x="957" y="480" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="842" y="293" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0co8631_di" bpmnElement="Flow_0co8631">
+        <di:waypoint x="922" y="150" />
+        <di:waypoint x="1007" y="150" />
+        <di:waypoint x="1007" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bezmlv_di" bpmnElement="Flow_1bezmlv">
+        <di:waypoint x="803" y="260" />
+        <di:waypoint x="847" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13ouyyi_di" bpmnElement="Flow_13ouyyi">
+        <di:waypoint x="1007" y="350" />
+        <di:waypoint x="1007" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fravdw_di" bpmnElement="Flow_1fravdw">
+        <di:waypoint x="3626" y="840" />
+        <di:waypoint x="3666" y="840" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qjbotz_di" bpmnElement="Flow_0qjbotz">
+        <di:waypoint x="3691" y="815" />
+        <di:waypoint x="3691" y="290" />
+        <di:waypoint x="3731" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3661" y="786" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0875gcr_di" bpmnElement="Flow_0875gcr">
+        <di:waypoint x="3831" y="290" />
+        <di:waypoint x="3866" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1sf1ssr_di" bpmnElement="Flow_1sf1ssr">
+        <di:waypoint x="3891" y="265" />
+        <di:waypoint x="3891" y="230" />
+        <di:waypoint x="3576" y="230" />
+        <di:waypoint x="3576" y="800" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3882" y="213" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bm2mfp_di" bpmnElement="Flow_0bm2mfp">
+        <di:waypoint x="3916" y="290" />
+        <di:waypoint x="3941" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3911" y="273" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16hylby_di" bpmnElement="Flow_16hylby">
+        <di:waypoint x="3691" y="865" />
+        <di:waypoint x="3691" y="990" />
+        <di:waypoint x="3891" y="990" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3664" y="864" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wyuo2f_di" bpmnElement="Flow_1wyuo2f">
+        <di:waypoint x="3991" y="990" />
+        <di:waypoint x="4201" y="990" />
+        <di:waypoint x="4201" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tuolbs_di" bpmnElement="Flow_0tuolbs">
+        <di:waypoint x="4251" y="320" />
+        <di:waypoint x="4276" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1494o3z_di" bpmnElement="Flow_1494o3z">
+        <di:waypoint x="2213" y="290" />
+        <di:waypoint x="2255" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12dr4fs_di" bpmnElement="Flow_12dr4fs">
+        <di:waypoint x="4041" y="290" />
+        <di:waypoint x="4073" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v2fxtb_di" bpmnElement="Flow_0v2fxtb">
+        <di:waypoint x="3166" y="290" />
+        <di:waypoint x="3211" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_173ewcv_di" bpmnElement="Flow_173ewcv">
+        <di:waypoint x="3261" y="290" />
+        <di:waypoint x="3326" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3261" y="263" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l2w72x_di" bpmnElement="Flow_1l2w72x">
+        <di:waypoint x="3236" y="315" />
+        <di:waypoint x="3236" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3247" y="311" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pjsocw_di" bpmnElement="Flow_1pjsocw">
+        <di:waypoint x="3426" y="290" />
+        <di:waypoint x="3478" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d7wd03_di" bpmnElement="Flow_1d7wd03">
+        <di:waypoint x="4403" y="1070" />
+        <di:waypoint x="4403" y="320" />
+        <di:waypoint x="4443" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15pouyr_di" bpmnElement="Flow_15pouyr">
+        <di:waypoint x="3236" y="410" />
+        <di:waypoint x="3236" y="825" />
+        <di:waypoint x="3526" y="825" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m6dltt_di" bpmnElement="Flow_1m6dltt">
+        <di:waypoint x="2996" y="410" />
+        <di:waypoint x="2996" y="840" />
+        <di:waypoint x="3526" y="840" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kh9q5c_di" bpmnElement="Flow_1kh9q5c">
+        <di:waypoint x="4326" y="360" />
+        <di:waypoint x="4326" y="1110" />
+        <di:waypoint x="4353" y="1110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18xfda5_di" bpmnElement="Flow_18xfda5">
+        <di:waypoint x="4543" y="320" />
+        <di:waypoint x="4595" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gxyofk_di" bpmnElement="Flow_1gxyofk">
+        <di:waypoint x="1117" y="970" />
+        <di:waypoint x="1153" y="970" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1desr2m_di" bpmnElement="Flow_1desr2m">
+        <di:waypoint x="1253" y="970" />
+        <di:waypoint x="1283" y="970" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mxjlzd_di" bpmnElement="Flow_0mxjlzd">
+        <di:waypoint x="1383" y="970" />
+        <di:waypoint x="1425" y="970" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1owd1gv_di" bpmnElement="Activity_1owd1gv">
+        <dc:Bounds x="957" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_186estz_di" bpmnElement="Activity_186estz">
+        <dc:Bounds x="1142" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1e192gz_di" bpmnElement="Activity_1e192gz">
+        <dc:Bounds x="1282" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1uoiw0s_di" bpmnElement="Gateway_1uoiw0s" isMarkerVisible="true">
+        <dc:Bounds x="1557" y="285" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1609" y="296" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mrmv26_di" bpmnElement="Activity_0mrmv26">
+        <dc:Bounds x="1660" y="560" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xnxiqz_di" bpmnElement="Activity_1xnxiqz">
+        <dc:Bounds x="1422" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_02j9snm_di" bpmnElement="Gateway_02j9snm" isMarkerVisible="true">
+        <dc:Bounds x="847" y="235" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="894" y="246" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_07fqp9u_di" bpmnElement="Gateway_07fqp9u" isMarkerVisible="true">
+        <dc:Bounds x="1167" y="455" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1215" y="466" width="73" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0t0dxdd_di" bpmnElement="Activity_0t0dxdd">
+        <dc:Bounds x="957" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12wtpyk_di" bpmnElement="GetCandidateList">
+        <dc:Bounds x="822" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0csl83z_di" bpmnElement="Activity_0csl83z">
+        <dc:Bounds x="4151" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ihokah_di" bpmnElement="Gateway_1ihokah" isMarkerVisible="true">
+        <dc:Bounds x="3666" y="815" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3726" y="820" width="65" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1nz3r1g_di" bpmnElement="Gateway_1nz3r1g" isMarkerVisible="true">
+        <dc:Bounds x="1801" y="575" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1853" y="586" width="45" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1awwzp7_di" bpmnElement="Event_1awwzp7">
+        <dc:Bounds x="2778" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0nphoax_di" bpmnElement="Gateway_0nphoax" isMarkerVisible="true">
+        <dc:Bounds x="2711" y="295" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2705" y="355" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_11464fn_di" bpmnElement="Gateway_11464fn" isMarkerVisible="true">
+        <dc:Bounds x="2541" y="695" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2540" y="755" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e8fq4i_di" bpmnElement="Activity_0e8fq4i">
+        <dc:Bounds x="2586" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ig68j3_di" bpmnElement="Activity_0ig68j3">
+        <dc:Bounds x="2406" y="680" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ug8oe6_di" bpmnElement="Event_1ug8oe6">
+        <dc:Bounds x="3478" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_16z25pq_di" bpmnElement="Activity_16z25pq">
+        <dc:Bounds x="3326" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_19avbdj_di" bpmnElement="Gateway_19avbdj" isMarkerVisible="true">
+        <dc:Bounds x="3211" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3207" y="228" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0006snt_di" bpmnElement="Activity_0006snt">
+        <dc:Bounds x="3186" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0gucikg_di" bpmnElement="Activity_0gucikg">
+        <dc:Bounds x="3066" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0xs92db_di" bpmnElement="Gateway_0xs92db" isMarkerVisible="true">
+        <dc:Bounds x="2971" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2964" y="228" width="65" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02r2016_di" bpmnElement="Activity_02r2016">
+        <dc:Bounds x="2832" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1mbwhhv_di" bpmnElement="Activity_1mbwhhv">
+        <dc:Bounds x="2946" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jmomr4_di" bpmnElement="Activity_1jmomr4">
+        <dc:Bounds x="4276" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15xect0_di" bpmnElement="Activity_15xect0">
+        <dc:Bounds x="4443" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0k988sn_di" bpmnElement="Event_0k988sn">
+        <dc:Bounds x="4595" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bhmndi_di" bpmnElement="Activity_0bhmndi">
+        <dc:Bounds x="3526" y="800" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_124vybm_di" bpmnElement="Gateway_124vybm" isMarkerVisible="true">
+        <dc:Bounds x="3866" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3861" y="322" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cr7d8f_di" bpmnElement="Activity_0cr7d8f">
+        <dc:Bounds x="3731" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c7cg6n_di" bpmnElement="Activity_0c7cg6n">
+        <dc:Bounds x="3941" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1xz0hmz_di" bpmnElement="Event_1xz0hmz">
+        <dc:Bounds x="4073" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10k95zq_di" bpmnElement="Activity_10k95zq">
+        <dc:Bounds x="3891" y="800" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cftyni_di" bpmnElement="Activity_1cftyni">
+        <dc:Bounds x="3891" y="950" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ljcy0l_di" bpmnElement="Activity_1ljcy0l">
+        <dc:Bounds x="4353" y="1070" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05bsifl_di" bpmnElement="Activity_05bsifl">
+        <dc:Bounds x="957" y="560" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ho0j7q_di" bpmnElement="Activity_0ho0j7q">
+        <dc:Bounds x="2406" y="800" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0obfw3z_di" bpmnElement="Activity_0obfw3z">
+        <dc:Bounds x="1776" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ic6j90_di" bpmnElement="Gateway_0ic6j90" isMarkerVisible="true">
+        <dc:Bounds x="1978" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1972" y="325" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vkoorj_di" bpmnElement="Activity_0vkoorj">
+        <dc:Bounds x="2113" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0q9nman_di" bpmnElement="Event_0q9nman">
+        <dc:Bounds x="2255" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_16dz3vr_di" bpmnElement="Activity_16dz3vr">
+        <dc:Bounds x="1017" y="930" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19mv5dw_di" bpmnElement="Activity_19mv5dw">
+        <dc:Bounds x="1153" y="930" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1aphsjt_di" bpmnElement="Activity_1aphsjt">
+        <dc:Bounds x="1283" y="930" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_155mjs4_di" bpmnElement="Event_155mjs4">
+        <dc:Bounds x="1425" y="952" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ni5cp8_di" bpmnElement="Activity_0ni5cp8">
+        <dc:Bounds x="703" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q2rd0u_di" bpmnElement="Activity_1q2rd0u">
+        <dc:Bounds x="573" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0mfdpio_di" bpmnElement="Gateway_0mfdpio" isMarkerVisible="true">
+        <dc:Bounds x="458" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="447" y="101" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vqxaq1_di" bpmnElement="Activity_0vqxaq1">
+        <dc:Bounds x="323" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10sltr1_di" bpmnElement="Activity_10sltr1">
+        <dc:Bounds x="433" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1io5cdh_di" bpmnElement="Event_1io5cdh">
+        <dc:Bounds x="465" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="245" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

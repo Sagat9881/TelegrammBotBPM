@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ${SERVICE_NAME:emailtrials}
+  cloud:
+    config:
+      enabled: false
+
+mdp.discovery:
+  discoveryClientName: ${DISCOVERY_CLIENT_NAME:false}

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0cta93a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <bpmn:collaboration id="Collaboration_0e98haq">
+    <bpmn:participant id="Participant_0n8ansa" name="Инцидент Списания сотрудников" processRef="dqworktimeincidentcreatea" />
+  </bpmn:collaboration>
+  <bpmn:process id="dqworktimeincidentcreatea" name="Инцидент Списания сотрудников" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_0ngku1n">
+      <bpmn:outgoing>Flow_1xa1tfj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1ecboid">
+      <bpmn:incoming>Flow_02we0rn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_023sxp4" name="Ищем значения метрик">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://qmon.micro.qrunsys.diasoft.ru:80/dqqmon/dqqmon/v1/qmetric-values</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:outputParameter name="metricValues">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").mapTo("java.util.Collection");</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1s6f7p1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0uv8a1c</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0y1u9o5" name="Читам параметры правила &#34;Списания сотрудников&#34;">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://qmon.micro.qrunsys.diasoft.ru:80/dqqmon/dqqmon/v1/qmetric-incident-rules?qMetricIncidentRuleName=%D0%A1%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D1%8F%20%D1%81%D0%BE%D1%82%D1%80%D1%83%D0%B4%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2</camunda:inputParameter>
+            <camunda:outputParameter name="QSetting">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("QSetting").mapTo("java.lang.Long");</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="QMetricMinValue">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("QMetricMinValue").mapTo("java.lang.Integer");</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="QMetricMaxValue">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("QMetricMaxValue").mapTo("java.lang.Integer");</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1xa1tfj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ipk54b</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:subProcess id="Activity_04c7ftg">
+      <bpmn:incoming>Flow_0uv8a1c</bpmn:incoming>
+      <bpmn:outgoing>Flow_02we0rn</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="metricValues" camunda:elementVariable="metricValue" />
+      <bpmn:startEvent id="Event_12atlal">
+        <bpmn:outgoing>Flow_00meccr</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="Activity_0ruqnhd" name="Добавление данных в QIncident">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="payload">{
+  "QIncidentComment": "created by QBPMN",
+  "QIncidentTimeCreation": "${metricValue.QMetricTime}", 
+  "QIncidentType": ${QIncidentTypeId},
+  "QState": 2,
+  "QIncidentAnswer": "${QIncidentTypeAnswer}",
+   "QIncidentPriority": ${QIncidentTypePriority},
+   "QIncidentTimeNorm": ${QIncidentTypeTimeNorm}
+}</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Content-type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://qincident.micro.qrunsys.diasoft.ru:80/dqqincident/dqqincident/v1/qincident</camunda:inputParameter>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:outputParameter name="QIncidentId">
+                <camunda:script scriptFormat="JavaScript">S(response).prop("QIncidentId").mapTo("java.lang.Long");   </camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="statusCode">
+                <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1tybemc</bpmn:incoming>
+        <bpmn:outgoing>Flow_1rkgy2p</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_00meccr" sourceRef="Event_12atlal" targetRef="Gateway_0r88w6i" />
+      <bpmn:endEvent id="Event_0se0gqp">
+        <bpmn:incoming>Flow_09marvw</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="Activity_148uzap" name="Добавление данных в QIncidentAttribute">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="payload">{
+  "QIncident": ${QIncidentId},
+  "QSettingValue": ${metricValue.QSettingValue}
+}</camunda:inputParameter>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Content-type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://qincident.micro.qrunsys.diasoft.ru:80/dqqincident/dqqincident/v1/qincident-attribute</camunda:inputParameter>
+              <camunda:outputParameter name="statusCode">
+                <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1rkgy2p</bpmn:incoming>
+        <bpmn:outgoing>Flow_09marvw</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1rkgy2p" sourceRef="Activity_0ruqnhd" targetRef="Activity_148uzap" />
+      <bpmn:sequenceFlow id="Flow_09marvw" sourceRef="Activity_148uzap" targetRef="Event_0se0gqp" />
+      <bpmn:exclusiveGateway id="Gateway_0r88w6i" name="Проверка значения" default="Flow_01nwzjs">
+        <bpmn:incoming>Flow_00meccr</bpmn:incoming>
+        <bpmn:outgoing>Flow_1tybemc</bpmn:outgoing>
+        <bpmn:outgoing>Flow_01nwzjs</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="Flow_1tybemc" name="Меньше минимального" sourceRef="Gateway_0r88w6i" targetRef="Activity_0ruqnhd">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${metricValue.QMetricValue&lt;QMetricMinValue}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:endEvent id="Event_0ugb7es">
+        <bpmn:incoming>Flow_01nwzjs</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_01nwzjs" name="Иначе" sourceRef="Gateway_0r88w6i" targetRef="Event_0ugb7es" />
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="Activity_0prm3b1" name="Ищем значение настройки">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://qsettings.digitalq.qrunsys.diasoft.ru/qsettings/value/v2/${QSetting}</camunda:inputParameter>
+            <camunda:outputParameter name="settingValues">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").mapTo("java.util.Collection");</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qmr9q8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1s6f7p1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_03ftmea" name="Читаем параметры Типа инцидента &#34;Списания сотрудников&#34;">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="QIncidentTypeId">
+            <camunda:script scriptFormat="JavaScript">1;</camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://qincident.micro.qrunsys.diasoft.ru:80/dqqincident/dqqincident/v1/qincident-types?qIncidentTypeName=%D0%A1%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D1%8F%20%D1%81%D0%BE%D1%82%D1%80%D1%83%D0%B4%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2</camunda:inputParameter>
+            <camunda:outputParameter name="QIncidentTypeAnswer">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("QIncidentTypeAnswer").stringValue();</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="QIncidentTypePriority">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("QIncidentTypePriority").mapTo("java.lang.Integer");</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="QIncidentTypeTimeNorm">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content").elements().get(0).prop("QIncidentTypeTimeNorm").mapTo("java.lang.Integer");</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ipk54b</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qmr9q8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1qmr9q8" sourceRef="Activity_03ftmea" targetRef="Activity_0prm3b1" />
+    <bpmn:sequenceFlow id="Flow_02we0rn" sourceRef="Activity_04c7ftg" targetRef="Event_1ecboid" />
+    <bpmn:sequenceFlow id="Flow_0uv8a1c" sourceRef="Activity_023sxp4" targetRef="Activity_04c7ftg" />
+    <bpmn:sequenceFlow id="Flow_1s6f7p1" sourceRef="Activity_0prm3b1" targetRef="Activity_023sxp4" />
+    <bpmn:sequenceFlow id="Flow_0ipk54b" sourceRef="Activity_0y1u9o5" targetRef="Activity_03ftmea" />
+    <bpmn:sequenceFlow id="Flow_1xa1tfj" sourceRef="StartEvent_0ngku1n" targetRef="Activity_0y1u9o5" />
+    <bpmn:textAnnotation id="TextAnnotation_1skg1rb">
+      <bpmn:text>/dqqmon/dqqmon/v1/qmetric-incident-rules
+получаем
+1. Значение настройки QSetting
+2. QMetricMinValue
+3. QMetricMaxValue</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0h4z04f">
+      <bpmn:text>для набора значений настроек на интервале дат
+ПОДХОДЯЩЕГО АПИ НЕТ - НУЖНО СОЗДАТЬ</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1v3dnpc">
+      <bpmn:text>/dqqincident/dqqincident/v1/qincident-types
+получаем
+1. QIncidentTypeAnswer
+2. QIncidentTypePriority
+3. QIncidentTypeTimeNorm</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1dbabb4">
+      <bpmn:text>/qsettings/value/v2/{QSetting}
+получаем
+список settingValueId</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_01l8q69" sourceRef="Activity_023sxp4" targetRef="TextAnnotation_0h4z04f" />
+    <bpmn:association id="Association_1w3lzkw" sourceRef="Activity_0y1u9o5" targetRef="TextAnnotation_1skg1rb" />
+    <bpmn:association id="Association_16el089" sourceRef="Activity_0prm3b1" targetRef="TextAnnotation_1dbabb4" />
+    <bpmn:association id="Association_08oa1b3" sourceRef="Activity_03ftmea" targetRef="TextAnnotation_1v3dnpc" />
+  </bpmn:process>
+  <bpmn:error id="Error_1lth9vb" name="Http_Error" errorCode="${statusCode}" camunda:errorMessage="${response.toString()}" />
+  <bpmn:error id="Error_1n5z0an" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0e98haq">
+      <bpmndi:BPMNShape id="Participant_0p27fkn" bpmnElement="Participant_0n8ansa" isHorizontal="true">
+        <dc:Bounds x="50" y="40" width="1310" height="840" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xa1tfj_di" bpmnElement="Flow_1xa1tfj">
+        <di:waypoint x="142" y="149" />
+        <di:waypoint x="200" y="149" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ipk54b_di" bpmnElement="Flow_0ipk54b">
+        <di:waypoint x="300" y="149" />
+        <di:waypoint x="430" y="149" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1s6f7p1_di" bpmnElement="Flow_1s6f7p1">
+        <di:waypoint x="750" y="149" />
+        <di:waypoint x="990" y="149" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0uv8a1c_di" bpmnElement="Flow_0uv8a1c">
+        <di:waypoint x="1040" y="189" />
+        <di:waypoint x="1040" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02we0rn_di" bpmnElement="Flow_02we0rn">
+        <di:waypoint x="1090" y="460" />
+        <di:waypoint x="1272" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qmr9q8_di" bpmnElement="Flow_1qmr9q8">
+        <di:waypoint x="530" y="149" />
+        <di:waypoint x="650" y="149" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_0ngku1n">
+        <dc:Bounds x="106" y="131" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="237" y="195" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ecboid_di" bpmnElement="Event_1ecboid">
+        <dc:Bounds x="1272" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j64xab_di" bpmnElement="Activity_023sxp4">
+        <dc:Bounds x="990" y="109" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0im0ky0_di" bpmnElement="Activity_0y1u9o5">
+        <dc:Bounds x="200" y="109" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04c7ftg_di" bpmnElement="Activity_04c7ftg" isExpanded="true">
+        <dc:Bounds x="430" y="350" width="660" height="330" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_01nwzjs_di" bpmnElement="Flow_01nwzjs">
+        <di:waypoint x="570" y="475" />
+        <di:waypoint x="570" y="542" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="580" y="493" width="40" height="17" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tybemc_di" bpmnElement="Flow_1tybemc">
+        <di:waypoint x="595" y="450" />
+        <di:waypoint x="710" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="606" y="416" width="88" height="51" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09marvw_di" bpmnElement="Flow_09marvw">
+        <di:waypoint x="990" y="450" />
+        <di:waypoint x="1022" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rkgy2p_di" bpmnElement="Flow_1rkgy2p">
+        <di:waypoint x="810" y="450" />
+        <di:waypoint x="890" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00meccr_di" bpmnElement="Flow_00meccr">
+        <di:waypoint x="496" y="450" />
+        <di:waypoint x="545" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_12atlal_di" bpmnElement="Event_12atlal">
+        <dc:Bounds x="460" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pgkhuh_di" bpmnElement="Activity_0ruqnhd">
+        <dc:Bounds x="710" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0se0gqp_di" bpmnElement="Event_0se0gqp">
+        <dc:Bounds x="1022" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14wqak0_di" bpmnElement="Activity_148uzap">
+        <dc:Bounds x="890" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0r88w6i_di" bpmnElement="Gateway_0r88w6i" isMarkerVisible="true">
+        <dc:Bounds x="545" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="539" y="388" width="62" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ugb7es_di" bpmnElement="Event_0ugb7es">
+        <dc:Bounds x="552" y="542" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06297vk_di" bpmnElement="Activity_0prm3b1">
+        <dc:Bounds x="650" y="109" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fp7s89_di" bpmnElement="Activity_03ftmea">
+        <dc:Bounds x="430" y="109" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1skg1rb_di" bpmnElement="TextAnnotation_1skg1rb">
+        <dc:Bounds x="105" y="210" width="255" height="82" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0h4z04f_di" bpmnElement="TextAnnotation_0h4z04f">
+        <dc:Bounds x="1080" y="240" width="215" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1v3dnpc_di" bpmnElement="TextAnnotation_1v3dnpc">
+        <dc:Bounds x="350" y="210" width="280" height="82" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1dbabb4_di" bpmnElement="TextAnnotation_1dbabb4">
+        <dc:Bounds x="620" y="238" width="190" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_01l8q69_di" bpmnElement="Association_01l8q69">
+        <di:waypoint x="1064" y="189" />
+        <di:waypoint x="1096" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1w3lzkw_di" bpmnElement="Association_1w3lzkw">
+        <di:waypoint x="233" y="175" />
+        <di:waypoint x="233" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_16el089_di" bpmnElement="Association_16el089">
+        <di:waypoint x="690" y="189" />
+        <di:waypoint x="676" y="238" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_08oa1b3_di" bpmnElement="Association_08oa1b3">
+        <di:waypoint x="438" y="189" />
+        <di:waypoint x="416" y="210" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,109 @@
+package com.apzakharov.telegrammBot.model;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.time.ZonedDateTime;
+
+@Entity
+public class User {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private Long chatId;
+    private Integer stateId;
+    private String phone;
+    private String email;
+    private Boolean admin;
+    private Boolean notified = false;
+
+
+
+    public ZonedDateTime getUserTimeStart() {
+        return userTimeStart;
+    }
+
+    public void setUserTimeStart(ZonedDateTime userTimeStart) {
+        this.userTimeStart = userTimeStart;
+    }
+
+    private ZonedDateTime userTimeStart;
+
+    public User() {
+    }
+
+    public User(Long chatId, Integer state, ZonedDateTime userTimeStart) {
+        this.chatId = chatId;
+        this.stateId = state;
+        this.userTimeStart = userTimeStart;
+    }
+
+    public User(Long chatId, Integer stateId, Boolean admin, ZonedDateTime userTimeStart) {
+        this.chatId = chatId;
+        this.stateId = stateId;
+        this.admin = admin;
+        this.userTimeStart = userTimeStart;
+    }
+
+    public User(Long chatId, Integer stateId, Boolean admin) {
+        this.chatId = chatId;
+        this.stateId = stateId;
+        this.admin = admin;}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Integer getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
+    public Boolean getNotified() {
+        return notified;
+    }
+
+    public void setNotified(Boolean notified) {
+        this.notified = notified;
+    }
+}

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0cta93a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <bpmn:collaboration id="Collaboration_0e98haq">
+    <bpmn:participant id="Participant_0n8ansa" name="Порождение инцидента Несписание в срок" processRef="dqworktimeincidentcreatea" />
+  </bpmn:collaboration>
+  <bpmn:process id="dqworktimeincidentcreatea" name="Порождение инцидента Несписание в срок" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_0ngku1n">
+      <bpmn:outgoing>Flow_1xa1tfj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_0y1u9o5" name="Читам параметры правила &#34;worktime&#34;">
+      <bpmn:incoming>Flow_1xa1tfj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ipk54b</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Activity_0prm3b1" name="Ищем значение настройки">
+      <bpmn:incoming>Flow_0ipk54b</bpmn:incoming>
+      <bpmn:outgoing>Flow_1s6f7p1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Activity_03ftmea" name="Читаем параметры Типа инцидента &#34;worktime&#34;">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="QIncidentTypeId">1</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0uv8a1c</bpmn:incoming>
+      <bpmn:outgoing>Flow_0l7r3ld</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:serviceTask id="Activity_023sxp4" name="Ищем значения метрик">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="service">dqqmon</camunda:inputParameter>
+            <camunda:inputParameter name="resource">/dqqmon/dqqmon/v1/qmetric-values</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:outputParameter name="metric-values">
+              <camunda:script scriptFormat="JavaScript">S(response).prop("content");</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="statusCode">
+              <camunda:script scriptFormat="JavaScript">statusCode;</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>rest-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1s6f7p1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0uv8a1c</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1ecboid">
+      <bpmn:incoming>Flow_0l7r3ld</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0l7r3ld" sourceRef="Activity_03ftmea" targetRef="Event_1ecboid" />
+    <bpmn:sequenceFlow id="Flow_0uv8a1c" sourceRef="Activity_023sxp4" targetRef="Activity_03ftmea" />
+    <bpmn:sequenceFlow id="Flow_1s6f7p1" sourceRef="Activity_0prm3b1" targetRef="Activity_023sxp4" />
+    <bpmn:sequenceFlow id="Flow_0ipk54b" sourceRef="Activity_0y1u9o5" targetRef="Activity_0prm3b1" />
+    <bpmn:sequenceFlow id="Flow_1xa1tfj" sourceRef="StartEvent_0ngku1n" targetRef="Activity_0y1u9o5" />
+    <bpmn:textAnnotation id="TextAnnotation_1dbabb4">
+      <bpmn:text>/qsettings/value/v2/{settingId}
+получаем
+список settingValueId</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1skg1rb">
+      <bpmn:text>/dqqmon/dqqmon/v1/qmetric-incident-rules
+получаем
+1. Значение настройки QSetting
+2. Интервал значений
+2.1 QMetricMinValue
+2.2 QMetricMaxValue</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0h4z04f">
+      <bpmn:text>для набора значений настроек на интервале дат
+ПОДХОДЯЩЕГО АПИ НЕТ - НУЖНО СОЗДАТЬ</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0cum5to">
+      <bpmn:text>/dqqincident/dqqincident/v1/qincident-types
+получаем
+QIncidentTypeId</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_16el089" sourceRef="Activity_0prm3b1" targetRef="TextAnnotation_1dbabb4" />
+    <bpmn:association id="Association_1w3lzkw" sourceRef="Activity_0y1u9o5" targetRef="TextAnnotation_1skg1rb" />
+    <bpmn:association id="Association_01l8q69" sourceRef="Activity_023sxp4" targetRef="TextAnnotation_0h4z04f" />
+    <bpmn:association id="Association_007xkp6" sourceRef="Activity_03ftmea" targetRef="TextAnnotation_0cum5to" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0e98haq">
+      <bpmndi:BPMNShape id="Participant_0p27fkn" bpmnElement="Participant_0n8ansa" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1310" height="730" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1dbabb4_di" bpmnElement="TextAnnotation_1dbabb4">
+        <dc:Bounds x="490" y="250" width="190" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1skg1rb_di" bpmnElement="TextAnnotation_1skg1rb">
+        <dc:Bounds x="215" y="250" width="255" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0h4z04f_di" bpmnElement="TextAnnotation_0h4z04f">
+        <dc:Bounds x="670" y="250" width="215" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0cum5to_di" bpmnElement="TextAnnotation_0cum5to">
+        <dc:Bounds x="890" y="250" width="250" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0l7r3ld_di" bpmnElement="Flow_0l7r3ld">
+        <di:waypoint x="1010" y="189" />
+        <di:waypoint x="1410" y="189" />
+        <di:waypoint x="1410" y="732" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0uv8a1c_di" bpmnElement="Flow_0uv8a1c">
+        <di:waypoint x="820" y="189" />
+        <di:waypoint x="910" y="189" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1s6f7p1_di" bpmnElement="Flow_1s6f7p1">
+        <di:waypoint x="600" y="189" />
+        <di:waypoint x="720" y="189" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ipk54b_di" bpmnElement="Flow_0ipk54b">
+        <di:waypoint x="410" y="189" />
+        <di:waypoint x="500" y="189" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1xa1tfj_di" bpmnElement="Flow_1xa1tfj">
+        <di:waypoint x="252" y="189" />
+        <di:waypoint x="310" y="189" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_0ngku1n">
+        <dc:Bounds x="216" y="171" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="237" y="195" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0y1u9o5_di" bpmnElement="Activity_0y1u9o5">
+        <dc:Bounds x="310" y="149" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0prm3b1_di" bpmnElement="Activity_0prm3b1">
+        <dc:Bounds x="500" y="149" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03ftmea_di" bpmnElement="Activity_03ftmea">
+        <dc:Bounds x="910" y="149" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j64xab_di" bpmnElement="Activity_023sxp4">
+        <dc:Bounds x="720" y="149" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ecboid_di" bpmnElement="Event_1ecboid">
+        <dc:Bounds x="1392" y="732" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1w3lzkw_di" bpmnElement="Association_1w3lzkw">
+        <di:waypoint x="314" y="226" />
+        <di:waypoint x="284" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_16el089_di" bpmnElement="Association_16el089">
+        <di:waypoint x="545" y="229" />
+        <di:waypoint x="542" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_007xkp6_di" bpmnElement="Association_007xkp6">
+        <di:waypoint x="949" y="229" />
+        <di:waypoint x="944" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_01l8q69_di" bpmnElement="Association_01l8q69">
+        <di:waypoint x="744" y="229" />
+        <di:waypoint x="730" y="250" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

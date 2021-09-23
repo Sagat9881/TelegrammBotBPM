@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_15za7bw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.2.0">
+  <bpmn:collaboration id="Collaboration_1kse395">
+    <bpmn:participant id="Participant_1wut5gj" name="CRUD Test Process" processRef="ProcessRest" />
+  </bpmn:collaboration>
+  <bpmn:process id="ProcessRest" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_19872jd</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_04pif63" sourceRef="Activity_1qx9rtq" targetRef="Activity_046f3fz" />
+    <bpmn:sequenceFlow id="Flow_19872jd" sourceRef="StartEvent_1" targetRef="Activity_0lb9v1q" />
+    <bpmn:sequenceFlow id="Flow_1sku5fi" sourceRef="Activity_0lb9v1q" targetRef="Activity_1qx9rtq" />
+    <bpmn:scriptTask id="Activity_0lb9v1q" name="Параметры заявки" scriptFormat="JavaScript">
+      <bpmn:incoming>Flow_19872jd</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sku5fi</bpmn:outgoing>
+      <bpmn:script>var pizzaorder = new java.util.HashMap();
+
+                var client = new java.util.HashMap();
+                client.put("email", "email_string");
+                client.put("name", "name_string");
+                client.put("phoneNumber", "phoneNumber_string");
+                client.put("promo", "promo_string");
+
+                var items = new java.util.ArrayList();
+                var item = new java.util.HashMap();
+                item.put("id", 1);
+                item.put("number", 2);
+                item.put("price", 3);
+                item.put("type", "string");
+                items.add(item);
+
+                pizzaorder.put("client", client);
+                pizzaorder.put("items", items);
+                pizzaorder.put("totalAmount", 123);
+
+                execution.setVariable("pizzaorder", pizzaorder);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1tvqs51" sourceRef="Activity_046f3fz" targetRef="Activity_148imib" />
+    <bpmn:endEvent id="Event_0a9fyx9">
+      <bpmn:incoming>Flow_032t8um</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_148imib" name="Удалить заявку">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="service">pizzaorder</camunda:inputParameter>
+            <camunda:inputParameter name="resource">/pizzaorder/v3/pizzaorder/#{orderId}</camunda:inputParameter>
+            <camunda:inputParameter name="method">DELETE</camunda:inputParameter>
+            <camunda:inputParameter name="payload">#{pizzaorder}</camunda:inputParameter>
+            <camunda:outputParameter name="statusDelete">#{statusCode}</camunda:outputParameter>
+            <camunda:outputParameter name="responseDelete">#{response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>rest-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1tvqs51</bpmn:incoming>
+      <bpmn:outgoing>Flow_032t8um</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_032t8um" sourceRef="Activity_148imib" targetRef="Event_0a9fyx9" />
+    <bpmn:serviceTask id="Activity_046f3fz" name="Получить заявку">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="service">pizzaorder</camunda:inputParameter>
+            <camunda:inputParameter name="resource">/pizzaorder/v3/pizzaorder/#{orderId}</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:outputParameter name="statusGet">#{statusCode}</camunda:outputParameter>
+            <camunda:outputParameter name="responseGet">#{response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>rest-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04pif63</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tvqs51</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1qx9rtq" name="Создать заявку">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="service">pizzaorder</camunda:inputParameter>
+            <camunda:inputParameter name="resource">/pizzaorder/v3/pizzaorder</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="payload">#{pizzaorder}</camunda:inputParameter>
+            <camunda:outputParameter name="statusCreate">#{statusCode}</camunda:outputParameter>
+            <camunda:outputParameter name="responseCreate">#{response}</camunda:outputParameter>
+            <camunda:outputParameter name="orderId">
+              <camunda:script scriptFormat="JavaScript">var response = connector.getVariable("response") || new java.util.HashMap();
+
+                                response instanceof java.util.Map ? response.get("id") : 1 ;</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>rest-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1sku5fi</bpmn:incoming>
+      <bpmn:outgoing>Flow_04pif63</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1kse395">
+      <bpmndi:BPMNShape id="Participant_1wut5gj_di" bpmnElement="Participant_1wut5gj" isHorizontal="true">
+        <dc:Bounds x="129" y="52" width="1021" height="238" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_032t8um_di" bpmnElement="Flow_032t8um">
+        <di:waypoint x="920" y="177" />
+        <di:waypoint x="1012" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tvqs51_di" bpmnElement="Flow_1tvqs51">
+        <di:waypoint x="750" y="177" />
+        <di:waypoint x="820" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1sku5fi_di" bpmnElement="Flow_1sku5fi">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="460" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19872jd_di" bpmnElement="Flow_19872jd">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04pif63_di" bpmnElement="Flow_04pif63">
+        <di:waypoint x="560" y="177" />
+        <di:waypoint x="650" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04b1pru_di" bpmnElement="Activity_0lb9v1q">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0a9fyx9_di" bpmnElement="Event_0a9fyx9">
+        <dc:Bounds x="1012" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_148imib_di" bpmnElement="Activity_148imib">
+        <dc:Bounds x="820" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_046f3fz_di" bpmnElement="Activity_046f3fz">
+        <dc:Bounds x="650" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1wgmcmu_di" bpmnElement="Activity_1qx9rtq">
+        <dc:Bounds x="460" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

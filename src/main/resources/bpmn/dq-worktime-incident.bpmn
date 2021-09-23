@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0pf8kzk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <bpmn:collaboration id="Collaboration_1biskca">
+    <bpmn:participant id="Participant_0o0vn5m" processRef="dq-worktime-incident" />
+  </bpmn:collaboration>
+  <bpmn:process id="dq-worktime-incident" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0vcd7p9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1t56itz">
+      <bpmn:incoming>Flow_1hvno60</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="Activity_0e26le3" name="Отправка сообщения" camunda:type="external" camunda:topic="message-Delegate">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="QIncidentType">${QIncidentType}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vcd7p9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hvno60</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_1hvno60" sourceRef="Activity_0e26le3" targetRef="Event_1t56itz" />
+    <bpmn:sequenceFlow id="Flow_0vcd7p9" sourceRef="StartEvent_1" targetRef="Activity_0e26le3" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1biskca">
+      <bpmndi:BPMNShape id="Participant_0o0vn5m_di" bpmnElement="Participant_0o0vn5m" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="410" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0vcd7p9_di" bpmnElement="Flow_0vcd7p9">
+        <di:waypoint x="268" y="190" />
+        <di:waypoint x="320" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hvno60_di" bpmnElement="Flow_1hvno60">
+        <di:waypoint x="420" y="190" />
+        <di:waypoint x="472" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="232" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1t56itz_di" bpmnElement="Event_1t56itz">
+        <dc:Bounds x="472" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1tr5fta_di" bpmnElement="Activity_0e26le3">
+        <dc:Bounds x="320" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
