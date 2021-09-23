@@ -1,0 +1,17 @@
+<bean id="processEngineConfiguration"
+      class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
+    ...
+    <property name="deploymentResources"
+              value="classpath*:/bpmn/bpmProcess/*.bpmn" />
+    <property name="deploymentResources">
+        <list>
+            <value>classpath*:/bpmn/bpmProcess/*.bpmn</value>
+<!--            <value>classpath*:/mytest/autodeploy.*.png</value>-->
+        </list>
+    </property>
+</bean>
+
+<bean id="processEngine"
+      class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
+<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+</bean>
