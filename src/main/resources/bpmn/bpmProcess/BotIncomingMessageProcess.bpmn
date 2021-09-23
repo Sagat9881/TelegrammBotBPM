@@ -42,19 +42,18 @@
     <bpmn:sequenceFlow id="Flow_17luu96" name="нет" sourceRef="Gateway_1iehuk3" targetRef="Activity_0v8l2vv" />
     <bpmn:sequenceFlow id="Flow_13r94ng" sourceRef="Activity_0v8l2vv" targetRef="Event_0525git" />
     <bpmn:sequenceFlow id="Flow_0hr41p2" name="да" sourceRef="Gateway_1iehuk3" targetRef="Activity_0e553tc">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">S(Input).stringValue().startsWith("/");
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">Input.startsWith("/");
 </bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0a8sbli" sourceRef="Activity_0e553tc" targetRef="Event_0zow9lg" />
-    <bpmn:scriptTask id="Activity_19kxajp" name="Обработка входящего сообщения" scriptFormat="JavaScript" camunda:resultVariable="isCommand">
+    <bpmn:sequenceFlow id="Flow_1nc4s0s" sourceRef="Event_10u8qrm" targetRef="Gateway_1iehuk3" />
+    <bpmn:task id="Activity_19kxajp" name="Обработка входящего сообщения">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:outputParameter name="isCommand" />
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:script>Input.startsWith("/");</bpmn:script>
-    </bpmn:scriptTask>
-    <bpmn:sequenceFlow id="Flow_1nc4s0s" sourceRef="Event_10u8qrm" targetRef="Gateway_1iehuk3" />
+    </bpmn:task>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02gcbze">
@@ -117,7 +116,7 @@
       <bpmndi:BPMNShape id="Activity_0nlzu3a_di" bpmnElement="Activity_0v8l2vv">
         <dc:Bounds x="840" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1w2mb2a_di" bpmnElement="Activity_19kxajp">
+      <bpmndi:BPMNShape id="Activity_1iqfj5q_di" bpmnElement="Activity_19kxajp">
         <dc:Bounds x="400" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

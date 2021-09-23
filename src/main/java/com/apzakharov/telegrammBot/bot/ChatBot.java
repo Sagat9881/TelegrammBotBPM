@@ -120,7 +120,7 @@ public class ChatBot extends TelegramLongPollingBot {
         return false;
     }
 
-    public void sendMessage(long chatId, String text) {
+    public void sendMessage(Long chatId, String text) {
         SendMessage message = new SendMessage()
                 .setChatId(chatId)
                 .setText(text);

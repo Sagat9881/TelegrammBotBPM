@@ -3,14 +3,18 @@ package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProces
 import com.apzakharov.telegrammBot.bpmn.service.CamundaProcessService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProcessCommand implements JavaDelegate {
     CamundaProcessService camundaProcessService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
-        Long chatID = (Long) delegateExecution.getVariable("ChatID");
+        String chatIDtoString = String.valueOf(delegateExecution.getVariable("ChatID"));
+        Long chatID = Long.parseLong("chatIDtoString");
+
         camundaProcessService.sendMessage("Тестовая заглушка работы сценария ответа на работу команды",chatID);
     }
 }
