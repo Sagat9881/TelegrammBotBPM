@@ -21,7 +21,7 @@ public class UserProcessServiceImpl implements UserProcessService {
 
     private UserRepository userRepository;
     static final String JSON_TYPE_STRING = "String";
-    static final String ProcessURL = "localhost:8080/engine-rest/process-definition/key/process-incoming-message/start";
+    static final String ProcessURL = "https://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
     ObjectMapper objectMapper;
     CamundaProcessService camundaProcessService;
 
