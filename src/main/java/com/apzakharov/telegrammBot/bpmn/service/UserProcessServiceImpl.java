@@ -21,7 +21,7 @@ public class UserProcessServiceImpl implements UserProcessService {
 
     private UserRepository userRepository;
     static final String JSON_TYPE_STRING = "String";
-    static final String ProcessURL = "localhost:8080/telegrammbot/engine-rest/process-definition/key/process-incoming-message/start";
+    static final String ProcessURL = "localhost:8080/engine-rest/process-definition/key/process-incoming-message/start";
     ObjectMapper objectMapper;
     CamundaProcessService camundaProcessService;
 
@@ -29,6 +29,7 @@ public class UserProcessServiceImpl implements UserProcessService {
     public void processStart(@Nonnull BotContext contex) throws Exception {
 
         User user = contex.getUser();
+        String chatID = user.getChatId().toString();
         String input = contex.getInput();
 //        Integer stateID = user.getStateId();
 
@@ -46,6 +47,7 @@ public class UserProcessServiceImpl implements UserProcessService {
             Map<String, ProcessVariable> variables =  new HashMap<>();
 
             variables.put("User",new ProcessVariable(JSON_TYPE_STRING, objectMapper.writeValueAsString(user)));
+            variables.put("ChatID",new ProcessVariable(JSON_TYPE_STRING, chatID));
             variables.put("Input",new ProcessVariable(JSON_TYPE_STRING, input));
 
             ProcessStartRequestBody processBody = new ProcessStartRequestBody();

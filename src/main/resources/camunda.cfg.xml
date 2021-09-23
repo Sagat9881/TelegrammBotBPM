@@ -1,0 +1,20 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="processEngineConfiguration"
+          class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
+        <!--        <property name="deploymentResources"-->
+        <!--                  value="classpath*:*.bpmn" />-->
+        <property name="deploymentResources">
+            <list>
+                <value>classpath*:bpmn/bpmProcess/*.bpmn</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="processEngine"
+          class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
+
+</beans>

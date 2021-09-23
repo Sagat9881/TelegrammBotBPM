@@ -22,8 +22,6 @@ import java.util.List;
 @PropertySource("classpath:telegram.properties")
 public class ChatBot extends TelegramLongPollingBot {
 
-    private UserProcessService userProcessService;
-
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
 
     private static final String BROADCAST = "broadcast ";
@@ -36,6 +34,8 @@ public class ChatBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final UserService userService;
+    private UserProcessService userProcessService;
+//    private final UserProcessService serProcessService;
 
     public ChatBot(UserService userService) {
         this.userService = userService;

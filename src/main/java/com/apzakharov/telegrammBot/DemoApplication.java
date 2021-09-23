@@ -8,7 +8,7 @@ import org.telegram.telegrambots.ApiContextInitializer;
 
 @SpringBootApplication
 @EnableProcessApplication
-@EnableScheduling
+//@EnableScheduling
 public class DemoApplication {
     public static void main(String[] args) {
         ApiContextInitializer.init();
