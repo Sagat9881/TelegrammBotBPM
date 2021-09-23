@@ -47,13 +47,7 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0a8sbli" sourceRef="Activity_0e553tc" targetRef="Event_0zow9lg" />
     <bpmn:sequenceFlow id="Flow_1nc4s0s" sourceRef="Event_10u8qrm" targetRef="Gateway_1iehuk3" />
-    <bpmn:task id="Activity_19kxajp" name="Обработка входящего сообщения">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:outputParameter name="isCommand" />
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-    </bpmn:task>
+    <bpmn:task id="Activity_19kxajp" name="Обработка входящего сообщения" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02gcbze">
