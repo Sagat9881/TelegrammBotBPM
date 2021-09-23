@@ -13,5 +13,5 @@
 
 <bean id="processEngine"
       class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
-<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    <property name="processEngineConfiguration" ref="processEngineConfiguration" />
 </bean>
