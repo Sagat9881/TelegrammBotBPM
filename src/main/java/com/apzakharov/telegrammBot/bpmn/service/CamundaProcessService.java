@@ -21,9 +21,7 @@ import java.util.Map;
 public class CamundaProcessService{
    private static final Logger LOGGER = LogManager.getLogger(CamundaProcessService.class);
 
-   @Autowired
    private final RestTemplate template;
-
    private final ChatBot botService;
 
 
