@@ -28,14 +28,14 @@ public class CamundaClient {
 
 //        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
 
-//        JSONObject request = new JSONObject();
-//        request.p("ProcessStartRequestBody",processBody);
-//        LOGGER.info("request: " + request.toString());
+        JSONObject request = new JSONObject(processBody);
+
+        LOGGER.info("request: " + request.toString());
 
         // set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<ProcessStartRequestBody> entity = new HttpEntity<>(processBody, headers);
+        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
 
         LOGGER.info("entity: " + entity);
 
