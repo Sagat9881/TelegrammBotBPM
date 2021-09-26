@@ -1,7 +1,9 @@
 package com.apzakharov.telegrammBot.bot;
 
 import com.apzakharov.telegrammBot.model.User;
+import lombok.Data;
 
+@Data
 public class BotContext {
     private final ChatBot bot;
     private final User user;

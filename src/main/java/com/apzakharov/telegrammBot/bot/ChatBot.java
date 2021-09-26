@@ -43,6 +43,16 @@ public class ChatBot extends TelegramLongPollingBot {
     }
 
     @Override
+    public String toString() {
+        return "ChatBot{" +
+                "botName='" + botName + '\'' +
+                ", botToken='" + botToken + '\'' +
+                ", userService=" + userService +
+                ", userProcessService=" + userProcessService +
+                '}';
+    }
+
+    @Override
     public String getBotUsername() {
         return botName;
     }
