@@ -19,14 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-
 public class UserProcessServiceImpl implements UserProcessService {
 
     private UserRepository userRepository;
     static final String JSON_TYPE_STRING = "String";
     static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
-    ObjectMapper objectMapper;
-    CamundaProcessService camundaProcessService;
+    private ObjectMapper objectMapper;
+    private CamundaProcessService camundaProcessService;
 
     private static final Logger LOGGER = LogManager.getLogger(ProcessCommand.class);
 

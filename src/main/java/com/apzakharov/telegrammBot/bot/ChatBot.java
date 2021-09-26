@@ -127,9 +127,12 @@ public class ChatBot extends TelegramLongPollingBot {
     }
 
     public void sendMessage(Long chatId, String text) {
+        LOGGER.info("Bot service try to sendMessag. ChatID: "+chatId+", and text: "+text);
         SendMessage message = new SendMessage()
                 .setChatId(chatId)
                 .setText(text);
+
+        LOGGER.info("messageText: "+message.getText()+", messageChatID: "+message.getChatId()+"messageMethod: "+message.getMethod());
         try {
             execute(message);
         } catch (TelegramApiException e) {
