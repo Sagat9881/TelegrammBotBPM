@@ -2,10 +2,8 @@ package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bot.BotContext;
 import com.apzakharov.telegrammBot.bot.BotStateBPMN;
-import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessCommand;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
-import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
-import java.text.MessageFormat;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +26,8 @@ public class UserProcessService {
     static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
 
     private final ObjectMapper objectMapper;
-    private final CamundaProcessService camundaProcessService;
-    private final ChatBot botService;
-    private final UserRepository userRepository;
+    private final CamundaClient camundaClient;
+    UserRepository userRepository;
 
     public void processStart(@Nonnull BotContext contex) throws Exception {
 
@@ -68,7 +64,7 @@ public class UserProcessService {
 
             LOGGER.info("StartProcess for Url: \n"+ ProcessURL+"\n"+" and body: \n"+objectMapper.writeValueAsString(processBody));
 
-            camundaProcessService.processStart(ProcessURL, processBody);
+            camundaClient.processStart(ProcessURL, processBody);
 
 //            user.setStateId(BotStateBPMN.PROCESS.getBotStateBPMNID());
         }
@@ -84,7 +80,5 @@ public class UserProcessService {
         userRepository.save(user);
     }
 
-    public void sendMessage(Long chatId, String text){
-        botService.sendMessage(chatId,text);
-    }
+
 }

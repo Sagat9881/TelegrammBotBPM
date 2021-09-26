@@ -1,6 +1,6 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
-import com.apzakharov.telegrammBot.bpmn.service.CamundaProcessService;
+import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.service.UserProcessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProcessAnswer implements JavaDelegate {
 
-    private final UserProcessService userProcessService;
+    private final ChatBot botService;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -26,7 +26,7 @@ public class ProcessAnswer implements JavaDelegate {
 
 
         String outputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
-        userProcessService.sendMessage(chatID, outputText);
+        botService.sendMessage(chatID, outputText);
 
     }
 

@@ -1,5 +1,7 @@
 package com.apzakharov.telegrammBot.service;
 
+import com.apzakharov.telegrammBot.bot.ChatBot;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,15 +11,12 @@ import com.apzakharov.telegrammBot.repo.UserRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Log4j2
 public class UserService {
 
     private final UserRepository userRepository;
 
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Transactional(readOnly = true)
     public User findByChatId(long id) {
@@ -49,6 +48,8 @@ public class UserService {
     public void updateUser(User user) {
         userRepository.save(user);
     }
+
+
 
 }
 
