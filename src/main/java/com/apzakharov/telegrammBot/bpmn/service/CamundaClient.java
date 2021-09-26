@@ -3,11 +3,14 @@ package com.apzakharov.telegrammBot.bpmn.service;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import lombok.RequiredArgsConstructor;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import spinjar.com.minidev.json.JSONObject;
 
 import java.util.Map;
 
@@ -20,12 +23,32 @@ public class CamundaClient {
 //   private final ChatBot botService;
 
 
-    public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
+    public String processStart(String processURL, ProcessStartRequestBody processBody) {
 
-        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
+//        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
 
-        return (processStartResult != null) ? processStartResult :
-                new ProcessStartResult();
+        JSONObject request = new JSONObject();
+        request.put("ProcessStartRequestBody",processBody);
+
+
+        // set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<String>(request.toJSONString(), headers);
+
+        // send request and parse result
+        ResponseEntity<String> loginResponse = template
+                .exchange(processURL, HttpMethod.POST, entity, String.class);
+        if (loginResponse.getStatusCode() == HttpStatus.OK) {
+            return loginResponse.getBody();
+        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+            // nono... bad credentials
+        }
+
+        return "fail";
+
+//        return (processStartResult != null) ? processStartResult :
+//                new ProcessStartResult();
     }
 
 
