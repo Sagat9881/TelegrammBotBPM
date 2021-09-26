@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProcessVariable {
 
-    String type;
-    String value;
+   private String type;
+   private String value;
 
 }

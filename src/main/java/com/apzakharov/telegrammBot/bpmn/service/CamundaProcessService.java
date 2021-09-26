@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CamundaProcessService{
-    private static final Logger LOGGER = LogManager.getLogger(CamundaProcessService.class);
+   private static final Logger LOGGER = LogManager.getLogger(CamundaProcessService.class);
 
    private final RestTemplate template;
    private final ChatBot botService;
