@@ -2,6 +2,7 @@ package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bot.BotContext;
 import com.apzakharov.telegrammBot.bot.BotStateBPMN;
+import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessCommand;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
@@ -29,6 +30,7 @@ public class UserProcessService {
 
     private final ObjectMapper objectMapper;
     private final CamundaProcessService camundaProcessService;
+    private final ChatBot botService;
     private final UserRepository userRepository;
 
     public void processStart(@Nonnull BotContext contex) throws Exception {
@@ -80,5 +82,9 @@ public class UserProcessService {
 //        user.setUserTimeStart(ZonedDateTime.now());
 //        QIncidentEntity qIncidentEntity = qIncidentEntityMapper.qIncidentToQIncidentEntity(qIncident);
         userRepository.save(user);
+    }
+
+    public void sendMessage(Long chatId, String text){
+        botService.sendMessage(chatId,text);
     }
 }

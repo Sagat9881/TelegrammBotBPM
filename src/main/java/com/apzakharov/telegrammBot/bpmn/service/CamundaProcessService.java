@@ -22,22 +22,15 @@ public class CamundaProcessService{
    private static final Logger LOGGER = LogManager.getLogger(CamundaProcessService.class);
 
    private final RestTemplate template;
-   private final ChatBot botService;
+//   private final ChatBot botService;
 
 
     public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
 
         ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
 
-
         return (processStartResult != null) ? processStartResult :
                 new ProcessStartResult();
-    }
-
-    public void sendMessage (String text, Long chatId){
-        LOGGER.info("Start send message with text: "+text+", and chatID: "+chatId);
-        botService.sendMessage(chatId,text);
-
     }
 
 

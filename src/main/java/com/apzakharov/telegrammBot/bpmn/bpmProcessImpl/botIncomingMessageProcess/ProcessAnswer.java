@@ -1,17 +1,20 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
 import com.apzakharov.telegrammBot.bpmn.service.CamundaProcessService;
+import com.apzakharov.telegrammBot.bpmn.service.UserProcessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
+
+
 @Component
 @RequiredArgsConstructor
 public class ProcessAnswer implements JavaDelegate {
 
-    private final CamundaProcessService camundaProcessService;
+    private final UserProcessService userProcessService;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -23,7 +26,7 @@ public class ProcessAnswer implements JavaDelegate {
 
 
         String outputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
-        camundaProcessService.sendMessage(outputText, chatID);
+        userProcessService.sendMessage(chatID, outputText);
 
     }
 
