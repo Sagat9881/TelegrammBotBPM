@@ -51,7 +51,7 @@
     <bpmn:task id="Activity_19kxajp" name="Обработка входящего сообщения">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:outputParameter name="Input">${ProcessStartRequestBody.get("ProcessStartRequestBody").get("variables").get("Input")}</camunda:outputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1nc4s0s</bpmn:incoming>

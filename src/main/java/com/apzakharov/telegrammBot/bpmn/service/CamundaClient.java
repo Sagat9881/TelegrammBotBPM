@@ -24,34 +24,34 @@ public class CamundaClient {
 //   private final ChatBot botService;
 
 
-    public String processStart(String processURL, ProcessStartRequestBody processBody) {
+    public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
 
-//        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
+        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
 
-        JSONObject request = new JSONObject(processBody);
+//        JSONObject request = new JSONObject(processBody);
+//
+//        LOGGER.info("request: " + request.toString());
+//
+//        // set headers
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
+//
+//        LOGGER.info("entity: " + entity);
+//
+//        // send request and TODO: parse result
+//        ResponseEntity<String> loginResponse = template
+//                .exchange(processURL, HttpMethod.POST, entity, String.class);
+//        if (loginResponse.getStatusCode() == HttpStatus.OK) {
+//            return loginResponse.getBody();
+//        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+//            // nono... bad credentials
+//        }
+//
+//        return "fail";
 
-        LOGGER.info("request: " + request.toString());
-
-        // set headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
-
-        LOGGER.info("entity: " + entity);
-
-        // send request and TODO: parse result
-        ResponseEntity<String> loginResponse = template
-                .exchange(processURL, HttpMethod.POST, entity, String.class);
-        if (loginResponse.getStatusCode() == HttpStatus.OK) {
-            return loginResponse.getBody();
-        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-            // nono... bad credentials
-        }
-
-        return "fail";
-
-//        return (processStartResult != null) ? processStartResult :
-//                new ProcessStartResult();
+        return (processStartResult != null) ? processStartResult :
+                new ProcessStartResult();
     }
 
 
