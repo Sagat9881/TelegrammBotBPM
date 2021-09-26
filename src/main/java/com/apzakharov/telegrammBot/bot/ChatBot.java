@@ -34,11 +34,12 @@ public class ChatBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final UserService userService;
-    private UserProcessService userProcessService;
+    private final UserProcessService userProcessService;
 //    private final UserProcessService serProcessService;
 
-    public ChatBot(UserService userService) {
+    public ChatBot(UserService userService, UserProcessService userProcessService) {
         this.userService = userService;
+        this.userProcessService = userProcessService;
     }
 
     @Override
