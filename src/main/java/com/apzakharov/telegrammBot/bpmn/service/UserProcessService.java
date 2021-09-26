@@ -25,19 +25,19 @@ public class UserProcessService {
     static final String JSON_TYPE_STRING = "String";
     static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
 
-    private final ObjectMapper objectMapper;
+//    private final ObjectMapper objectMapper;
     private final CamundaClient camundaClient;
     private final UserRepository userRepository;
 
     public void processStart(@Nonnull BotContext contex) throws Exception {
 
-        LOGGER.info("Start New UserProcessAnswer for contex: \n"+ objectMapper.writeValueAsString(contex));
+        LOGGER.info("Start New UserProcessAnswer for contex: \n"+ contex.toString());
 
         User user = contex.getUser();
         Long chatID = user.getChatId();
         String input = contex.getInput();
 
-        LOGGER.info("Context for process: \n"+ objectMapper.writeValueAsString(contex));
+        LOGGER.info("Context for process: \n"+ contex.toString());
 //        Integer stateID = user.getStateId();
 
 //        BotStateBPMN usersBotState = BotStateBPMN.getByBotStateBPMNID(stateID)
@@ -53,16 +53,16 @@ public class UserProcessService {
 
             Map<String, Object> variables =  new HashMap<>();
 
-            variables.put("User", objectMapper.writeValueAsString(user));
+            variables.put("User", user.toString());
             variables.put("ChatID", chatID);
             variables.put("Input", input);
 
-            LOGGER.info("Variabls for process: "+ objectMapper.writeValueAsString(variables));
+            LOGGER.info("Variabls for process: "+ contex.toString());
 
             ProcessStartRequestBody processBody = new ProcessStartRequestBody();
             processBody.setVariables(variables);
 
-            LOGGER.info("StartProcess for Url: \n"+ ProcessURL+"\n"+" and body: \n"+objectMapper.writeValueAsString(processBody));
+            LOGGER.info("StartProcess for Url: \n"+ ProcessURL+"\n"+" and body: \n"+processBody.toString());
 
             camundaClient.processStart(ProcessURL, processBody);
 
