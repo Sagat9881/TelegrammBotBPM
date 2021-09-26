@@ -26,22 +26,24 @@ public class CamundaClient {
 
     public String processStart(String processURL, ProcessStartRequestBody processBody) {
 
-         String processStartResult = template.postForObject(processURL, processBody, String.class);
 
-//        JSONObject request = new JSONObject(processBody);
-//
-//        LOGGER.info("request: " + request.toString());
-//
-//        // set headers
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
-//
-//        LOGGER.info("entity: " + entity);
-//
-//        // send request and TODO: parse result
-//        ResponseEntity<String> loginResponse = template
-//                .exchange(processURL, HttpMethod.POST, entity, String.class);
+
+
+
+        JSONObject request = new JSONObject(processBody);
+        request.put("headers",MediaType.APPLICATION_JSON);
+
+        LOGGER.info("request: " + request.toString());
+
+        // set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
+
+        LOGGER.info("entity: " + entity);
+
+        // send request and TODO: parse result
+       String processStartResult = template.postForObject(processURL, request, String.class);
 //        if (loginResponse.getStatusCode() == HttpStatus.OK) {
 //            return loginResponse.getBody();
 //        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
