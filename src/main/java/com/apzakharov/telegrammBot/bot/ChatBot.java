@@ -1,7 +1,7 @@
 package com.apzakharov.telegrammBot.bot;
 
-import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.bpmn.service.UserProcessService;
+import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.service.UserService;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;

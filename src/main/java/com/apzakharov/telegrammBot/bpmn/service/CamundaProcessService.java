@@ -1,13 +1,49 @@
 package com.apzakharov.telegrammBot.bpmn.service;
 
+import com.apzakharov.telegrammBot.bot.BotService;
+import com.apzakharov.telegrammBot.bot.ChatBot;
+import com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessCommand;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
+import com.apzakharov.telegrammBot.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-public interface CamundaProcessService {
-    ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody);
+import java.util.Map;
 
-    void sendMessage(String text, Long chatId);
+@Service
+public class CamundaProcessService{
+    private static final Logger LOGGER = LogManager.getLogger(CamundaProcessService.class);
 
-    Long getChatID (DelegateExecution delegateExecution);
+    RestTemplate template;
+    ChatBot botService;
+
+
+    public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
+
+        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
+
+
+        return (processStartResult != null) ? processStartResult :
+                new ProcessStartResult();
+    }
+
+    public void sendMessage (String text, Long chatId){
+        LOGGER.info("Start send message with text: "+text+", and chatID: "+chatId);
+        botService.sendMessage(chatId,text);
+
+    }
+
+
+    public Long getChatID(DelegateExecution delegateExecution) {
+
+        Map<String,Object> user = (Map<String,Object>)delegateExecution.getVariable("User");
+        return (Long) user.get("chatID");
+
+            }
+
+
 }
