@@ -128,6 +128,7 @@ public class ChatBot extends TelegramLongPollingBot {
             execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+
         }
     }
 

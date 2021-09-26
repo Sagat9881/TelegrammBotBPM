@@ -1,5 +1,6 @@
 spring.datasource.url: jdbc:h2:file:./camunda-h2-database
-
+bot.name: InfoCar_SPB_bot
+bot.token: 2033573597:AAEWVk4KOxw6RAU7q1zl8clx9S08ORPMBXU
 camunda.bpm.admin-user:
   id: demo
   password: demo

@@ -26,8 +26,8 @@ public class ProcessAnswer implements JavaDelegate {
         Long chatID = (Long) delegateExecution.getVariable("ChatID");
 
 
-        String inputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
-        camundaProcessService.sendMessage(inputText, chatID);
+        String outputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
+        camundaProcessService.sendMessage(outputText, chatID);
 
     }
 
