@@ -24,9 +24,9 @@ public class CamundaClient {
 //   private final ChatBot botService;
 
 
-    public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
+    public String processStart(String processURL, ProcessStartRequestBody processBody) {
 
-        ProcessStartResult processStartResult = template.postForObject(processURL, processBody, ProcessStartResult.class);
+         String processStartResult = template.postForObject(processURL, processBody, String.class);
 
 //        JSONObject request = new JSONObject(processBody);
 //
@@ -48,10 +48,10 @@ public class CamundaClient {
 //            // nono... bad credentials
 //        }
 //
-//        return "fail";
+//        return ;
 
         return (processStartResult != null) ? processStartResult :
-                new ProcessStartResult();
+                "fail";
     }
 
 
