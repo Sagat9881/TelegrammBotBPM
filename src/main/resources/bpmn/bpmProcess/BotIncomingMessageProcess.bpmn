@@ -21,7 +21,7 @@
       <bpmn:outgoing>Flow_1nc4s0s</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:exclusiveGateway id="Gateway_1iehuk3" name="Это команда?" default="Flow_17luu96">
-      <bpmn:incoming>Flow_1nc4s0s</bpmn:incoming>
+      <bpmn:incoming>Flow_1tn0vfi</bpmn:incoming>
       <bpmn:outgoing>Flow_17luu96</bpmn:outgoing>
       <bpmn:outgoing>Flow_0hr41p2</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -46,8 +46,17 @@
 </bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0a8sbli" sourceRef="Activity_0e553tc" targetRef="Event_0zow9lg" />
-    <bpmn:sequenceFlow id="Flow_1nc4s0s" sourceRef="Event_10u8qrm" targetRef="Gateway_1iehuk3" />
-    <bpmn:task id="Activity_19kxajp" name="Обработка входящего сообщения" />
+    <bpmn:sequenceFlow id="Flow_1nc4s0s" sourceRef="Event_10u8qrm" targetRef="Activity_19kxajp" />
+    <bpmn:sequenceFlow id="Flow_1tn0vfi" sourceRef="Activity_19kxajp" targetRef="Gateway_1iehuk3" />
+    <bpmn:task id="Activity_19kxajp" name="Обработка входящего сообщения">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="Input">${ProcessStartRequestBody.get("variables").get("Input")}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1nc4s0s</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tn0vfi</bpmn:outgoing>
+    </bpmn:task>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02gcbze">
@@ -60,6 +69,10 @@
       <bpmndi:BPMNShape id="Lane_12yayq5_di" bpmnElement="Lane_12yayq5" isHorizontal="true">
         <dc:Bounds x="170" y="200" width="1020" height="250" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1nc4s0s_di" bpmnElement="Flow_1nc4s0s">
+        <di:waypoint x="268" y="320" />
+        <di:waypoint x="400" y="320" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0a8sbli_di" bpmnElement="Flow_0a8sbli">
         <di:waypoint x="690" y="140" />
         <di:waypoint x="1122" y="140" />
@@ -82,8 +95,8 @@
           <dc:Bounds x="744" y="302" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1nc4s0s_di" bpmnElement="Flow_1nc4s0s">
-        <di:waypoint x="268" y="320" />
+      <bpmndi:BPMNEdge id="Flow_1tn0vfi_di" bpmnElement="Flow_1tn0vfi">
+        <di:waypoint x="500" y="320" />
         <di:waypoint x="615" y="320" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_10u8qrm_di" bpmnElement="Event_10u8qrm">
@@ -111,7 +124,7 @@
         <dc:Bounds x="840" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1iqfj5q_di" bpmnElement="Activity_19kxajp">
-        <dc:Bounds x="400" y="210" width="100" height="80" />
+        <dc:Bounds x="400" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

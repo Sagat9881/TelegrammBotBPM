@@ -30,7 +30,7 @@ public class CamundaClient {
 
         JSONObject request = new JSONObject();
         request.put("ProcessStartRequestBody",processBody);
-
+        LOGGER.info("request: " + request.toString());
 
         // set headers
         HttpHeaders headers = new HttpHeaders();
