@@ -27,7 +27,7 @@ public class UserProcessService {
 
     private final ObjectMapper objectMapper;
     private final CamundaClient camundaClient;
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public void processStart(@Nonnull BotContext contex) throws Exception {
 
