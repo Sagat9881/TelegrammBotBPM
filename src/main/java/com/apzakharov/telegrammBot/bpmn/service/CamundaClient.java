@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import spinjar.com.minidev.json.JSONObject;
+
 
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class CamundaClient {
         // set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<String>(request.toJSONString(), headers);
+        HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
 
         // send request and parse result
         ResponseEntity<String> loginResponse = template
