@@ -2,15 +2,17 @@ package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProces
 
 import com.apzakharov.telegrammBot.bpmn.service.CamundaProcessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProcessAnswer implements JavaDelegate {
 
-    CamundaProcessService camundaProcessService;
-    ObjectMapper objectMapper;
+    private final CamundaProcessService camundaProcessService;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {

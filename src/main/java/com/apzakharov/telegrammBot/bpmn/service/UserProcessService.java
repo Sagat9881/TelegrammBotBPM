@@ -8,6 +8,7 @@ import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class UserProcessService {
-
-    private UserRepository userRepository;
-    static final String JSON_TYPE_STRING = "String";
-    static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
-    private ObjectMapper objectMapper;
-    private CamundaProcessService camundaProcessService;
-
     private static final Logger LOGGER = LogManager.getLogger(ProcessCommand.class);
 
+    static final String JSON_TYPE_STRING = "String";
+    static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
+
+    private final ObjectMapper objectMapper;
+    private final CamundaProcessService camundaProcessService;
+    private final UserRepository userRepository;
 
     public void processStart(@Nonnull BotContext contex) throws Exception {
 

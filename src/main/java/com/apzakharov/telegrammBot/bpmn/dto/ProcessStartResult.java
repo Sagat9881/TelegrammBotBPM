@@ -1,16 +1,20 @@
 package com.apzakharov.telegrammBot.bpmn.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProcessStartResult {
 
-    String id;
-    String definitionId;
-    String businessKey;
-    String caseInstanceId;
-    String tenantId;
-    Boolean ended;
-    Boolean suspended;
+    private String id;
+    private String definitionId;
+    private String businessKey;
+    private String caseInstanceId;
+    private String tenantId;
+    private Boolean ended;
+    private Boolean suspended;
 
 }

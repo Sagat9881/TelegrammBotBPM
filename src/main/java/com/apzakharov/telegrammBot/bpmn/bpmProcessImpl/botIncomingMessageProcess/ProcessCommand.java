@@ -3,6 +3,7 @@ package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProces
 import com.apzakharov.telegrammBot.bpmn.service.CamundaProcessService;
 import com.apzakharov.telegrammBot.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -10,11 +11,12 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProcessCommand implements JavaDelegate {
     private static final Logger LOGGER = LogManager.getLogger(ProcessCommand.class);
-    private CamundaProcessService camundaProcessService;
-    private UserService userService;
+
+    private final CamundaProcessService camundaProcessService;
+    private final UserService userService;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
