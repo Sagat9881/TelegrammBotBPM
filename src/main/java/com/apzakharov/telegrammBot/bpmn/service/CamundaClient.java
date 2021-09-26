@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +40,11 @@ public class CamundaClient {
         LOGGER.info("entity: " + entity);
 
         // send request and TODO: parse result
-        ResponseEntity<ProcessStartResult> response = template
-                .exchange(processURL, HttpMethod.POST, entity, ProcessStartResult.class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return Objects.requireNonNull(response.getBody()).toString();
-        } else if (response.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+        ResponseEntity<String> loginResponse = template
+                .exchange(processURL, HttpMethod.POST, entity, String.class);
+        if (loginResponse.getStatusCode() == HttpStatus.OK) {
+            return loginResponse.getBody();
+        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
             // nono... bad credentials
         }
 
