@@ -74,26 +74,32 @@ public class ChatBot extends TelegramLongPollingBot {
             userService.addUser(user);
 
             context = BotContext.of(this, user, text);
+            LOGGER.info("BotContext of user with id" + chatId+ "Input: "+ text);
             user.setStateId(BotStateBPMN.WAIT.getBotStateBPMNID());
 
             try {
+                LOGGER.info("processStart for user with id:  " + chatId);
                 userProcessService.processStart(context);
             } catch (Exception e) {
+                LOGGER.info("processStart fail for user with id:  " + chatId);
                 e.printStackTrace();
             }
 
             LOGGER.info("New user registered: " + chatId);
         } else {
             context = BotContext.of(this, user, text);
+            LOGGER.info("BotContext of user with id" + chatId+ "Input: "+ text);
 //            state = BotState.byId(user.getStateId());
 
             try {
+                LOGGER.info("processStart for user with id: " + chatId);
                 userProcessService.processStart(context);
             } catch (Exception e) {
+                LOGGER.info("processStart fail for user with id:  " + chatId);
                 e.printStackTrace();
             }
 
-//            OGGER.info("Update received for user in state: " + state);
+           LOGGER.info("Update received for user with id: "+ chatId);
         }
 
         userService.updateUser(user);
