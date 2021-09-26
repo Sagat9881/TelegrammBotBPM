@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +21,9 @@ import java.util.Map;
 public class CamundaProcessService{
    private static final Logger LOGGER = LogManager.getLogger(CamundaProcessService.class);
 
+   @Autowired
    private final RestTemplate template;
+
    private final ChatBot botService;
 
 
