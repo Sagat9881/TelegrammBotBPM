@@ -38,7 +38,7 @@ public class CamundaClient {
 
 
         // send request and TODO: parse result
-       String processStartResult = template.postForObject(processURL, request, String.class);
+       String processStartResult = template.postForObject(processURL, request.toMap(), String.class);
 //        if (loginResponse.getStatusCode() == HttpStatus.OK) {
 //            return loginResponse.getBody();
 //        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
