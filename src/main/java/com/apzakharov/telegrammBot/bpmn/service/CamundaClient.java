@@ -26,21 +26,16 @@ public class CamundaClient {
 
     public String processStart(String processURL, ProcessStartRequestBody processBody) {
 
-
-
-
-
-        JSONObject request = new JSONObject(processBody);
-        request.put("headers",MediaType.APPLICATION_JSON);
-
-        LOGGER.info("request: " + request.toString());
+       JSONObject request = new JSONObject(processBody);
 
         // set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
+        request.put("headers",headers);
 
-        LOGGER.info("entity: " + entity);
+        LOGGER.info("request: " + request.toString());
+
 
         // send request and TODO: parse result
        String processStartResult = template.postForObject(processURL, request, String.class);
