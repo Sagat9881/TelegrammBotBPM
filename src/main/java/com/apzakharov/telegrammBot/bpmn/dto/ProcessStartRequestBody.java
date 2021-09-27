@@ -7,6 +7,8 @@ import lombok.ToString;
 
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Map;
 
 @Data
@@ -15,6 +17,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProcessStartRequestBody {
+   @Id
+   @GeneratedValue
+   private Long id;
 
    private String businessKey;
    private String caseInstanceId;
