@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.spin.Spin;
+import org.camunda.spin.json.SpinJsonNode;
+import org.camunda.spin.plugin.impl.SpinBpmPlatformPlugin;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -27,8 +30,9 @@ public class CamundaClient {
 
     public void processStart(String processURL, ProcessStartRequestBody processBody) {
 
-        JSONObject requestVariables = new JSONObject();
-        requestVariables.accumulate("variables",processBody.getVariables());
+        SpinJsonNode requestVariables = Spin.JSON(processBody.getVariables());
+//        requestVariables.accumulate("variables",processBody.getVariables());
+//        Spin
 
 
 //        request.put("Content-type",MediaType.APPLICATION_JSON_VALUE);
@@ -36,10 +40,10 @@ public class CamundaClient {
 //        headers.put("сontent-Type","application/json");
 //        request.put("headers",headers);
 
-        LOGGER.info("requestVariables to string: " + requestVariables.toString());
+        LOGGER.info("requestVariables to string: " + requestVariables);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(requestVariables.toString(),headers);
+        HttpEntity<SpinJsonNode> entity = new HttpEntity<>(requestVariables,headers);
         LOGGER.info("entity to string: " + entity);
 
         // send request and TODO: parse result
