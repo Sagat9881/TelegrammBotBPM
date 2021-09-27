@@ -1,7 +1,6 @@
 package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
-import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -24,32 +24,21 @@ public class CamundaClient {
 //   private final ChatBot botService;
 
 
-    public String processStart(String processURL, ProcessStartRequestBody processBody) {
+    public void processStart(String processURL, ProcessStartRequestBody processBody) {
 
-       JSONObject request = new JSONObject(processBody);
-
-        // set headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
+        JSONObject request = new JSONObject(processBody);
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("Content-Type","application/json");
         request.put("headers",headers);
-
         LOGGER.info("request: " + request.toString());
 
+        HttpEntity<String> entity = new HttpEntity<String>(request.toString());
+        LOGGER.info("entity: " + entity.toString());
 
         // send request and TODO: parse result
-       String processStartResult = template.postForObject(processURL, request.toMap(), String.class);
-//        if (loginResponse.getStatusCode() == HttpStatus.OK) {
-//            return loginResponse.getBody();
-//        } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-//            // nono... bad credentials
-//        }
-//
-//        return ;
+        String processStartResult = template.postForObject(processURL, entity, String.class);
 
-        return (processStartResult != null) ? processStartResult :
-                "fail";
-    }
+        }
 
 
     public Long getChatID(DelegateExecution delegateExecution) {
