@@ -23,36 +23,23 @@ public class User {
 
 
 
-    public ZonedDateTime getUserTimeStart() {
-        return userTimeStart;
-    }
 
-    public void setUserTimeStart(ZonedDateTime userTimeStart) {
-        this.userTimeStart = userTimeStart;
-    }
-
-    private ZonedDateTime userTimeStart;
 
     public User() {
     }
 
-    public User(Long chatId, Integer state, ZonedDateTime userTimeStart) {
+    public User(Long chatId, Integer state) {
         this.chatId = chatId;
         this.stateId = state;
-        this.userTimeStart = userTimeStart;
-    }
 
-    public User(Long chatId, Integer stateId, Boolean admin, ZonedDateTime userTimeStart) {
-        this.chatId = chatId;
-        this.stateId = stateId;
-        this.admin = admin;
-        this.userTimeStart = userTimeStart;
     }
 
     public User(Long chatId, Integer stateId, Boolean admin) {
         this.chatId = chatId;
         this.stateId = stateId;
-        this.admin = admin;}
+        this.admin = admin;
+
+    }
 
     public Long getId() {
         return id;

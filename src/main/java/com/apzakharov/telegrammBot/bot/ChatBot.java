@@ -81,7 +81,7 @@ public class ChatBot extends TelegramLongPollingBot {
         if (user == null) {
 
 
-            user = new User(chatId, BotStateBPMN.REG.getBotStateBPMNID(), ZonedDateTime.now());
+            user = new User(chatId, BotStateBPMN.REG.getBotStateBPMNID());
             userService.addUser(user);
 
             context = BotContext.of(this, user, text);

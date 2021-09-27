@@ -57,7 +57,7 @@ public class UserProcessService {
             variables.put("ChatID", chatID);
             variables.put("Input", input);
 
-            LOGGER.info("Variabls for process: "+ contex.toString());
+            LOGGER.info("Variabls for process: "+ variables.toString());
 
             ProcessStartRequestBody processBody = new ProcessStartRequestBody();
             processBody.setVariables(variables);
@@ -74,7 +74,7 @@ public class UserProcessService {
             user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
 
         }
-        user.setUserTimeStart(ZonedDateTime.now());
+//        user.setUserTimeStart(ZonedDateTime.now());
 //        user.setUserTimeStart(ZonedDateTime.now());
 //        QIncidentEntity qIncidentEntity = qIncidentEntityMapper.qIncidentToQIncidentEntity(qIncident);
         userRepository.save(user);
