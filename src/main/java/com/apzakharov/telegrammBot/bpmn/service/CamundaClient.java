@@ -40,7 +40,7 @@ public class CamundaClient {
         headers.setContentType(MediaType.APPLICATION_JSON);
         LOGGER.info("headers: " + headers);
         // compling Request Entity
-        HttpEntity<SpinJsonNode> entity = new HttpEntity<>(request,headers);
+        HttpEntity<String> entity = new HttpEntity<>(request.toString(),headers);
         LOGGER.info("entity to string: " + entity);
 
         // send request and TODO: parse result
