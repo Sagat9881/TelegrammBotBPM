@@ -22,9 +22,6 @@ public class User {
     private Boolean notified = false;
 
 
-
-
-
     public User() {
     }
 

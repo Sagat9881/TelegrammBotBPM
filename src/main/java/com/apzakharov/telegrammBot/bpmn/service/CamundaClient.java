@@ -29,8 +29,25 @@ public class CamundaClient {
 
 
     public void processStart(String processURL, ProcessStartRequestBody processBody) {
+        //get body
+        Map<String,Object> requestVariables = new HashMap<>();
+        requestVariables.put("variables",processBody.getVariables());
+        LOGGER.info("requestVariables to string: " + requestVariables);
+        SpinJsonNode request = Spin.JSON(requestVariables);
+        LOGGER.info("request: " + request);
+        // set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        LOGGER.info("headers: " + headers);
+        // compling Request Entity
+        HttpEntity<SpinJsonNode> entity = new HttpEntity<>(request,headers);
+        LOGGER.info("entity to string: " + entity);
 
-        SpinJsonNode requestVariables = Spin.JSON(processBody.getVariables());
+        // send request and TODO: parse result
+        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
+        LOGGER.info("processStartResult status: "+processStartResult.getStatusCode()+"\n processStartResult body: " + processStartResult.getBody());
+    }
+
 //        requestVariables.accumulate("variables",processBody.getVariables());
 //        Spin
 
@@ -40,16 +57,7 @@ public class CamundaClient {
 //        headers.put("сontent-Type","application/json");
 //        request.put("headers",headers);
 
-        LOGGER.info("requestVariables to string: " + requestVariables);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<SpinJsonNode> entity = new HttpEntity<>(requestVariables,headers);
-        LOGGER.info("entity to string: " + entity);
 
-        // send request and TODO: parse result
-        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
-        LOGGER.info("processStartResult status: "+processStartResult.getStatusCode()+"\n processStartResult body: " + processStartResult.getBody());
-        }
 
 
     public Long getChatID(DelegateExecution delegateExecution) {
