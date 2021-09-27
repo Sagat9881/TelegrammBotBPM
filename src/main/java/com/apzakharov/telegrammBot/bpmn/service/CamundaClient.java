@@ -28,7 +28,7 @@ public class CamundaClient {
 
         JSONObject request = new JSONObject(processBody);
         Map<String, Object> headers = new HashMap<>();
-        headers.put("Content-Type","application/json");
+        headers.put("сontent-Type","application/json");
         request.put("headers",headers);
         LOGGER.info("request: " + request.toString());
 
@@ -36,7 +36,7 @@ public class CamundaClient {
         LOGGER.info("entity: " + entity.toString());
 
         // send request and TODO: parse result
-        String processStartResult = template.postForObject(processURL, entity, String.class);
+        String processStartResult = template.postForObject(processURL, request.toMap(), String.class);
 
         }
 
