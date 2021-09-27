@@ -24,6 +24,6 @@ public class ProcessStartRequestBody {
 
    private String businessKey;
    private String caseInstanceId;
-   private Map<String, Object> variables;
+   private Map<String, ProcessVariable> variables;
 
 }

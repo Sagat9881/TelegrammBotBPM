@@ -4,6 +4,7 @@ import com.apzakharov.telegrammBot.bot.BotContext;
 import com.apzakharov.telegrammBot.bot.BotStateBPMN;
 import com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessCommand;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,11 +52,14 @@ public class UserProcessService {
 //          после чего у этого инстанса получаем URL соотвествующего bpmn-процесса.
 
 
-            Map<String, Object> variables =  new HashMap<>();
+            Map<String, ProcessVariable> variables =  new HashMap<>();
 
-            variables.put("User", user);
-            variables.put("ChatID", chatID);
-            variables.put("Input", input);
+            variables.put("User",
+                    new ProcessVariable(JSON_TYPE_STRING,user.toString()));
+            variables.put("ChatID",
+                    new ProcessVariable(JSON_TYPE_STRING,chatID);
+            variables.put("Input",
+                    new ProcessVariable(JSON_TYPE_STRING,input);
 
             LOGGER.info("Variabls for process: "+ variables.toString());
 
