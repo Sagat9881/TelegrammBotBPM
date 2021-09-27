@@ -1,6 +1,7 @@
 package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +37,7 @@ public class CamundaClient {
         LOGGER.info("entity: " + entity.toString());
 
         // send request and TODO: parse result
-        ResponseEntity<String> processStartResult = template.postForEntity(processURL, request.toMap(), String.class);
+        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, request.toMap(), ProcessStartResult.class);
 
         }
 
