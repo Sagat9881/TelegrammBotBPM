@@ -27,7 +27,8 @@ public class ProcessAnswer implements JavaDelegate {
         Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
 
 
-        String outputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
+        String outputText = chatID.equals(966663803L) ?
+                "Люблю тебя :3":"Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
         botService.sendMessage(chatID, outputText);
 
     }
