@@ -35,7 +35,7 @@ public class CamundaClient {
         LOGGER.info("request: " + request.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(request.toString(),headers);
+        HttpEntity entity = new HttpEntity(request.toString(),headers);
         LOGGER.info("entity: " + entity);
 
         // send request and TODO: parse result

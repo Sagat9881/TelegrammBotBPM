@@ -6,9 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
+import javax.persistence.Entity;
 import java.util.Map;
 
 @Data
+@Entity
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
