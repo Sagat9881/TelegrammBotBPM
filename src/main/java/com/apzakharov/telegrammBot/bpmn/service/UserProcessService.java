@@ -57,9 +57,9 @@ public class UserProcessService {
             variables.put("User",
                     new ProcessVariable(JSON_TYPE_STRING,user.toString()));
             variables.put("ChatID",
-                    new ProcessVariable(JSON_TYPE_STRING,chatID);
+                    new ProcessVariable(JSON_TYPE_STRING,chatID.toString()));
             variables.put("Input",
-                    new ProcessVariable(JSON_TYPE_STRING,input);
+                    new ProcessVariable(JSON_TYPE_STRING,input));
 
             LOGGER.info("Variabls for process: "+ variables.toString());
 
