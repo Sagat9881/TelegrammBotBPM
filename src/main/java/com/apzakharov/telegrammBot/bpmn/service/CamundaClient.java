@@ -40,7 +40,7 @@ public class CamundaClient {
         LOGGER.info("entity to string: " + entity);
 
         // send request and TODO: parse result
-        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, processBody, ProcessStartResult.class);
+        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
         LOGGER.info("processStartResult status: "+processStartResult.getStatusCode()+"\n processStartResult body: " + processStartResult.getBody());
         }
 
