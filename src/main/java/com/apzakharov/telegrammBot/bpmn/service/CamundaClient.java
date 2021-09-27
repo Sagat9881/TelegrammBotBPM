@@ -35,11 +35,11 @@ public class CamundaClient {
         LOGGER.info("request: " + request.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<ProcessStartRequestBody> entity = new HttpEntity<>(processBody,headers);
-        LOGGER.info("entity: " + entity.toString());
+        HttpEntity<String> entity = new HttpEntity<>(request.toString(),headers);
+        LOGGER.info("entity: " + entity);
 
         // send request and TODO: parse result
-        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
+        ResponseEntity<String> processStartResult = template.exchange(processURL,HttpMethod.POST, entity, String.class);
 
         }
 
