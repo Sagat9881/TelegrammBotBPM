@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.spin.Spin;
 import org.springframework.stereotype.Component;
 
 
@@ -22,7 +23,7 @@ public class ProcessCommand implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
-        Long chatID = (Long) delegateExecution.getVariable("ChatID");
+        Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
         LOGGER.info("ProcessCommand for chatID: "+ chatID);
 
         String outputText = "Тестовая заглушка работы сценария ответа на работу команды";

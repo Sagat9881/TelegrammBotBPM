@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.spin.Spin;
 import org.springframework.stereotype.Component;
 
 
@@ -15,14 +16,15 @@ import org.springframework.stereotype.Component;
 public class ProcessAnswer implements JavaDelegate {
 
     private final ChatBot botService;
-    private final ObjectMapper objectMapper;
+
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
 
-        Long chatID = (Long) delegateExecution.getVariable("ChatID");
+
+        Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
 
 
         String outputText = "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
