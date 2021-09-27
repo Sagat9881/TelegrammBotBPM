@@ -53,7 +53,7 @@ public class UserProcessService {
 
             Map<String, Object> variables =  new HashMap<>();
 
-            variables.put("User", user.toString());
+            variables.put("User", user);
             variables.put("ChatID", chatID);
             variables.put("Input", input);
 
