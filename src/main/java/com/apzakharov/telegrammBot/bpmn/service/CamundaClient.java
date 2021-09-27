@@ -27,18 +27,19 @@ public class CamundaClient {
 
     public void processStart(String processURL, ProcessStartRequestBody processBody) {
 
-        JSONObject requestJSON = new JSONObject();
-        JSONObject variablesJSON = new JSONObject(processBody.getVariables());
-        requestJSON.put("variables", variablesJSON);
+        JSONObject requestVariables = new JSONObject();
+        requestVariables.accumulate("variables",processBody.getVariables());
+
+
 //        request.put("Content-type",MediaType.APPLICATION_JSON_VALUE);
 //        Map<String, Object> headers = new HashMap<>();
 //        headers.put("сontent-Type","application/json");
 //        request.put("headers",headers);
 
-        LOGGER.info("requestVariables to string: " + requestJSON.toString());
+        LOGGER.info("requestVariables to string: " + requestVariables.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(requestJSON.toString(),headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestVariables.toString(),headers);
         LOGGER.info("entity to string: " + entity);
 
         // send request and TODO: parse result
