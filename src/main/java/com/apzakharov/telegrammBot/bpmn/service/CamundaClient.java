@@ -36,12 +36,12 @@ public class CamundaClient {
         LOGGER.info("request to string: " + request.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(request.toString(),headers);
-        LOGGER.info("entity to string: " + entity.toString());
+        HttpEntity<ProcessStartRequestBody> entity = new HttpEntity<>(processBody,headers);
+        LOGGER.info("entity to string: " + entity);
 
         // send request and TODO: parse result
-        ProcessStartResult processStartResult = template.postForObject(processURL, entity.toString(), ProcessStartResult.class);
-        LOGGER.info("processStartResult: " + processStartResult);
+        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
+        LOGGER.info("processStartResult status: "+processStartResult.getStatusCode()+"\n processStartResult body: " + processStartResult.getBody());
         }
 
 
