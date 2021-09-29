@@ -3,8 +3,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="processEngineConfiguration"
           class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
-        <!--        <property name="deploymentResources"-->
-        <!--                  value="classpath*:*.bpmn" />-->
+                <property name="deploymentResources"
+                          value="classpath*:bpmn/bpmProcess/*.bpmn" />
         <property name="deploymentResources">
             <list>
                 <value>classpath*:bpmn/bpmProcess/*.bpmn</value>
