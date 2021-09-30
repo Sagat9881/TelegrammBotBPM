@@ -44,9 +44,9 @@ public class ProcessCommand implements JavaDelegate {
 
         variablesNameFromProcess.forEach((String variableName) ->{
 
-            String value = Spin.JSON(delegateExecution
+            String value = Spin.S(delegateExecution
                     .getVariable(variableName))
-                    .stringValue();
+                    .toString();
 
             variablesForDelegate.put(variableName,
                     new ProcessVariable(JSON_TYPE_STRING,value));
