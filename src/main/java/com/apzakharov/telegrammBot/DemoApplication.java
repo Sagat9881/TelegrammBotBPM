@@ -15,3 +15,6 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 }
+
+//TODO: Форматировать все переменные. (Все с большой, либо все с маленькой).
+

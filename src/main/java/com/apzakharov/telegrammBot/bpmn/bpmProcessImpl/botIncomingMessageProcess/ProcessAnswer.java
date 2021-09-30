@@ -32,8 +32,8 @@ public class ProcessAnswer implements JavaDelegate {
 
 //        RuntimeService reciveResult = ProcessEngines.
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
-        Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
-        String input = Spin.JSON(delegateExecution.getVariable("Input")).stringValue();
+        Long chatID = Spin.S(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
+        String input = (String)delegateExecution.getVariable("Input");
 
         ProcessEngine engine = delegateExecution.getProcessEngine();
         RuntimeService runtimeService = engine.getRuntimeService();
