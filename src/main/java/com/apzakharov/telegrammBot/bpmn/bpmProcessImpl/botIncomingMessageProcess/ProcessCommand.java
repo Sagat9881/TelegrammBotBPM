@@ -25,7 +25,7 @@ import java.util.Set;
 public class ProcessCommand implements JavaDelegate {
     private static final Logger LOGGER = LogManager.getLogger(ProcessCommand.class);
     private static final String JSON_TYPE_STRING = "String";
-    private static final String ProcessURLTemplate = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/";
+    private static final String ProcessURLTemplate = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key";
 
     private final ChatBot botService;
     private final CamundaClient camundaClient;
