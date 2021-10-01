@@ -16,6 +16,7 @@ import org.camunda.spin.Spin;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Component
@@ -32,22 +33,24 @@ public class ProcessAnswer implements JavaDelegate {
 
 //        RuntimeService reciveResult = ProcessEngines.
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
-        Long chatID = Spin.S(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
-        String input = (String)delegateExecution.getVariable("Input");
+        Long chatID = Spin.S(delegateExecution.getVariableLocalTyped("ChatID",true))
+                .mapTo("java.lang.Long");
+        String input = Spin.S(delegateExecution.getVariableLocalTyped("Input",true))
+                .mapTo("java.lang.String");
 
         ProcessEngine engine = delegateExecution.getProcessEngine();
         RuntimeService runtimeService = engine.getRuntimeService();
-        LOGGER.info("Start MessageCorrelation for chatID: "+ chatID+"\n Input text: \n"+input);
+        LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
         MessageCorrelationResult reciveResult = runtimeService
                 .createMessageCorrelation("new_incoming_message")
                 .localVariableEquals("ChatID", chatID)
-                .setVariableLocal("Input",input)
+                .setVariableLocal("Input", input)
                 .correlateWithResult();
-        LOGGER.info("Result MessageCorrelation for chatID: "+ chatID+"\n Result: пока хз, надо найти как логгировать");
+        LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: пока хз, надо найти как логгировать");
 
 
         String outputText = chatID.equals(966663803L) ?
-                "Люблю тебя :3":"Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
+                "Люблю тебя :3" : "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
         botService.sendMessage(chatID, outputText); //TODO: перенести отправку сообщений в ProcessMessageSend
 
     }

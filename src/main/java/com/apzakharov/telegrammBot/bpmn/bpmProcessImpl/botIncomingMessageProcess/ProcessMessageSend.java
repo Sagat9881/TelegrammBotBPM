@@ -18,8 +18,10 @@ public class ProcessMessageSend implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
-        Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID")).mapTo("java.lang.Long");
-        String textToSend = (String) delegateExecution.getVariable("TextToSend");
+        Long chatID = Spin.S(delegateExecution.getVariableLocalTyped("ChatID",true))
+                .mapTo("java.lang.Long");
+        String textToSend = Spin.S(delegateExecution.getVariableLocalTyped("TextToSend",false))
+                .mapTo("java.lang.String");
 
         botService.sendMessage(chatID,textToSend);
 
