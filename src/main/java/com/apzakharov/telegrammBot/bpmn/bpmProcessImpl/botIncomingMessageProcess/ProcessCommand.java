@@ -34,9 +34,9 @@ public class ProcessCommand implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
-        Long chatID = Spin.S(delegateExecution.getVariableLocalTyped("ChatID",true))
+        Long chatID = Spin.S(delegateExecution.getVariableLocalTyped("ChatID"))
                 .mapTo("java.lang.Long");
-        String input = Spin.S(delegateExecution.getVariableLocalTyped("Input",true))
+        String input = Spin.S(delegateExecution.getVariableLocalTyped("Input"))
                 .mapTo("java.lang.String");
         LOGGER.info("ProcessCommand for chatID: "+ chatID);
 
