@@ -39,9 +39,9 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(User user) {
+    public User addUser(User user) {
         user.setAdmin(userRepository.count() == 0);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Transactional

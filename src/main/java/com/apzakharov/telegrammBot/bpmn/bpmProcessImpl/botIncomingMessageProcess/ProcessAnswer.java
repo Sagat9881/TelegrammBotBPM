@@ -10,6 +10,9 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import spinjar.com.fasterxml.jackson.core.JsonParseException;
+import spinjar.com.fasterxml.jackson.databind.JsonMappingException;
+
 
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
 import org.camunda.spin.Spin;
@@ -46,7 +49,8 @@ public class ProcessAnswer implements JavaDelegate {
                 .localVariableEquals("ChatID", chatID)
                 .setVariableLocal("Input", input)
                 .correlateWithResult();
-        LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: пока хз, надо найти как логгировать");
+
+        LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: "+ reciveResult.getResultType().name());
 
 
         String outputText = chatID.equals(966663803L) ?

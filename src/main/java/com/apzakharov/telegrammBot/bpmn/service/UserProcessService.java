@@ -23,8 +23,8 @@ import java.util.Map;
 public class UserProcessService {
     private static final Logger LOGGER = LogManager.getLogger(UserProcessService.class);
 
-    static final String JSON_TYPE_STRING = "String";
-    static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
+    private static final String JSON_TYPE_STRING = "String";
+    private static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
 
 //    private final ObjectMapper objectMapper;
     private final CamundaClient camundaClient;
