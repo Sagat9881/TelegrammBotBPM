@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 
+
 @Data
 @Entity
 @Component
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Message {
     @Id
@@ -29,5 +31,4 @@ public class Message {
     }
 
 }
-
 

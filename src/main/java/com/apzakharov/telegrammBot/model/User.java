@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 @Data
 @Entity
 @Component
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class User {
     @Id

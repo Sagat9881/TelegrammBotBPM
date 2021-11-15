@@ -17,6 +17,7 @@ import java.util.Map;
 @Data
 @Entity
 @Component
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Chat {
 
@@ -27,4 +28,10 @@ public class Chat {
     private final Long chatId;
     private final Long userId;
     private final LinkedHashMap<Message,Message> chatMap;
+
+    public Chat(Long chatId, Long userId, LinkedHashMap<Message, Message> chatMap) {
+        this.chatId = chatId;
+        this.userId = userId;
+        this.chatMap = chatMap;
+    }
 }
