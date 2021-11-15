@@ -1,28 +1,26 @@
 package com.apzakharov.telegrammBot.model;
 
 
-import lombok.*;
-import org.springframework.stereotype.Component;
+import lombok.Builder;
+import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @Entity
+@Table(name = "chats")
 @Builder
-@Component
 public class Chat {
 
     @Id
-    @GeneratedValue
-    private Long id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
+    @Column(name = "chatId", nullable = false)
     private  Long chatId;
+    @Column(name = "userId", nullable = false)
     private  Long userId;
+
     private  LinkedHashMap<Message,Message> chatMap;
 
 }

@@ -3,24 +3,24 @@ package com.apzakharov.telegrammBot.model;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
+import javax.persistence.*;
 
 
 @Data
 @Entity
+@Table(name = "messages")
 @Builder
-@Component
 public class Message {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "chatId", nullable = false)
     private  Long chatId;
+    @Column(name = "userId", nullable = false)
     private  Long userId;
+    @Column(name = "text", nullable = false)
     private  String text;
+    @Column(name = "stateId")
     private  Integer stateId;
 
 }
