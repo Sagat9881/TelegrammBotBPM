@@ -58,7 +58,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="apzakhrov">
+    <changeSet id="3" author="apzakhrov">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="users"/>
