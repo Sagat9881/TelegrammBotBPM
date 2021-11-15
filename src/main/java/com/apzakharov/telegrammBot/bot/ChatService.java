@@ -73,7 +73,7 @@ public class ChatService {
 
     }
 
-    public Chat createNewChat(Long chatId, LinkedHashMap<Message, Message> chatMap, Long userId) {
+    public Chat createNewChat(Long chatId, Long userId, LinkedHashMap<Message, Message> chatMap) {
         Chat chat = new Chat(chatId, userId, chatMap);
 
         reciveMessage(chat, new Message(chatId, userId, REGISTRATION_COMMAND));

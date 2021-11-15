@@ -64,7 +64,7 @@ public class ChatBot extends TelegramLongPollingBot {
             return;
 
         message = update.getMessage();
-        final long chatId = message.getChatId();
+        Long chatId = message.getChatId();
 
         Chat chat = chatService.findByChatId(chatId);
 
@@ -72,7 +72,7 @@ public class ChatBot extends TelegramLongPollingBot {
             Long userId = chatService.createNewUser(chatId);
             LinkedHashMap<Message, Message> chatMap = new LinkedHashMap<>();
 
-            chat = chatService.createNewChat(chatId,chatMap,userId);
+            chat = chatService.createNewChat(chatId,userId,chatMap);
         }
 
         chatService.reciveMessage(chat, new Message(message));
