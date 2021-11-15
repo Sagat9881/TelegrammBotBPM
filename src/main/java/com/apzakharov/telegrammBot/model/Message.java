@@ -11,24 +11,17 @@ import javax.persistence.Id;
 
 @Data
 @Entity
+@Builder
 @Component
-@NoArgsConstructor
-@RequiredArgsConstructor
 public class Message {
     @Id
     @GeneratedValue
     private Long id;
 
-    private final Long chatId;
-    private final Long userId;
-    private final String text;
-    private Integer stateId;
-
-    public Message(org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate) {
-        this.chatId = messageFromUpdate.getChatId();
-        this.text = messageFromUpdate.getText();
-        this.userId = Long.valueOf(messageFromUpdate.getFrom().getId());
-    }
+    private  Long chatId;
+    private  Long userId;
+    private  String text;
+    private  Integer stateId;
 
 }
 

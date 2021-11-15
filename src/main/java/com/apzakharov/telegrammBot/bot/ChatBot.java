@@ -2,7 +2,6 @@ package com.apzakharov.telegrammBot.bot;
 
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
-import com.apzakharov.telegrammBot.model.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,10 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +26,7 @@ public class ChatBot extends TelegramLongPollingBot {
 
     private static final String BROADCAST = "broadcast ";
     private static final String LIST_USERS = "users";
-    private org.telegram.telegrambots.meta.api.objects.Message message;
+    private org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate;
 
     @Value("${bot.name}")
     private String botName;
@@ -63,8 +59,9 @@ public class ChatBot extends TelegramLongPollingBot {
         if (!update.hasMessage() || !update.getMessage().hasText())
             return;
 
-        message = update.getMessage();
-        Long chatId = message.getChatId();
+        messageFromUpdate = update.getMessage();
+
+        Long chatId = messageFromUpdate.getChatId();
 
         Chat chat = chatService.findByChatId(chatId);
 
@@ -72,10 +69,15 @@ public class ChatBot extends TelegramLongPollingBot {
             Long userId = chatService.createNewUser(chatId);
             LinkedHashMap<Message, Message> chatMap = new LinkedHashMap<>();
 
-            chat = chatService.createNewChat(chatId,userId,chatMap);
+            chat = chatService.createNewChat(chatId, userId, chatMap);
         }
+        Message message = Message.builder()
+                .chatId(chatId)
+                .userId(chat.getUserId())
+                .text(messageFromUpdate.getText())
+                .build();
 
-        chatService.reciveMessage(chat, new Message(message));
+        chatService.reciveMessage(chat, message);
 
 
     }

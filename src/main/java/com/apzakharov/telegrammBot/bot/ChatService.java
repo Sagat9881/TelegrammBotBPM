@@ -30,7 +30,6 @@ public class ChatService {
 
     private static final String REGISTRATION_COMMAND = "/start";
 
-
     @Transactional(readOnly = true)
     public Chat findByChatId(long id) {
         return chatRepository.findByChatId(id);
@@ -51,8 +50,10 @@ public class ChatService {
         return chatRepository.save(chat);
     }
 
-    public Long createNewUser(long id) {
-        User user = new User(id);
+    public Long createNewUser(Long chatId) {
+        User user = User.builder()
+                .chatId(chatId)
+                .build();
 
         return userService.addUser(user).getId();
     }
@@ -74,9 +75,20 @@ public class ChatService {
     }
 
     public Chat createNewChat(Long chatId, Long userId, LinkedHashMap<Message, Message> chatMap) {
-        Chat chat = new Chat(chatId, userId, chatMap);
 
-        reciveMessage(chat, new Message(chatId, userId, REGISTRATION_COMMAND));
+        Chat chat =Chat.builder()
+                .chatId(chatId)
+                .userId(userId)
+                .chatMap(chatMap)
+                .build();
+
+        Message message = Message.builder()
+                .chatId(chatId)
+                .userId(userId)
+                .text(REGISTRATION_COMMAND)
+                .build();
+
+        reciveMessage(chat, message);
 
         return addChat(chat);
 

@@ -1,10 +1,7 @@
 package com.apzakharov.telegrammBot.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
@@ -16,22 +13,16 @@ import java.util.Map;
 
 @Data
 @Entity
+@Builder
 @Component
-@NoArgsConstructor
-@RequiredArgsConstructor
 public class Chat {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private final Long chatId;
-    private final Long userId;
-    private final LinkedHashMap<Message,Message> chatMap;
+    private  Long chatId;
+    private  Long userId;
+    private  LinkedHashMap<Message,Message> chatMap;
 
-    public Chat(Long chatId, Long userId, LinkedHashMap<Message, Message> chatMap) {
-        this.chatId = chatId;
-        this.userId = userId;
-        this.chatMap = chatMap;
-    }
 }

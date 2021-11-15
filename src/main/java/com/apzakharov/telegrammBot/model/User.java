@@ -10,15 +10,14 @@ import java.time.ZonedDateTime;
 
 @Data
 @Entity
+@Builder
 @Component
-@NoArgsConstructor
-@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue
     private Long id;
 
-    private final Long chatId;
+    private  Long chatId;
 
     private Integer stateId;
     private String phone;
