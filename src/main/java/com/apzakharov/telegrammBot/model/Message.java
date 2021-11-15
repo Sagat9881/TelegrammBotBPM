@@ -11,7 +11,6 @@ import javax.persistence.Id;
 @Data
 @Entity
 @Component
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class Message {
     @Id
