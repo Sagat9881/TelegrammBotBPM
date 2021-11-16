@@ -74,7 +74,6 @@ public class ChatBot extends TelegramLongPollingBot {
             chat = chatService.findByChatId(chatId);
         } catch (Exception e) {
             LOGGER.info("FIND CHAT PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
-            e.printStackTrace();
         }
 
         LOGGER.info("CHATID: " + chatId);
@@ -85,7 +84,6 @@ public class ChatBot extends TelegramLongPollingBot {
                 chat = chatService.createNewChat(chatId, userId);
             } catch (Exception e) {
                 LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
-                e.printStackTrace();
             }
         }
 
@@ -102,7 +100,6 @@ public class ChatBot extends TelegramLongPollingBot {
             chatService.reciveMessage(chat, message);
         } catch (Exception e) {
             LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
-            e.printStackTrace();
         }
 
         LOGGER.info("UPDATE RECIVE END");
