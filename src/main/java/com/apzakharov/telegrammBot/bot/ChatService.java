@@ -89,7 +89,7 @@ public class ChatService {
     public void reciveMessage(Chat chat, Message message) throws Exception {
         LOGGER.info("reciveMessage START: \n" + "CHAT: " + chat + "MESSAGE: " + message);
 
-        Long chatId = chat.getChat_id();
+        Long chatId = chat.getChatId();
         String input = message.getText();
 
         User user = userService.findByChat_id(chatId);
@@ -119,13 +119,13 @@ public class ChatService {
     public Chat createNewChat(Long chatId, Long userId) throws Exception {
         LOGGER.info("createNewChat START: " + "CHATID: " + chatId + "USERID: " + userId);
         Chat chat = Chat.builder()
-                .chat_id(chatId)
-                .user_id(userId)
+                .chatId(chatId)
+                .userId(userId)
                 .build();
 
         Message message = Message.builder()
-                .chat_id(chatId)
-                .user_id(userId)
+                .chatId(chatId)
+                .userId(userId)
                 .text(REGISTRATION_COMMAND)
                 .build();
 

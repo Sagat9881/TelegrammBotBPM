@@ -87,8 +87,8 @@ public class ChatBot extends TelegramLongPollingBot {
 
         LOGGER.info("CHATID: " + chatId);
         Message message = Message.builder()
-                .chat_id(chatId)
-                .user_id(chat.getUser_id())
+                .chatId(chatId)
+                .userId(chat.getUserId())
                 .text(messageFromUpdate.getText())
                 .build();
 

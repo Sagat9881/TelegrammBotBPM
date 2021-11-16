@@ -17,8 +17,8 @@ public class User {
 
     @Column(name = "chatId")
     private  Long chatId;
-    @Column(name = "state_id")
-    private Long state_id;
+    @Column(name = "stateId")
+    private Long stateId;
     @Column(name = "phone")
     private String phone;
     @Column(name = "email")
