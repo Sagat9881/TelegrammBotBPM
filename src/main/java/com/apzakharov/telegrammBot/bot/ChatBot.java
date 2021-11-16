@@ -67,7 +67,7 @@ public class ChatBot extends TelegramLongPollingBot {
 
         Long chatId = update.getMessage().getChatId();
 
-        Chat chat = chatService.findById(chatId);
+        Chat chat = chatService.findByChatId(chatId);
         LOGGER.info("CHATID: " + chatId);
         if (chat == null) {
             Long userId = chatService.createNewUser(chatId);

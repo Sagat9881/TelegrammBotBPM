@@ -35,13 +35,21 @@ public class ChatService {
     private static final String REGISTRATION_COMMAND = "/start";
 
     @Transactional(readOnly = true)
-    public Chat findById(long id) {
+    public Chat findById(Long id) {
+        LOGGER.info("findById START: "+ id);
         return chatRepository.findById(id).get();
     }
 
     @Transactional(readOnly = true)
-    public Chat findByUserId(long id) {
-        return chatRepository.findByUserId(id);
+    public Chat findByUserId(Long userId) {
+        LOGGER.info("findById START: "+ userId);
+        return chatRepository.findByUserId(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public Chat findByChatId(Long chatId) {
+        LOGGER.info("findById START: "+ chatId);
+        return chatRepository.findByChatId(chatId);
     }
 
     @Transactional(readOnly = true)
