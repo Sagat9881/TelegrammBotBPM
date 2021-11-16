@@ -49,10 +49,10 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public Chat findByUserId(Long userId) throws Exception {
-        LOGGER.info("findByUserId START: userId " + userId);
+    public Chat findByUser_id(Long user_id) throws Exception {
+        LOGGER.info("findByUserId START: user_id " + user_id);
 
-        Optional<Chat> chatOptional = chatRepository.findByUserId(userId);
+        Optional<Chat> chatOptional = chatRepository.findByUser_id(user_id);
 
         if (chatOptional.isPresent()) {
             return chatOptional.get();
@@ -65,10 +65,10 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public Chat findByChatId(Long chatId) throws Exception {
-        LOGGER.info("findByChatId START: chatId " + chatId);
+    public Chat findByChat_id(Long chat_id) throws Exception {
+        LOGGER.info("findByChatId START: chat_id " + chat_id);
 
-        Optional<Chat> optionalChat = chatRepository.findByChatId(chatId);
+        Optional<Chat> optionalChat = chatRepository.findByChat_id(chat_id);
         if (optionalChat.isPresent()) {
             return optionalChat.get();
         }
@@ -94,7 +94,7 @@ public class ChatService {
         Long chatId = chat.getChat_id();
         String input = message.getText();
 
-        User user = userService.findByChatId(chatId);
+        User user = userService.findByChat_id(chatId);
 
         BotContext contex = BotContext.of(chat, user, input);
 

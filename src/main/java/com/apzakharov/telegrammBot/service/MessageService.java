@@ -18,13 +18,13 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     @Transactional(readOnly = true)
-    public Message findByChatId(long id) {
-        return messageRepository.findByChatId(id);
+    public Message findByChat_id(Long id) {
+        return messageRepository.findByChat_id(id);
     }
 
     @Transactional(readOnly = true)
-    public Message findByUserId(long id) {
-        return messageRepository.findByUserId(id);
+    public Message findByUser_id(Long id) {
+        return messageRepository.findByUser_id(id);
     }
 
     @Transactional(readOnly = true)

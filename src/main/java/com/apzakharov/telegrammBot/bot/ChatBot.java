@@ -2,7 +2,6 @@ package com.apzakharov.telegrammBot.bot;
 
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
-import liquibase.pro.packaged.E;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
-import java.util.LinkedHashMap;
 
 @Component
 @RequiredArgsConstructor
@@ -71,7 +69,7 @@ public class ChatBot extends TelegramLongPollingBot {
         Long chatId = update.getMessage().getChatId();
 
         try {
-            chat = chatService.findByChatId(chatId);
+            chat = chatService.findByChat_id(chatId);
         } catch (Exception e) {
             LOGGER.info("FIND CHAT PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
         }
