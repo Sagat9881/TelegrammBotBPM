@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    Message findByChat_Id(Long chat_Id);
-    Message findByUser_Id(Long user_Id);
+    Message findByChatId(Long chat_Id);
+    Message findByUserId(Long user_Id);
 }
