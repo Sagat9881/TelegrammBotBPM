@@ -89,8 +89,8 @@ public class ChatBot extends TelegramLongPollingBot {
 
         LOGGER.info("CHATID: " + chatId);
         Message message = Message.builder()
-                .chatId(chatId)
-                .userId(chat.getUserId())
+                .chat_id(chatId)
+                .user_id(chat.getUser_id())
                 .text(messageFromUpdate.getText())
                 .build();
 
@@ -104,60 +104,6 @@ public class ChatBot extends TelegramLongPollingBot {
 
         LOGGER.info("UPDATE RECIVE END");
     }
-
-//    @Override
-//    public void onUpdateReceived(Update update) {
-//        if (!update.hasMessage() || !update.getMessage().hasText())
-//            return;
-//
-//        final String text = update.getMessage().getText();
-//        final long chatId = update.getMessage().getChatId();
-//
-//        User user = userService.findByChatId(chatId);
-//
-////        if (checkIfAdminCommand(user, text))
-////            return;
-//
-//        BotContext context;
-//
-//        if (user == null) {
-//
-//
-//            user = new User(chatId, BotStateBPMN.REG.getBotStateBPMNID());
-//            userService.addUser(user);
-//
-//            context = BotContext.of(this, user, text);
-//            LOGGER.info("BotContext of user with id" + chatId + "Input: " + text);
-//            user.setStateId(BotStateBPMN.WAIT.getBotStateBPMNID());
-//
-//            try {
-//                LOGGER.info("processStart for user with id:  " + chatId);
-//                userProcessService.processStart(context);
-//            } catch (Exception e) {
-//                LOGGER.info("processStart fail for user with id:  " + chatId);
-//                e.printStackTrace();
-//            }
-//
-//            LOGGER.info("New user registered: " + chatId);
-//        } else {
-//            context = BotContext.of(this, user, text);
-//            LOGGER.info("BotContext of user with id" + chatId + "Input: " + text);
-////            state = BotState.byId(user.getStateId());
-//
-//            try {
-//                LOGGER.info("processStart for user with id: " + chatId);
-//                userProcessService.processStart(context);
-//            } catch (Exception e) {
-//                LOGGER.info("processStart fail for user with id:  " + chatId);
-//                e.printStackTrace();
-//            }
-//
-//            LOGGER.info("Update received for user with id: " + chatId);
-//        }
-//
-//        userService.updateUser(user);
-//    }
-
 
     public void sendMessage(Long chatId, String text) {
         LOGGER.info("Bot service try to sendMessag. ChatID: " + chatId + ", and text: " + text);

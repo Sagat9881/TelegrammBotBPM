@@ -15,10 +15,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "chatId")
-    private  Long chatId;
-    @Column(name = "stateId")
-    private Long stateId;
+    @Column(name = "chat_id")
+    private  Long chat_id;
+    @Column(name = "state_id")
+    private Long state_id;
     @Column(name = "phone")
     private String phone;
     @Column(name = "email")

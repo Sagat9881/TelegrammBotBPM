@@ -87,22 +87,11 @@ public class ChatService {
         return chatRepository.save(chat);
     }
 
-    public Long createNewUser(Long chatId) throws Exception {
-        LOGGER.info("createNewUser START " + "CHATID: " + chatId);
-        User user = User.builder()
-                .chatId(chatId)
-                .build();
-
-        LOGGER.info("NEW USER: " + user.toString());
-
-        return userService.addUser(user).getId();
-    }
-
     @Transactional
     public void reciveMessage(Chat chat, Message message) throws Exception {
         LOGGER.info("reciveMessage START: \n" + "CHAT: " + chat + "MESSAGE: " + message);
 
-        Long chatId = chat.getChatId();
+        Long chatId = chat.getChat_id();
         String input = message.getText();
 
         User user = userService.findByChatId(chatId);
@@ -118,16 +107,27 @@ public class ChatService {
 
     }
 
+    public Long createNewUser(Long chatId) throws Exception {
+        LOGGER.info("createNewUser START " + "CHATID: " + chatId);
+        User user = User.builder()
+                .chat_id(chatId)
+                .build();
+
+        LOGGER.info("NEW USER: " + user.toString());
+
+        return userService.addUser(user).getId();
+    }
+
     public Chat createNewChat(Long chatId, Long userId) throws Exception {
         LOGGER.info("createNewChat START: " + "CHATID: " + chatId + "USERID: " + userId);
         Chat chat = Chat.builder()
-                .chatId(chatId)
-                .userId(userId)
+                .chat_id(chatId)
+                .user_id(userId)
                 .build();
 
         Message message = Message.builder()
-                .chatId(chatId)
-                .userId(userId)
+                .chat_id(chatId)
+                .user_id(userId)
                 .text(REGISTRATION_COMMAND)
                 .build();
 
@@ -141,7 +141,7 @@ public class ChatService {
 
     protected void sendMessage(BotContext context, String text) {
         SendMessage message = new SendMessage()
-                .setChatId(context.getUser().getChatId())
+                .setChatId(context.getUser().getChat_id())
                 .setText(text);
         try {
             context.getBot().execute(message);

@@ -14,14 +14,14 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "chatId", nullable = false)
-    private  Long chatId;
-    @Column(name = "userId", nullable = false)
-    private  Long userId;
+    @Column(name = "chat_id", nullable = false)
+    private  Long chat_id;
+    @Column(name = "user_id", nullable = false)
+    private  Long user_id;
     @Column(name = "text", nullable = false)
     private  String text;
-    @Column(name = "stateId")
-    private  Integer stateId;
+    @Column(name = "state_id")
+    private  Integer state_id;
 
 }
 

@@ -62,7 +62,7 @@ public class CamundaClient {
         LOGGER.info("Start New UserProcessAnswer for contex: \n" + contex.toString());
 
         User user = contex.getUser();
-        Long chatID = user.getChatId();
+        Long chatID = user.getChat_id();
         String input = contex.getInput();
 
         LOGGER.info("Context for process: \n" + contex.toString());
