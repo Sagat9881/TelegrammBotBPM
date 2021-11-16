@@ -108,7 +108,7 @@ public class ChatService {
     public Long createNewUser(Long chatId) throws Exception {
         LOGGER.info("createNewUser START " + "CHATID: " + chatId);
         User user = User.builder()
-                .chat_id(chatId)
+                .chatId(chatId)
                 .build();
 
         LOGGER.info("NEW USER: " + user.toString());
@@ -139,7 +139,7 @@ public class ChatService {
 
     protected void sendMessage(BotContext context, String text) {
         SendMessage message = new SendMessage()
-                .setChatId(context.getUser().getChat_id())
+                .setChatId(context.getUser().getChatId())
                 .setText(text);
         try {
             context.getBot().execute(message);

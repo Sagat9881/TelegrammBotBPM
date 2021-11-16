@@ -19,7 +19,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findByChat_id(Long id) {
-        return userRepository.findByChat_Id(id);
+        return userRepository.findByChatId(id);
     }
 
     @Transactional(readOnly = true)

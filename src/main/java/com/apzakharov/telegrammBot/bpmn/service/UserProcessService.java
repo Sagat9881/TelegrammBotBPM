@@ -1,20 +1,16 @@
 package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bot.BotContext;
-import com.apzakharov.telegrammBot.bot.BotStateBPMN;
-import com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessCommand;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.repo.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +31,7 @@ public class UserProcessService {
         LOGGER.info("Start New UserProcessAnswer for contex: \n"+ contex.toString());
 
         User user = contex.getUser();
-        Long chatID = user.getChat_id();
+        Long chatID = user.getChatId();
         String input = contex.getInput();
 
         LOGGER.info("Context for process: \n"+ contex.toString());

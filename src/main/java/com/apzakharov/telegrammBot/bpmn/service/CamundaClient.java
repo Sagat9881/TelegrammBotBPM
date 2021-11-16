@@ -1,7 +1,6 @@
 package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bot.BotContext;
-import com.apzakharov.telegrammBot.bot.BotStateBPMN;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
@@ -10,11 +9,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.spin.Spin;
 import org.camunda.spin.json.SpinJsonNode;
-import org.camunda.spin.plugin.impl.SpinBpmPlatformPlugin;
-import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -62,7 +58,7 @@ public class CamundaClient {
         LOGGER.info("Start New UserProcessAnswer for contex: \n" + contex.toString());
 
         User user = contex.getUser();
-        Long chatID = user.getChat_id();
+        Long chatID = user.getChatId();
         String input = contex.getInput();
 
         LOGGER.info("Context for process: \n" + contex.toString());

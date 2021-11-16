@@ -98,7 +98,7 @@ public enum BotState   {
 
     protected void sendMessage(BotContext context, String text) {
         SendMessage message = new SendMessage()
-                .setChatId(context.getUser().getChat_id())
+                .setChatId(context.getUser().getChatId())
                 .setText(text);
         try {
             context.getBot().execute(message);

@@ -15,8 +15,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "chat_id")
-    private  Long chat_id;
+    @Column(name = "chatId")
+    private  Long chatId;
     @Column(name = "state_id")
     private Long state_id;
     @Column(name = "phone")
