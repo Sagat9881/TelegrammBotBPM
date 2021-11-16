@@ -63,6 +63,7 @@ public class ChatBot extends TelegramLongPollingBot {
         }
 
         messageFromUpdate = update.getMessage();
+        LOGGER.info("INCOME MESSAGE: "+ messageFromUpdate);
 
         Long chatId = update.getMessage().getChatId();
 

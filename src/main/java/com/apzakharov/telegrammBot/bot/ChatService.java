@@ -36,7 +36,7 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public Chat findByChatId(long id) {
-        return chatRepository.findByChatId(id);
+        return chatRepository.findById(id).get();
     }
 
     @Transactional(readOnly = true)
