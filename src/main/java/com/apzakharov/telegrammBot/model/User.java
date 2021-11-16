@@ -8,8 +8,10 @@ import java.time.ZonedDateTime;
 
 @Data
 @Entity
-@Table(name = "users")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

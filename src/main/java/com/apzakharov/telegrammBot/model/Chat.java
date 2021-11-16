@@ -1,16 +1,20 @@
 package com.apzakharov.telegrammBot.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.LinkedHashMap;
 
 @Data
 @Entity
-@Table(name = "chats")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "chats")
 public class Chat {
 
     @Id
