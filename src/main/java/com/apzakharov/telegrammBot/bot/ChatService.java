@@ -36,35 +36,35 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public Chat findById(Long id) {
-        LOGGER.info("findById START: id"+ id);
+        LOGGER.info("findById START: id " + id);
         return chatRepository.findById(id).get();
     }
 
     @Transactional(readOnly = true)
     public Chat findByUserId(Long userId) throws Exception {
-        LOGGER.info("findByUserId START: userId"+ userId);
+        LOGGER.info("findByUserId START: userId " + userId);
         return chatRepository.findByUserId(userId).get();
     }
 
     @Transactional(readOnly = true)
-    public Chat findByChatId(Long chatId)throws Exception {
-        LOGGER.info("findByChatId START: chatId"+ chatId);
+    public Chat findByChatId(Long chatId) throws Exception {
+        LOGGER.info("findByChatId START: chatId " + chatId);
         return chatRepository.findByChatId(chatId).get();
     }
 
     @Transactional(readOnly = true)
-    public List<Chat> findAllChats()throws Exception {
+    public List<Chat> findAllChats() throws Exception {
         return chatRepository.findAll();
     }
 
     @Transactional
-    public Chat addChat(Chat chat) throws Exception{
-        LOGGER.info("addChat START " + "CHAT: "+chat);
+    public Chat addChat(Chat chat) throws Exception {
+        LOGGER.info("addChat START " + "CHAT: " + chat);
         return chatRepository.save(chat);
     }
 
-    public Long createNewUser(Long chatId) throws Exception{
-        LOGGER.info("createNewUser START " + "CHATID: "+chatId);
+    public Long createNewUser(Long chatId) throws Exception {
+        LOGGER.info("createNewUser START " + "CHATID: " + chatId);
         User user = User.builder()
                 .chatId(chatId)
                 .build();
@@ -75,13 +75,13 @@ public class ChatService {
     }
 
     @Transactional
-    public void reciveMessage(Chat chat, Message message) throws Exception{
-        LOGGER.info("reciveMessage START: \n" + "CHAT: "+chat+"MESSAGE: "+ message);
+    public void reciveMessage(Chat chat, Message message) throws Exception {
+        LOGGER.info("reciveMessage START: \n" + "CHAT: " + chat + "MESSAGE: " + message);
 
-        Long chatId  = chat.getChatId();
+        Long chatId = chat.getChatId();
         String input = message.getText();
 
-        User user    = userService.findByChatId(chatId);
+        User user = userService.findByChatId(chatId);
 
         BotContext contex = BotContext.of(chat, user, input);
 
@@ -94,9 +94,9 @@ public class ChatService {
 
     }
 
-    public Chat createNewChat(Long chatId, Long userId)throws Exception {
-        LOGGER.info("createNewChat START: " +"CHATID: "+ chatId+"USERID: "+userId);
-        Chat chat =Chat.builder()
+    public Chat createNewChat(Long chatId, Long userId) throws Exception {
+        LOGGER.info("createNewChat START: " + "CHATID: " + chatId + "USERID: " + userId);
+        Chat chat = Chat.builder()
                 .chatId(chatId)
                 .userId(userId)
                 .build();
