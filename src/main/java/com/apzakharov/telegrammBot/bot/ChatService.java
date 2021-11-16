@@ -68,7 +68,7 @@ public class ChatService {
 
     @Transactional
     public void reciveMessage(Chat chat, Message message) {
-        LOGGER.info("reciveMessage START: \n" + "CHAT: "+chat.toString()+"MESSAGE: "+ message.toString());
+        LOGGER.info("reciveMessage START: \n" + "CHAT: "+chat+"MESSAGE: "+ message);
 
         Long chatId  = chat.getChatId();
         String input = message.getText();

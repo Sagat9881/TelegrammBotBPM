@@ -56,7 +56,7 @@ public class ChatBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        LOGGER.info("UPDATE RECIVE: ");
+        LOGGER.info("UPDATE RECIVE START : ");
         if (!update.hasMessage() || !update.getMessage().hasText()) {
             LOGGER.info("FAIL: message is not exist ");
             return;
@@ -83,10 +83,10 @@ public class ChatBot extends TelegramLongPollingBot {
                 .text(messageFromUpdate.getText())
                 .build();
 
-        LOGGER.info("Message: " + message.toString());
+        LOGGER.info("Message: " + message);
         chatService.reciveMessage(chat, message);
 
-
+        LOGGER.info("UPDATE RECIVE END");
     }
 
 //    @Override
