@@ -11,6 +11,6 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
 
     Optional<Chat> findById(Long id);
-    Chat findByUserId(Long userid);
-    Chat findByChatId(Long chatId);
+    Optional <Chat> findByUserId(Long userid);
+    Optional <Chat> findByChatId(Long chatId);
 }

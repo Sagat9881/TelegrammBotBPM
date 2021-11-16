@@ -36,34 +36,34 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public Chat findById(Long id) {
-        LOGGER.info("findById START: "+ id);
+        LOGGER.info("findById START: id"+ id);
         return chatRepository.findById(id).get();
     }
 
     @Transactional(readOnly = true)
-    public Chat findByUserId(Long userId) {
-        LOGGER.info("findById START: "+ userId);
-        return chatRepository.findByUserId(userId);
+    public Chat findByUserId(Long userId) throws Exception {
+        LOGGER.info("findByUserId START: userId"+ userId);
+        return chatRepository.findByUserId(userId).get();
     }
 
     @Transactional(readOnly = true)
-    public Chat findByChatId(Long chatId) {
-        LOGGER.info("findById START: "+ chatId);
-        return chatRepository.findByChatId(chatId);
+    public Chat findByChatId(Long chatId)throws Exception {
+        LOGGER.info("findByChatId START: chatId"+ chatId);
+        return chatRepository.findByChatId(chatId).get();
     }
 
     @Transactional(readOnly = true)
-    public List<Chat> findAllChats() {
+    public List<Chat> findAllChats()throws Exception {
         return chatRepository.findAll();
     }
 
     @Transactional
-    public Chat addChat(Chat chat) {
+    public Chat addChat(Chat chat) throws Exception{
         LOGGER.info("addChat START " + "CHAT: "+chat);
         return chatRepository.save(chat);
     }
 
-    public Long createNewUser(Long chatId) {
+    public Long createNewUser(Long chatId) throws Exception{
         LOGGER.info("createNewUser START " + "CHATID: "+chatId);
         User user = User.builder()
                 .chatId(chatId)
@@ -75,7 +75,7 @@ public class ChatService {
     }
 
     @Transactional
-    public void reciveMessage(Chat chat, Message message) {
+    public void reciveMessage(Chat chat, Message message) throws Exception{
         LOGGER.info("reciveMessage START: \n" + "CHAT: "+chat+"MESSAGE: "+ message);
 
         Long chatId  = chat.getChatId();
@@ -94,12 +94,11 @@ public class ChatService {
 
     }
 
-    public Chat createNewChat(Long chatId, Long userId, LinkedHashMap<Message, Message> chatMap) {
+    public Chat createNewChat(Long chatId, Long userId)throws Exception {
         LOGGER.info("createNewChat START: " +"CHATID: "+ chatId+"USERID: "+userId);
         Chat chat =Chat.builder()
                 .chatId(chatId)
                 .userId(userId)
-                .chatMap(chatMap)
                 .build();
 
         Message message = Message.builder()

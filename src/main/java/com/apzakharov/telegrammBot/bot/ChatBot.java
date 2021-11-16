@@ -2,6 +2,7 @@ package com.apzakharov.telegrammBot.bot;
 
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
+import liquibase.pro.packaged.E;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,7 @@ public class ChatBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
 
     private static final String BROADCAST = "broadcast ";
+    private static final Exception e = new Exception();
     private static final String LIST_USERS = "users";
     private org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate;
 
@@ -63,18 +65,28 @@ public class ChatBot extends TelegramLongPollingBot {
         }
 
         messageFromUpdate = update.getMessage();
-        LOGGER.info("INCOME MESSAGE: "+ messageFromUpdate);
+        LOGGER.info("INCOME MESSAGE: " + messageFromUpdate);
 
+        Chat chat = null;
         Long chatId = update.getMessage().getChatId();
 
-        Chat chat = chatService.findByChatId(chatId);
+        try {
+            chat = chatService.findByChatId(chatId);
+        } catch (Exception e) {
+            LOGGER.info("FIND CHAT PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
+            e.printStackTrace();
+        }
+
         LOGGER.info("CHATID: " + chatId);
         if (chat == null) {
-            Long userId = chatService.createNewUser(chatId);
-            LOGGER.info("NEW USER ID: " + chatId);
-            LinkedHashMap<Message, Message> chatMap = new LinkedHashMap<>();
-
-            chat = chatService.createNewChat(chatId, userId, chatMap);
+            try {
+                Long userId = chatService.createNewUser(chatId);
+                LOGGER.info("NEW USER ID: " + userId);
+                chat = chatService.createNewChat(chatId, userId);
+            } catch (Exception e) {
+                LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
+                e.printStackTrace();
+            }
         }
 
         LOGGER.info("CHATID: " + chatId);
@@ -85,7 +97,13 @@ public class ChatBot extends TelegramLongPollingBot {
                 .build();
 
         LOGGER.info("Message: " + message);
-        chatService.reciveMessage(chat, message);
+
+        try {
+            chatService.reciveMessage(chat, message);
+        } catch (Exception e) {
+            LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
+            e.printStackTrace();
+        }
 
         LOGGER.info("UPDATE RECIVE END");
     }

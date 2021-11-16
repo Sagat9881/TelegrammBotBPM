@@ -21,6 +21,6 @@ public class Chat {
     @Column(name = "userId", nullable = false)
     private  Long userId;
 
-    private  LinkedHashMap<Message,Message> chatMap;
+//    private  LinkedHashMap<Message,Message> chatMap;
 
 }
