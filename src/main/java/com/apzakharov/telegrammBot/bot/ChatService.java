@@ -35,7 +35,7 @@ public class ChatService {
     private static final String REGISTRATION_COMMAND = "/start";
 
     @Transactional(readOnly = true)
-    public Chat findByChatId(long id) {
+    public Chat findById(long id) {
         return chatRepository.findById(id).get();
     }
 
@@ -100,9 +100,11 @@ public class ChatService {
                 .text(REGISTRATION_COMMAND)
                 .build();
 
+        addChat(chat);
+
         reciveMessage(chat, message);
 
-        return addChat(chat);
+        return chat;
 
     }
 
