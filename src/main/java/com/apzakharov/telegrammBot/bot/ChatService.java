@@ -9,6 +9,8 @@ import com.apzakharov.telegrammBot.service.MessageService;
 import com.apzakharov.telegrammBot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -27,6 +29,8 @@ public class ChatService {
     private final MessageService messageService;
     private final CamundaClient camundaClient;
     private final ChatRepository chatRepository;
+
+    private static final Logger LOGGER = LogManager.getLogger(ChatService.class);
 
     private static final String REGISTRATION_COMMAND = "/start";
 
@@ -47,25 +51,33 @@ public class ChatService {
 
     @Transactional
     public Chat addChat(Chat chat) {
+        LOGGER.info("addChat START " + "CHAT: "+chat);
         return chatRepository.save(chat);
     }
 
     public Long createNewUser(Long chatId) {
+        LOGGER.info("createNewUser START " + "CHATID: "+chatId);
         User user = User.builder()
                 .chatId(chatId)
                 .build();
+
+        LOGGER.info("NEW USER: " + user.toString());
 
         return userService.addUser(user).getId();
     }
 
     @Transactional
     public void reciveMessage(Chat chat, Message message) {
+        LOGGER.info("reciveMessage START: \n" + "CHAT: "+chat.toString()+"MESSAGE: "+ message.toString());
 
         Long chatId  = chat.getChatId();
         String input = message.getText();
+
         User user    = userService.findByChatId(chatId);
 
         BotContext contex = BotContext.of(chat, user, input);
+
+        LOGGER.info("BotContext: " + contex);
         try {
             camundaClient.processStart(contex);
         } catch (Exception exception) {
@@ -75,7 +87,7 @@ public class ChatService {
     }
 
     public Chat createNewChat(Long chatId, Long userId, LinkedHashMap<Message, Message> chatMap) {
-
+        LOGGER.info("createNewChat START: " +"CHATID: "+ chatId+"USERID: "+userId);
         Chat chat =Chat.builder()
                 .chatId(chatId)
                 .userId(userId)

@@ -56,27 +56,34 @@ public class ChatBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (!update.hasMessage() || !update.getMessage().hasText())
+        LOGGER.info("UPDATE RECIVE: ");
+        if (!update.hasMessage() || !update.getMessage().hasText()) {
+            LOGGER.info("FAIL: message is not exist ");
             return;
+        }
 
         messageFromUpdate = update.getMessage();
 
-        Long chatId = messageFromUpdate.getChatId();
+        Long chatId = update.getMessage().getChatId();
 
         Chat chat = chatService.findByChatId(chatId);
-
+        LOGGER.info("CHATID: " + chatId);
         if (chat == null) {
             Long userId = chatService.createNewUser(chatId);
+            LOGGER.info("NEW USER ID: " + chatId);
             LinkedHashMap<Message, Message> chatMap = new LinkedHashMap<>();
 
             chat = chatService.createNewChat(chatId, userId, chatMap);
         }
+
+        LOGGER.info("CHATID: " + chatId);
         Message message = Message.builder()
                 .chatId(chatId)
                 .userId(chat.getUserId())
                 .text(messageFromUpdate.getText())
                 .build();
 
+        LOGGER.info("Message: " + message.toString());
         chatService.reciveMessage(chat, message);
 
 
