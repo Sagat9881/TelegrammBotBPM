@@ -14,10 +14,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +50,7 @@ public class ChatService {
     public Chat findByUser_id(Long user_id) throws Exception {
         LOGGER.info("findByUserId START: user_id " + user_id);
 
-        Optional<Chat> chatOptional = chatRepository.findByUser_id(user_id);
+        Optional<Chat> chatOptional = chatRepository.findByUserId(user_id);
 
         if (chatOptional.isPresent()) {
             return chatOptional.get();
@@ -68,7 +66,7 @@ public class ChatService {
     public Chat findByChat_id(Long chat_id) throws Exception {
         LOGGER.info("findByChatId START: chat_id " + chat_id);
 
-        Optional<Chat> optionalChat = chatRepository.findByChat_id(chat_id);
+        Optional<Chat> optionalChat = chatRepository.findByChatId(chat_id);
         if (optionalChat.isPresent()) {
             return optionalChat.get();
         }
