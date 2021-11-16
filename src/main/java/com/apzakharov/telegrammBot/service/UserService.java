@@ -1,6 +1,5 @@
 package com.apzakharov.telegrammBot.service;
 
-import com.apzakharov.telegrammBot.bot.ChatBot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findByChat_id(Long id) {
-        return userRepository.findByChatId(id);
+        return userRepository.findByChat_Id(id);
     }
 
     @Transactional(readOnly = true)

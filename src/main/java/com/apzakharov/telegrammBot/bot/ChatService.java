@@ -50,7 +50,7 @@ public class ChatService {
     public Chat findByUser_id(Long user_id) throws Exception {
         LOGGER.info("findByUserId START: user_id " + user_id);
 
-        Optional<Chat> chatOptional = chatRepository.findByUserId(user_id);
+        Optional<Chat> chatOptional = chatRepository.findByUser_Id(user_id);
 
         if (chatOptional.isPresent()) {
             return chatOptional.get();
@@ -66,7 +66,7 @@ public class ChatService {
     public Chat findByChat_id(Long chat_id) throws Exception {
         LOGGER.info("findByChatId START: chat_id " + chat_id);
 
-        Optional<Chat> optionalChat = chatRepository.findByChatId(chat_id);
+        Optional<Chat> optionalChat = chatRepository.findByChat_Id(chat_id);
         if (optionalChat.isPresent()) {
             return optionalChat.get();
         }

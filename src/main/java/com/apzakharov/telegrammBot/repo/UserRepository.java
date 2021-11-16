@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "AND u.phone IS NOT NULL AND u.email IS NOT NULL")
     List<User> findNewUsers();
 
-    User findByChatId(Long id);
+    User findByChat_Id(Long id);
 }
