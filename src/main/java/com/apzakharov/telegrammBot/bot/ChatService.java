@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -37,19 +38,42 @@ public class ChatService {
     @Transactional(readOnly = true)
     public Chat findById(Long id) {
         LOGGER.info("findById START: id " + id);
-        return chatRepository.findById(id).get();
+
+        Optional<Chat> optionalChat = chatRepository.findById(id);
+        if (optionalChat.isPresent()) {
+            return optionalChat.get();
+        }
+        LOGGER.info("findById RESULT: NULL ");
+        return null;
+
     }
 
     @Transactional(readOnly = true)
     public Chat findByUserId(Long userId) throws Exception {
         LOGGER.info("findByUserId START: userId " + userId);
-        return chatRepository.findByUserId(userId).get();
+
+        Optional<Chat> chatOptional = chatRepository.findByUserId(userId);
+
+        if (chatOptional.isPresent()) {
+            return chatOptional.get();
+        }
+
+        LOGGER.info("findByUserId RESULT: NULL ");
+        return null;
+
+
     }
 
     @Transactional(readOnly = true)
     public Chat findByChatId(Long chatId) throws Exception {
         LOGGER.info("findByChatId START: chatId " + chatId);
-        return chatRepository.findByChatId(chatId).get();
+
+        Optional<Chat> optionalChat = chatRepository.findByChatId(chatId);
+        if (optionalChat.isPresent()) {
+            return optionalChat.get();
+        }
+        LOGGER.info("findByChatId RESULT: NULL ");
+        return null;
     }
 
     @Transactional(readOnly = true)
