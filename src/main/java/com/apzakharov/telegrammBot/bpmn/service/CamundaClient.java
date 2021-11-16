@@ -89,7 +89,7 @@ public class CamundaClient {
 //            user.setStateId(BotStateBPMN.PROCESS.getBotStateBPMNID());
         } catch (Exception ex) {
             ex.printStackTrace();
-            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
+//            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
         }
 
 //        requestVariables.accumulate("variables",processBody.getVariables());

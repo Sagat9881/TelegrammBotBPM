@@ -75,7 +75,7 @@ public class UserProcessService {
         catch(Exception ex) {
 
          ex.printStackTrace();
-            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
+//            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
 
         }
 //        user.setUserTimeStart(ZonedDateTime.now());
