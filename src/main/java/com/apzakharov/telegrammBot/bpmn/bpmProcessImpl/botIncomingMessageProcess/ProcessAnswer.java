@@ -43,10 +43,13 @@ public class ProcessAnswer implements JavaDelegate {
         String chatIdFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
         String inputFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
 
-        Long chatID = (Long) (Spin.S(chatIdFromProcess, chatIdFromProcessType).unwrap());
+        Long chatID = (Long) (Spin
+                                   .S(chatIdFromProcess, chatIdFromProcessType)
+                                   .unwrap());
 
-        String input = String.valueOf(Spin.S(inputFromProcess, inputFromProcessType).unwrap());
-
+        String input = String.valueOf (Spin
+                                            .S(inputFromProcess, inputFromProcessType)
+                                            .unwrap());
 
         String outputText = chatID.equals(966663803L) ?
                 "Люблю тебя :3" : "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";

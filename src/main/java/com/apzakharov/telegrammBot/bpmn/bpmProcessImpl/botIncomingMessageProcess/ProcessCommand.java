@@ -42,9 +42,13 @@ public class ProcessCommand implements JavaDelegate {
         String chatIdFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
         String inputFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
 
-        Long chatID = Spin.S(chatIdFromProcess,chatIdFromProcessType)
-                .mapTo("java.lang.Long");
-        String input = (String) Spin.S(inputFromProcess,inputFromProcessType).unwrap();
+        Long chatID = (Long) (Spin
+                                  .S(chatIdFromProcess, chatIdFromProcessType)
+                                  .unwrap());
+
+        String input = String.valueOf( Spin
+                                           .S(inputFromProcess,inputFromProcessType)
+                                           .unwrap());
 
         LOGGER.info("ProcessCommand for chatID: " + chatID + "\nCommand: " + input);
 
@@ -54,9 +58,11 @@ public class ProcessCommand implements JavaDelegate {
 
         variablesNameFromProcess.forEach((String variableName) -> {
 
-            String value = Spin.S(delegateExecution
-                    .getVariableTyped(variableName).getValue())
-                    .mapTo("java.lang.String");
+            Object variabelFromProcess  = delegateExecution.getVariableTyped(variableName);
+
+            String variabelFromProcessType = delegateExecution.getVariableTyped(variableName).getType().getName();
+
+            String value = String.valueOf(Spin.S(variabelFromProcess,variabelFromProcessType));
 
             variablesForDelegate.put(variableName,
                     new ProcessVariable(JSON_TYPE_STRING, value));
