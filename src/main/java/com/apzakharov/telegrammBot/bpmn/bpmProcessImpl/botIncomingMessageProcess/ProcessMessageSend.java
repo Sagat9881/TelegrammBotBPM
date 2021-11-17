@@ -20,8 +20,7 @@ public class ProcessMessageSend implements JavaDelegate {
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
         Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
 
-        String textToSend = Spin.S(delegateExecution.getVariableTyped("TextToSend").getValue())
-                .mapTo("java.lang.String");
+        String textToSend = (String) delegateExecution.getVariableTyped("TextToSend").getValue();
         botService.sendMessage(chatID,textToSend);
 
 //       Map<String,Object> variables = delegateExecution.getVariables();
