@@ -65,11 +65,12 @@ public class ProcessAnswer implements JavaDelegate {
             RuntimeService runtimeService = engine.getRuntimeService();
             LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
             MessageCorrelationResult reciveResult = runtimeService
-                    .createMessageCorrelation("new_incoming_message")
+                    .createMessageCorrelation("NewIncomingMessage")
                     .localVariableEquals("ChatID", String.valueOf(chatID))
                     .setVariableLocal("Input", input)
                     .correlateWithResult();
         } catch (Exception e) {
+
             LOGGER.info("NOT FOUND AWAITING MESSAGE CHAT FOR CHATID: " + chatID);
             return;
         }
