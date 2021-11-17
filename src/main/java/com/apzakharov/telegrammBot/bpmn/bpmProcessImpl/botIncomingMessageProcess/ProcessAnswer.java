@@ -35,22 +35,24 @@ public class ProcessAnswer implements JavaDelegate {
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
 
 //        RuntimeService reciveResult = ProcessEngines.
-        //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
-        Long chatID = Spin.S(delegateExecution.getVariableTyped("ChatID").getValue())
+//      TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
+
+        Long chatID = Spin.S(delegateExecution.getVariable("ChatID"))
                 .mapTo("java.lang.Long");
-        String input = Spin.S(delegateExecution.getVariableTyped("Input").getValue())
+
+        String input = Spin.S(delegateExecution.getVariable("Input"))
                 .mapTo("java.lang.String");
 
-        ProcessEngine engine = delegateExecution.getProcessEngine();
-        RuntimeService runtimeService = engine.getRuntimeService();
-        LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
-        MessageCorrelationResult reciveResult = runtimeService
-                .createMessageCorrelation("new_incoming_message")
-                .localVariableEquals("ChatID", chatID)
-                .setVariableLocal("Input", input)
-                .correlateWithResult();
-
-        LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: "+ reciveResult.getResultType().name());
+//        ProcessEngine engine = delegateExecution.getProcessEngine();
+//        RuntimeService runtimeService = engine.getRuntimeService();
+//        LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
+//        MessageCorrelationResult reciveResult = runtimeService
+//                .createMessageCorrelation("new_incoming_message")
+//                .localVariableEquals("ChatID", chatID)
+//                .setVariableLocal("Input", input)
+//                .correlateWithResult();
+//
+//        LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: "+ reciveResult.getResultType().name());
 
 
         String outputText = chatID.equals(966663803L) ?
