@@ -59,7 +59,7 @@
       <bpmn:outgoing>Flow_1y0eq5x</bpmn:outgoing>
     </bpmn:task>
   </bpmn:process>
-  <bpmn:process id="start" name="" isExecutable="true">
+  <bpmn:process id="start" name="start" isExecutable="true">
     <bpmn:laneSet id="LaneSet_1ds6mp6">
       <bpmn:lane id="Lane_16tpeah" name="Чат-бот">
         <bpmn:flowNodeRef>Event_0ol7xcl</bpmn:flowNodeRef>
@@ -69,7 +69,7 @@
         <bpmn:flowNodeRef>Gateway_06j7hvi</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1441wxz</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0j42gq3</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1w6sw8j</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0q3e4aa</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:startEvent id="Event_0ol7xcl">
@@ -136,7 +136,7 @@
           <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0w3d2fl</bpmn:incoming>
+      <bpmn:incoming>Flow_1gzxvco</bpmn:incoming>
       <bpmn:outgoing>Flow_0osckpx</bpmn:outgoing>
       <bpmn:script>boolean isValidNumber = (
 Input
@@ -144,13 +144,15 @@ Input
 .startsWith([0-9]);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0rlv3gg" sourceRef="Activity_1441wxz" targetRef="Activity_1qpe97w" />
-    <bpmn:sequenceFlow id="Flow_0w3d2fl" sourceRef="Event_1w6sw8j" targetRef="Activity_0j42gq3" />
-    <bpmn:intermediateCatchEvent id="Event_1w6sw8j" name="new_incoming_message">
-      <bpmn:outgoing>Flow_0w3d2fl</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_149n830" messageRef="Message_13w4w3x" />
+    <bpmn:intermediateCatchEvent id="Event_0q3e4aa" name="NewIncomingMessage" camunda:asyncBefore="true" camunda:asyncAfter="true">
+      <bpmn:outgoing>Flow_1gzxvco</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_14vl4dp" messageRef="Message_11tt8e3" />
     </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1gzxvco" sourceRef="Event_0q3e4aa" targetRef="Activity_0j42gq3" />
   </bpmn:process>
   <bpmn:message id="Message_13w4w3x" name="new_incoming_message" />
+  <bpmn:message id="Message_0vkg1b5" name="Message_2lmtlic" />
+  <bpmn:message id="Message_11tt8e3" name="NewIncomingMessage" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02gcbze">
       <bpmndi:BPMNShape id="Participant_1qto4u9_di" bpmnElement="Participant_1qto4u9" isHorizontal="true">
@@ -255,9 +257,9 @@ Input
         <di:waypoint x="396" y="840" />
         <di:waypoint x="396" y="781" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0w3d2fl_di" bpmnElement="Flow_0w3d2fl">
-        <di:waypoint x="560" y="723" />
-        <di:waypoint x="560" y="651" />
+      <bpmndi:BPMNEdge id="Flow_1gzxvco_di" bpmnElement="Flow_1gzxvco">
+        <di:waypoint x="550" y="723" />
+        <di:waypoint x="550" y="651" />
         <di:waypoint x="640" y="651" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0ol7xcl_di" bpmnElement="Event_0ol7xcl">
@@ -284,10 +286,10 @@ Input
       <bpmndi:BPMNShape id="Activity_0j42gq3_di" bpmnElement="Activity_0j42gq3">
         <dc:Bounds x="640" y="611" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ksx641_di" bpmnElement="Event_1w6sw8j">
-        <dc:Bounds x="542" y="723" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_1huavue_di" bpmnElement="Event_0q3e4aa">
+        <dc:Bounds x="532" y="723" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="517" y="766" width="87" height="27" />
+          <dc:Bounds x="506" y="766" width="88" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
