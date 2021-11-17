@@ -60,15 +60,19 @@ public class ProcessAnswer implements JavaDelegate {
                 .build();
 
         messageService.addMessage(message);
-
-        ProcessEngine engine = delegateExecution.getProcessEngine();
-        RuntimeService runtimeService = engine.getRuntimeService();
-        LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
-        MessageCorrelationResult reciveResult = runtimeService
-                .createMessageCorrelation("new_incoming_message")
-                .localVariableEquals("ChatID", chatID)
-                .setVariableLocal("Input", input)
-                .correlateWithResult();
+        try {
+            ProcessEngine engine = delegateExecution.getProcessEngine();
+            RuntimeService runtimeService = engine.getRuntimeService();
+            LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
+            MessageCorrelationResult reciveResult = runtimeService
+                    .createMessageCorrelation("new_incoming_message")
+                    .localVariableEquals("ChatID", chatID)
+                    .setVariableLocal("Input", input)
+                    .correlateWithResult();
+        } catch (Exception e) {
+            LOGGER.info("NOT FOUND AWAITING MESSAGE CHAT FOR CHATID: " + chatID);
+            return;
+        }
 
         LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: пока хз, надо найти как логгировать");
 
