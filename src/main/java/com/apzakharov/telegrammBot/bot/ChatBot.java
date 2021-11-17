@@ -1,5 +1,6 @@
 package com.apzakharov.telegrammBot.bot;
 
+import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ChatBot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
+    private final CamundaClient camundaClient;
 
     private static final String BROADCAST = "broadcast ";
     private static final String LIST_USERS = "users";
@@ -34,8 +36,8 @@ public class ChatBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
 
-    private final ChatService chatService;
-    private final Map<String,Object> chatMap;
+    private final ChatService chatBot;
+    private final Map<String, Object> chatMap;
 
     @Override
     public String toString() {
@@ -70,7 +72,7 @@ public class ChatBot extends TelegramLongPollingBot {
         Long chatId = update.getMessage().getChatId();
 
         try {
-            chat = chatService.findByChat_id(chatId);
+            chat = chatBot.findByChat_id(chatId);
 
             LOGGER.info("CHATID: " + chatId);
             LOGGER.info("CHAT: " + chat);
@@ -82,10 +84,10 @@ public class ChatBot extends TelegramLongPollingBot {
 
         if (chat == null) {
             try {
-                Long userId = chatService.createNewUser(chatId);
+                Long userId = chatBot.createNewUser(chatId);
                 LOGGER.info("NEW USER ID: " + userId);
 
-                chat = chatService.createNewChat(chatId, userId);
+                chat = chatBot.createNewChat(chatId, userId);
                 LOGGER.info("NEW CHAT ID: " + chatId + "\nNEW CHAT: " + chat);
 
             } catch (Exception e) {
@@ -103,7 +105,10 @@ public class ChatBot extends TelegramLongPollingBot {
         LOGGER.info("Message: " + message);
 
         try {
-            chatService.reciveMessage(chat, message);
+            BotContext context = chatBot.getBotContext(chat, message);
+            camundaClient.processStart(context);
+
+            LOGGER.info("reciveMessage END");
         } catch (Exception e) {
             LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
             return;

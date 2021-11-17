@@ -26,10 +26,10 @@ public class ChatService {
 
     private final UserService userService;
     private final MessageService messageService;
-    private final CamundaClient camundaClient;
+
     private final ChatRepository chatRepository;
 
-    private static final Logger LOGGER = LogManager.getLogger(ChatService.class);
+    private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
 
     private static final String REGISTRATION_COMMAND = "/start";
 
@@ -82,7 +82,7 @@ public class ChatService {
     }
 
     @Transactional
-    public void reciveMessage(Chat chat, Message message) throws Exception {
+    public BotContext getBotContext(Chat chat, Message message) throws Exception {
         LOGGER.info("reciveMessage START: \n" + "CHAT: " + chat + "MESSAGE: " + message);
 
         Long chatId = chat.getChatId();
@@ -90,17 +90,7 @@ public class ChatService {
 
         User user = userService.findByChat_id(chatId);
 
-        BotContext contex = BotContext.of(chat, user, input);
-
-        LOGGER.info("BotContext: " + contex);
-        try {
-            camundaClient.processStart(contex);
-
-        } catch (Exception exception) {
-            LOGGER.info("reciveMessage FAIL: " + exception.getLocalizedMessage());
-        }
-
-        LOGGER.info("reciveMessage END" );
+        return BotContext.of(chat, user, input);
 
     }
 
@@ -133,7 +123,7 @@ public class ChatService {
 
         LOGGER.info("REGISTRATION COMMAND MESSAGE: "+ message);
 
-        reciveMessage(addedChat, message);
+        getBotContext(addedChat, message);
 
         LOGGER.info("CREATE NEW CHAT RESULT: "+"\n"+"NEW ADDED CHAT: "+ addedChat);
         return chat;

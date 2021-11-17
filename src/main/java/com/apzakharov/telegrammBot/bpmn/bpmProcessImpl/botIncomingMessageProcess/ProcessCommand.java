@@ -4,15 +4,11 @@ import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
-import com.apzakharov.telegrammBot.bpmn.service.UserProcessService;
-import com.apzakharov.telegrammBot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.spin.DataFormats;
-import org.camunda.spin.Spin;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

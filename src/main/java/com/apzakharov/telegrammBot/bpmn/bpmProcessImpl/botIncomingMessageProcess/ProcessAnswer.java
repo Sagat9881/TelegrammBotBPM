@@ -1,11 +1,9 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
 import com.apzakharov.telegrammBot.bot.ChatBot;
-import com.apzakharov.telegrammBot.bpmn.service.UserProcessService;
 import com.apzakharov.telegrammBot.model.Message;
 import com.apzakharov.telegrammBot.service.MessageService;
 import com.apzakharov.telegrammBot.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,16 +11,9 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import spinjar.com.fasterxml.jackson.core.JsonParseException;
-import spinjar.com.fasterxml.jackson.databind.JsonMappingException;
 
 
-import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
-import org.camunda.spin.Spin;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
 
 
 @Component
