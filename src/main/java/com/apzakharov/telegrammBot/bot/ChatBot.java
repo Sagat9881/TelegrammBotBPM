@@ -25,7 +25,6 @@ public class ChatBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
 
     private static final String BROADCAST = "broadcast ";
-    private static final Exception e = new Exception();
     private static final String LIST_USERS = "users";
     private org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate;
 

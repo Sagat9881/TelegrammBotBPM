@@ -1,6 +1,7 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
 import com.apzakharov.telegrammBot.bot.ChatBot;
+import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -13,7 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProcessMessageSend implements JavaDelegate {
 
-    private final ChatBot botService;
+    private final CamundaClient camundaClient;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -22,7 +23,7 @@ public class ProcessMessageSend implements JavaDelegate {
 
         String textToSend = (String) delegateExecution.getVariableTyped("TextToSend").getValue();
         String needAnswer = (String) delegateExecution.getVariableTyped("NeedAnswer").getValue();
-        botService.sendMessage(chatID,textToSend);
+        camundaClient.processSendMessage(chatID,textToSend);
 
 //        if(needAnswer.equals("true")){
 //            botService.putInAwaitingChatMap(String.valueOf(chatID),delegateExecution.getProcessInstance().getProcessInstanceId())

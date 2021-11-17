@@ -1,6 +1,7 @@
 package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bot.BotContext;
+import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
@@ -26,6 +27,7 @@ public class CamundaClient {
     private static final Logger LOGGER = LogManager.getLogger(CamundaClient.class);
 
     private final RestTemplate template;
+    private final ChatBot botService;
 
     private static final String JSON_TYPE_STRING = "String";
     private static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
@@ -112,4 +114,9 @@ public class CamundaClient {
 
 
     }
+    public void processSendMessage(Long chatID, String textToSend) throws Exception{
+        botService.sendMessage(chatID,textToSend);
+    }
+
+
 }
