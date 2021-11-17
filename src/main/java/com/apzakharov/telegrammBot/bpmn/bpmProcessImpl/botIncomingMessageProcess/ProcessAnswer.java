@@ -66,7 +66,7 @@ public class ProcessAnswer implements JavaDelegate {
             LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
             MessageCorrelationResult reciveResult = runtimeService
                     .createMessageCorrelation("new_incoming_message")
-                    .localVariableEquals("ChatID", chatID)
+                    .localVariableEquals("ChatID", String.valueOf(chatID))
                     .setVariableLocal("Input", input)
                     .correlateWithResult();
         } catch (Exception e) {
