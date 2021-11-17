@@ -37,10 +37,16 @@ public class ProcessAnswer implements JavaDelegate {
 //        RuntimeService reciveResult = ProcessEngines.
 //      TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
 
-        Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID"))
+        Object chatIdFromProcess  = delegateExecution.getVariableTyped("ChatID");
+        Object inputFromProcess   = delegateExecution.getVariableTyped("Input");
+
+        String chatIdFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
+        String inputFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
+
+        Long chatID = Spin.S(chatIdFromProcess,chatIdFromProcessType)
                 .mapTo("java.lang.Long");
 
-        String input = Spin.JSON(delegateExecution.getVariable("Input"))
+        String input = Spin.S(inputFromProcess,inputFromProcessType)
                 .mapTo("java.lang.String");
 
         String outputText = chatID.equals(966663803L) ?
