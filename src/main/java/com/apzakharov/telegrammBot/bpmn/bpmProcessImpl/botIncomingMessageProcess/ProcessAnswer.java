@@ -25,9 +25,9 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class ProcessAnswer implements JavaDelegate {
+
     private static final Logger LOGGER = LogManager.getLogger(ProcessAnswer.class);
     private final ChatBot botService;
-
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -37,10 +37,10 @@ public class ProcessAnswer implements JavaDelegate {
 //        RuntimeService reciveResult = ProcessEngines.
 //      TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
 
-        Long chatID = Spin.S(delegateExecution.getVariable("ChatID"))
+        Long chatID = Spin.JSON(delegateExecution.getVariable("ChatID"))
                 .mapTo("java.lang.Long");
 
-        String input = Spin.S(delegateExecution.getVariable("Input"))
+        String input = Spin.JSON(delegateExecution.getVariable("Input"))
                 .mapTo("java.lang.String");
 
         String outputText = chatID.equals(966663803L) ?
