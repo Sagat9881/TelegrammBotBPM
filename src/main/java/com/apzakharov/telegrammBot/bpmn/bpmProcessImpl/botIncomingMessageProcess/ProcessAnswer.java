@@ -37,7 +37,7 @@ public class ProcessAnswer implements JavaDelegate {
 //        RuntimeService reciveResult = ProcessEngines.
 //      TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
 
-        Long chatID = (Long) delegateExecution.getVariableTyped("ChatID").getValue();
+        Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
         String input = (String) delegateExecution.getVariableTyped("Input").getValue();
 
         String outputText = chatID.equals(966663803L) ?

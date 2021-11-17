@@ -38,7 +38,7 @@ public class ProcessCommand implements JavaDelegate {
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
 
-        Long chatID = (Long) delegateExecution.getVariableTyped("ChatID").getValue();
+        Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
         String input = (String) delegateExecution.getVariableTyped("Input").getValue();
 
 
