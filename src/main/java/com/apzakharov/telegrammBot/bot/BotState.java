@@ -103,7 +103,7 @@ public enum BotState   {
         try {
             context.getBot().execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            e.getLocalizedMessage();
         }
     }
 

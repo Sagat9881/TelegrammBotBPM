@@ -121,7 +121,7 @@ public class ChatBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            e.getLocalizedMessage();
 
         }
     }
@@ -136,7 +136,7 @@ public class ChatBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            e.getLocalizedMessage();
         }
     }
 

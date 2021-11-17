@@ -147,7 +147,7 @@ public class ChatService {
         try {
             context.getBot().execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            e.getLocalizedMessage();
         }
     }
 

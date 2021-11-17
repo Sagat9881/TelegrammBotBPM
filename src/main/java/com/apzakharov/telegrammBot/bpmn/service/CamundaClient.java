@@ -35,6 +35,12 @@ public class CamundaClient {
 
     public void processStart(String processURL, ProcessStartRequestBody processBody) {
         //get body
+        LOGGER.info("======================");
+        LOGGER.info("CamundaClient.ProcessStart START : ");
+        LOGGER.info(" ");
+        LOGGER.info("\n"+"PROCESS BODY"+processBody+"\nPROCESS URL: "+processURL);
+        LOGGER.info(" ");
+
         Map<String, Object> requestVariables = new HashMap<>();
         requestVariables.put("variables", processBody.getVariables());
         LOGGER.info("requestVariables to string: " + requestVariables);
@@ -49,8 +55,15 @@ public class CamundaClient {
         LOGGER.info("entity to string: " + entity);
 
         // send request and TODO: parse result
-        ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
-        LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody());
+        try {
+            ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
+            LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody());
+            LOGGER.info("======================");
+        } catch (Exception e){
+            LOGGER.info("CamundaClient.ProcessStart FAIL: ");
+            e.getLocalizedMessage();
+            LOGGER.info("======================");
+        }
     }
 
     public void processStart(@Nonnull BotContext contex) throws Exception {
@@ -84,7 +97,7 @@ public class CamundaClient {
 
 //            user.setStateId(BotStateBPMN.PROCESS.getBotStateBPMNID());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ex.getLocalizedMessage();
 //            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
         }
 

@@ -70,7 +70,7 @@ public class UserProcessService {
         }
         catch(Exception ex) {
 
-         ex.printStackTrace();
+         ex.getLocalizedMessage();
 //            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
 
         }
