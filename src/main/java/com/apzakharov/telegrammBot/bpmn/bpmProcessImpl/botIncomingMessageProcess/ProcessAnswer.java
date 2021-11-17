@@ -31,7 +31,7 @@ public class ProcessAnswer implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
+        LOGGER.info("ProcessAnswer.execute START:  " + delegateExecution);
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
 
 //        RuntimeService reciveResult = ProcessEngines.
@@ -43,21 +43,22 @@ public class ProcessAnswer implements JavaDelegate {
         String input = Spin.S(delegateExecution.getVariable("Input"))
                 .mapTo("java.lang.String");
 
-//        ProcessEngine engine = delegateExecution.getProcessEngine();
-//        RuntimeService runtimeService = engine.getRuntimeService();
-//        LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
-//        MessageCorrelationResult reciveResult = runtimeService
-//                .createMessageCorrelation("new_incoming_message")
-//                .localVariableEquals("ChatID", chatID)
-//                .setVariableLocal("Input", input)
-//                .correlateWithResult();
-//
-//        LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: "+ reciveResult.getResultType().name());
-
-
         String outputText = chatID.equals(966663803L) ?
                 "Люблю тебя :3" : "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
-        botService.sendMessage(chatID, outputText); //TODO: перенести отправку сообщений в ProcessMessageSend
+
+        LOGGER.info("======================");
+
+        LOGGER.info("MEESAGE SEND PROCESS START: \n");
+        LOGGER.info("VARIABELS:  \n" + "CHATID: " + chatID + "\nINPUT: " + input + "\nOUTPUT_TEXT: " + outputText);
+        try {
+            botService.sendMessage(chatID, outputText);
+        } catch (Exception e) {
+            LOGGER.info("START MESSAGE SEND PROCESS FAIL: ");
+            e.getLocalizedMessage();
+        }
+
+        LOGGER.info("END MESSAGE SEND PROCESS \n");
+        LOGGER.info("======================\n");
 
     }
 

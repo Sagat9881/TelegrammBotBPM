@@ -32,39 +32,63 @@ public class ProcessCommand implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
+        LOGGER.info("ProcessCommand.execute START:  " + delegateExecution);
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
         Long chatID = Spin.S(delegateExecution.getVariableTyped("ChatID").getValue())
                 .mapTo("java.lang.Long");
         String input = Spin.S(delegateExecution.getVariableTyped("Input").getValue())
                 .mapTo("java.lang.String");
-        LOGGER.info("ProcessCommand for chatID: "+ chatID);
+
+        LOGGER.info("ProcessCommand for chatID: " + chatID + "\nCommand: " + input);
 
         ProcessStartRequestBody processBody = new ProcessStartRequestBody();
-        Map<String, ProcessVariable> variablesForDelegate =  new HashMap<>();
-        Set<String> variablesNameFromProcess =  delegateExecution.getVariableNames();
+        Map<String, ProcessVariable> variablesForDelegate = new HashMap<>();
+        Set<String> variablesNameFromProcess = delegateExecution.getVariableNames();
 
-        variablesNameFromProcess.forEach((String variableName) ->{
+        variablesNameFromProcess.forEach((String variableName) -> {
 
             String value = Spin.S(delegateExecution
                     .getVariableTyped(variableName).getValue())
                     .mapTo("java.lang.String");
 
             variablesForDelegate.put(variableName,
-                    new ProcessVariable(JSON_TYPE_STRING,value));
+                    new ProcessVariable(JSON_TYPE_STRING, value));
 
         });
 
         processBody.setVariables(variablesForDelegate);
-        LOGGER.info("Variabls for process: "+ variablesForDelegate.toString()+"\n ProcessName: "+ input);
+        LOGGER.info("======================");
+        LOGGER.info("PROCESS BODY: ");
+        LOGGER.info("Variabls for CommandProcess: " + variablesForDelegate + "\n ProcessCommandName: " + input);
 
-        String processURL = ProcessURLTemplate+input+"/start";
-        LOGGER.info("ProcessURL for process: "+ processURL+"\n ProcessName: "+ input);
+        String processURL = ProcessURLTemplate + input + "/start";
+        LOGGER.info("ProcessURL for CommandProcess: " + processURL + "\n ProcessCommandName: " + input);
+        try {
+            LOGGER.info("START COMMAND PROCESS: \n");
+            camundaClient.processStart(processURL, processBody);
+        } catch (Exception e) {
+            LOGGER.info("START COMMAND PROCESS FAIL: ");
+            e.getLocalizedMessage();
+        }
+        LOGGER.info("END COMMAND PROCESS \n");
+        LOGGER.info("======================\n");
 
-        camundaClient.processStart(processURL,processBody);
         String outputText = "Тестовая заглушка работы сценария ответа на работу команды";
-        botService.sendMessage(chatID, outputText);//TODO: перенести отправку сообщений в ProcessMessageSend
+
+        LOGGER.info("======================");
+
+        LOGGER.info("MEESAGE SEND PROCESS START: \n");
+        LOGGER.info("VARIABELS:  \n" + "CHATID: " + chatID + "\nINPUT: " + input + "\nOUTPUT_TEXT: " + outputText);
+        try {
+            botService.sendMessage(chatID, outputText);
+        } catch (Exception e) {
+            LOGGER.info("START MESSAGE SEND PROCESS FAIL: ");
+            e.getLocalizedMessage();
+        }
+        LOGGER.info("END MESSAGE SEND PROCESS \n");
+        LOGGER.info("======================\n");
     }
 
-    
+
 }
