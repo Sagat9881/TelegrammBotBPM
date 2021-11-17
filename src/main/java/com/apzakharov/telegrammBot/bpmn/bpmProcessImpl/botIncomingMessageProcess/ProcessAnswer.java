@@ -71,7 +71,7 @@ public class ProcessAnswer implements JavaDelegate {
             runtimeService.correlateMessage("NewIncomingMessage", correlationKeys);
 
         } catch (Exception e) {
-
+            e.getLocalizedMessage();
             LOGGER.info("NOT FOUND AWAITING MESSAGE CHAT FOR CHATID: " + chatID);
             return;
         }
