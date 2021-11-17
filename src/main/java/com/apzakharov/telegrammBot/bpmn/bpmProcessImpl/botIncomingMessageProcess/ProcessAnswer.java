@@ -21,7 +21,6 @@ import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
 import org.camunda.spin.Spin;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,15 +59,23 @@ public class ProcessAnswer implements JavaDelegate {
                 .text(outputText)
                 .build();
 
-        Map<String, Object> correlationKeys = new HashMap<>();
-        correlationKeys.put("ChatID", String.valueOf(chatID));
-
         messageService.addMessage(message);
         try {
             ProcessEngine engine = delegateExecution.getProcessEngine();
             RuntimeService runtimeService = engine.getRuntimeService();
             LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
-            runtimeService.correlateMessage("NewIncomingMessage", correlationKeys);
+//            MessageCorrelationResult reciveResult = runtimeService
+//                    .createMessageCorrelation("NewIncomingMessage")
+//                    .localVariableEquals("ChatID", String.valueOf(chatID))
+//                    .setVariableLocal("Input", input)
+//                    .correlateWithResult();
+
+            delegateExecution.getProcessEngineServices()
+                    .getRuntimeService()
+                    .createMessageCorrelation("NewIncomingMessage")
+                    .processInstanceVariableEquals("ChatID",String.valueOf(chatID))
+                    .setVariableLocal("Input", input)
+                    .correlate();
 
         } catch (Exception e) {
             e.getLocalizedMessage();

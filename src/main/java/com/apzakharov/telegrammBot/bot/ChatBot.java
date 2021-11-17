@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class ChatBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final ChatService chatService;
+    private final Map<String,Object> chatMap;
 
     @Override
     public String toString() {

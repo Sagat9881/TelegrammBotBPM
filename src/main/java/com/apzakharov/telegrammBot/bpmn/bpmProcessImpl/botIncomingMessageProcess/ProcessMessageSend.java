@@ -21,8 +21,12 @@ public class ProcessMessageSend implements JavaDelegate {
         Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
 
         String textToSend = (String) delegateExecution.getVariableTyped("TextToSend").getValue();
+        String needAnswer = (String) delegateExecution.getVariableTyped("NeedAnswer").getValue();
         botService.sendMessage(chatID,textToSend);
 
+//        if(needAnswer.equals("true")){
+//            botService.putInAwaitingChatMap(String.valueOf(chatID),delegateExecution.getProcessInstance().getProcessInstanceId())
+//        }
 //       Map<String,Object> variables = delegateExecution.getVariables();
 
     }
