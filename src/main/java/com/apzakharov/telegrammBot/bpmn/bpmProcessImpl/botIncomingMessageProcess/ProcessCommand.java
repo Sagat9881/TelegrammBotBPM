@@ -74,20 +74,20 @@ public class ProcessCommand implements JavaDelegate {
         LOGGER.info("END COMMAND PROCESS \n");
         LOGGER.info("======================\n");
 
-        String outputText = "Тестовая заглушка работы сценария ответа на работу команды";
-
-        LOGGER.info("======================");
-
-        LOGGER.info("MEESAGE SEND PROCESS START: \n");
-        LOGGER.info("VARIABELS:  \n" + "CHATID: " + chatID + "\nINPUT: " + input + "\nOUTPUT_TEXT: " + outputText);
-        try {
-            botService.sendMessage(chatID, outputText);
-        } catch (Exception e) {
-            LOGGER.info("START MESSAGE SEND PROCESS FAIL: ");
-            e.getLocalizedMessage();
-        }
-        LOGGER.info("END MESSAGE SEND PROCESS \n");
-        LOGGER.info("======================\n");
+//        String outputText = "Тестовая заглушка работы сценария ответа на работу команды";
+//
+//        LOGGER.info("======================");
+//
+//        LOGGER.info("MEESAGE SEND PROCESS START: \n");
+//        LOGGER.info("VARIABELS:  \n" + "CHATID: " + chatID + "\nINPUT: " + input + "\nOUTPUT_TEXT: " + outputText);
+//        try {
+//            botService.sendMessage(chatID, outputText);
+//        } catch (Exception e) {
+//            LOGGER.info("START MESSAGE SEND PROCESS FAIL: ");
+//            e.getLocalizedMessage();
+//        }
+//        LOGGER.info("END MESSAGE SEND PROCESS \n");
+//        LOGGER.info("======================\n");
     }
 
 

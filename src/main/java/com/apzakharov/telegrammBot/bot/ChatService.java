@@ -31,7 +31,7 @@ public class ChatService {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatService.class);
 
-    private static final String REGISTRATION_COMMAND = "/start";
+    private static final String REGISTRATION_COMMAND = "start";
 
     @Transactional(readOnly = true)
     public Chat findById(Long id) {
