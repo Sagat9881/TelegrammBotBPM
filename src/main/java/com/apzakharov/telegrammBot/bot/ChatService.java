@@ -38,11 +38,11 @@ public class ChatService {
         LOGGER.info("findById START: id " + id);
 
         Optional<Chat> optionalChat = chatRepository.findById(id);
-        if (optionalChat.isPresent()) {
-            return optionalChat.get();
-        }
-        LOGGER.info("findById RESULT: NULL ");
-        return null;
+
+        Chat chat = optionalChat.orElseGet(() ->null);
+        LOGGER.info("findById RESULT:  " + chat);
+
+        return chat;
 
     }
 
@@ -50,16 +50,12 @@ public class ChatService {
     public Chat findByUser_id(Long user_id) throws Exception {
         LOGGER.info("findByUserId START: user_id " + user_id);
 
-        Optional<Chat> chatOptional = chatRepository.findByUserId(user_id);
+        Optional<Chat> optionalChat = chatRepository.findByUserId(user_id);
 
-        if (chatOptional.isPresent()) {
-            return chatOptional.get();
-        }
+        Chat chat = optionalChat.orElseGet(() ->null);
+        LOGGER.info("findByUserId RESULT:  " + chat);
 
-        LOGGER.info("findByUserId RESULT: NULL ");
-        return null;
-
-
+        return chat;
     }
 
     @Transactional(readOnly = true)
@@ -67,11 +63,11 @@ public class ChatService {
         LOGGER.info("findByChatId START: chat_id " + chat_id);
 
         Optional<Chat> optionalChat = chatRepository.findByChatId(chat_id);
-        if (optionalChat.isPresent()) {
-            return optionalChat.get();
-        }
-        LOGGER.info("findByChatId RESULT: NULL ");
-        return null;
+
+        Chat chat = optionalChat.orElseGet(() ->null);
+        LOGGER.info("findByChatId RESULT:  " + chat);
+
+        return chat;
     }
 
     @Transactional(readOnly = true)
@@ -99,9 +95,12 @@ public class ChatService {
         LOGGER.info("BotContext: " + contex);
         try {
             camundaClient.processStart(contex);
+
         } catch (Exception exception) {
-            exception.printStackTrace();
+            LOGGER.info("reciveMessage FAIL: " + exception.getLocalizedMessage());
         }
+
+        LOGGER.info("reciveMessage END" );
 
     }
 
@@ -111,9 +110,10 @@ public class ChatService {
                 .chatId(chatId)
                 .build();
 
-        LOGGER.info("NEW USER: " + user.toString());
+        User addedUser = userService.addUser(user);
 
-        return userService.addUser(user).getId();
+        LOGGER.info("createNewUser RESULT: \nNEW ADDED USER: " + user);
+        return addedUser.getId();
     }
 
     public Chat createNewChat(Long chatId, Long userId) throws Exception {
@@ -129,10 +129,13 @@ public class ChatService {
                 .text(REGISTRATION_COMMAND)
                 .build();
 
-        addChat(chat);
+        Chat addedChat = addChat(chat);
 
-        reciveMessage(chat, message);
+        LOGGER.info("REGISTRATION COMMAND MESSAGE: "+ message);
 
+        reciveMessage(addedChat, message);
+
+        LOGGER.info("CREATE NEW CHAT RESULT: "+"\n"+"NEW ADDED CHAT: "+ addedChat);
         return chat;
 
     }

@@ -70,22 +70,29 @@ public class ChatBot extends TelegramLongPollingBot {
 
         try {
             chat = chatService.findByChat_id(chatId);
+
+            LOGGER.info("CHATID: " + chatId);
+            LOGGER.info("CHAT: " + chat);
         } catch (Exception e) {
-            LOGGER.info("FIND CHAT PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
+            LOGGER.info("FIND CHAT PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+            return;
         }
 
-        LOGGER.info("CHATID: " + chatId);
+
         if (chat == null) {
             try {
                 Long userId = chatService.createNewUser(chatId);
                 LOGGER.info("NEW USER ID: " + userId);
+
                 chat = chatService.createNewChat(chatId, userId);
+                LOGGER.info("NEW CHAT ID: " + chatId + "\nNEW CHAT: " + chat);
+
             } catch (Exception e) {
-                LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
+                LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+                return;
             }
         }
 
-        LOGGER.info("CHATID: " + chatId);
         Message message = Message.builder()
                 .chatId(chatId)
                 .userId(chat.getUserId())
@@ -97,7 +104,8 @@ public class ChatBot extends TelegramLongPollingBot {
         try {
             chatService.reciveMessage(chat, message);
         } catch (Exception e) {
-            LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage()+"\n");
+            LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+            return;
         }
 
         LOGGER.info("UPDATE RECIVE END");
