@@ -44,8 +44,7 @@ public class ProcessCommand implements JavaDelegate {
 
         Long chatID = Spin.S(chatIdFromProcess,chatIdFromProcessType)
                 .mapTo("java.lang.Long");
-        String input = Spin.S(inputFromProcess,inputFromProcessType)
-                .mapTo("java.lang.String");
+        String input = (String) Spin.S(inputFromProcess,inputFromProcessType).unwrap();
 
         LOGGER.info("ProcessCommand for chatID: " + chatID + "\nCommand: " + input);
 
