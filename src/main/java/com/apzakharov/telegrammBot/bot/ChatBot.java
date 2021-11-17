@@ -124,6 +124,7 @@ public class ChatBot extends TelegramLongPollingBot {
             e.getLocalizedMessage();
 
         }
+        LOGGER.info("ChatBot.sendMessage END");
     }
 
     private void sendPhoto(long chatId) {

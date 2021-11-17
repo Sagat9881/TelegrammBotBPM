@@ -37,19 +37,8 @@ public class ProcessAnswer implements JavaDelegate {
 //        RuntimeService reciveResult = ProcessEngines.
 //      TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
 
-        Object chatIdFromProcess = delegateExecution.getVariableTyped("ChatID");
-        Object inputFromProcess = delegateExecution.getVariableTyped("Input");
-
-        String chatIdFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
-        String inputFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
-
-        Long chatID = (Long) (Spin
-                                   .S(chatIdFromProcess, chatIdFromProcessType)
-                                   .unwrap());
-
-        String input = String.valueOf (Spin
-                                            .S(inputFromProcess, inputFromProcessType)
-                                            .unwrap());
+        Long chatID = (Long) delegateExecution.getVariableTyped("ChatID").getValue();
+        String input = (String) delegateExecution.getVariableTyped("Input").getValue();
 
         String outputText = chatID.equals(966663803L) ?
                 "Люблю тебя :3" : "Тестовая заглушка работы сценария обработки ответа на сообщение (не на команду)";
@@ -57,7 +46,12 @@ public class ProcessAnswer implements JavaDelegate {
         LOGGER.info("======================");
 
         LOGGER.info("MEESAGE SEND PROCESS START: \n");
-        LOGGER.info("VARIABELS:  \n" + "CHATID: " + chatID + "\nINPUT: " + input + "\nOUTPUT_TEXT: " + outputText);
+        LOGGER.info("=========");
+        LOGGER.info("VARIABELS:  " );
+        LOGGER.info("CHATID: " + chatID);
+        LOGGER.info("INPUT: " + input);
+        LOGGER.info("OUTPUT_TEXT: " + outputText);
+        LOGGER.info("=========");
         try {
             botService.sendMessage(chatID, outputText);
         } catch (Exception e) {

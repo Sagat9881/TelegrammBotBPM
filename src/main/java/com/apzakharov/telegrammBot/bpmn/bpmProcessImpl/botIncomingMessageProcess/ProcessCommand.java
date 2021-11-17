@@ -25,6 +25,8 @@ import java.util.Set;
 public class ProcessCommand implements JavaDelegate {
     private static final Logger LOGGER = LogManager.getLogger(ProcessCommand.class);
     private static final String JSON_TYPE_STRING = "String";
+    private static final String TYPE_STRING = "java.lang.String";
+    private static final String TYPE_LONG = "java.lang.Long";
     private static final String ProcessURLTemplate = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key";
 
     private final ChatBot botService;
@@ -36,19 +38,9 @@ public class ProcessCommand implements JavaDelegate {
 //        Long chatID = camundaProcessService.getChatID(delegateExecution);
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
 
-        Object chatIdFromProcess  = delegateExecution.getVariableTyped("ChatID");
-        Object inputFromProcess   = delegateExecution.getVariableTyped("Input");
+        Long chatID = (Long) delegateExecution.getVariableTyped("ChatID").getValue();
+        String input = (String) delegateExecution.getVariableTyped("Input").getValue();
 
-        String chatIdFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
-        String inputFromProcessType = delegateExecution.getVariableTyped("ChatID").getType().getName();
-
-        Long chatID = (Long) (Spin
-                                  .S(chatIdFromProcess, chatIdFromProcessType)
-                                  .unwrap());
-
-        String input = String.valueOf( Spin
-                                           .S(inputFromProcess,inputFromProcessType)
-                                           .unwrap());
 
         LOGGER.info("ProcessCommand for chatID: " + chatID + "\nCommand: " + input);
 
@@ -58,11 +50,7 @@ public class ProcessCommand implements JavaDelegate {
 
         variablesNameFromProcess.forEach((String variableName) -> {
 
-            Object variabelFromProcess  = delegateExecution.getVariableTyped(variableName);
-
-            String variabelFromProcessType = delegateExecution.getVariableTyped(variableName).getType().getName();
-
-            String value = String.valueOf(Spin.S(variabelFromProcess,variabelFromProcessType));
+            String value = (String) delegateExecution.getVariableTyped(variableName).getValue();
 
             variablesForDelegate.put(variableName,
                     new ProcessVariable(JSON_TYPE_STRING, value));
