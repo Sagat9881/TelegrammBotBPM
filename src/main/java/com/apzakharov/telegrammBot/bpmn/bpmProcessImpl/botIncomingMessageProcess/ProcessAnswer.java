@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class ProcessAnswer implements JavaDelegate {
 
     private static final Logger LOGGER = LogManager.getLogger(ProcessAnswer.class);
-    CamundaClient camundaClient;
+    private final CamundaClient camundaClient;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
