@@ -94,6 +94,7 @@ public class ChatBot extends TelegramLongPollingBot {
                         .userId(user.getId())
                         .text(REGISTRATION_COMMAND)
                         .build();
+
                 Message addedMessage = chatService.addMessage(message);
 
                 LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
@@ -120,7 +121,8 @@ public class ChatBot extends TelegramLongPollingBot {
 
         try {
 
-            sendMessage(chat.getChatId(), message.getText());
+            getFromCamundaClientContextMap(getBotUsername())
+                    .processStart(chat,user,message.getText());
 
             LOGGER.info("reciveMessage END");
         } catch (Exception e) {

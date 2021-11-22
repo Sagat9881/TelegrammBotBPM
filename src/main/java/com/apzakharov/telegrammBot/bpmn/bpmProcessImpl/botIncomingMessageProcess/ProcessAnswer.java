@@ -43,7 +43,7 @@ public class ProcessAnswer implements JavaDelegate {
         Message message = Message.builder()
                 .chatId(chatID)
                 .userId(userId)
-                .text(outputText)
+                .text(input)
                 .build();
 
         camundaClient.addMessage(message);
