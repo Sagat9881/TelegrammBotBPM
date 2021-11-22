@@ -11,6 +11,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 
+import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
 import org.springframework.stereotype.Component;
 
 
@@ -51,18 +52,13 @@ public class ProcessAnswer implements JavaDelegate {
             ProcessEngine engine = delegateExecution.getProcessEngine();
             RuntimeService runtimeService = engine.getRuntimeService();
             LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
-//            MessageCorrelationResult reciveResult = runtimeService
-//                    .createMessageCorrelation("NewIncomingMessage")
-//                    .localVariableEquals("ChatID", String.valueOf(chatID))
-//                    .setVariableLocal("Input", input)
-//                    .correlateWithResult();
 
-            delegateExecution.getProcessEngineServices()
-                    .getRuntimeService()
+            MessageCorrelationResult reciveResult = runtimeService
                     .createMessageCorrelation("NewIncomingMessage")
-                    .processInstanceVariableEquals("ChatID", String.valueOf(chatID))
+                    .localVariableEquals("ChatID", String.valueOf(chatID))
                     .setVariableLocal("Input", input)
-                    .correlate();
+                    .correlateWithResult();
+
 
         } catch (Exception e) {
             e.getLocalizedMessage();

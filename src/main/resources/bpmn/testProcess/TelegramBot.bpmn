@@ -152,6 +152,7 @@ Input
     <bpmn:receiveTask id="Activity_0igjsh3" name="Получение ответа" messageRef="Message_11tt8e3">
       <bpmn:extensionElements>
         <camunda:inputOutput>
+          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
           <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
           <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
         </camunda:inputOutput>
