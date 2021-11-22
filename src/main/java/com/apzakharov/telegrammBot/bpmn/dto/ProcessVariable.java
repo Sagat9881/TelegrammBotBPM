@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class ProcessVariable {
 
-   private String type;
    private String value;
+   private String type;
 
 }
