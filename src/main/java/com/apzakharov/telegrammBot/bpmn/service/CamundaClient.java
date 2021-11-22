@@ -10,6 +10,7 @@ import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
 import com.apzakharov.telegrammBot.model.User;
 import lombok.Builder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,7 @@ import static com.apzakharov.telegrammBot.bot.BotContext.getFromContextChatBotMa
 
 
 @Builder
+@Data
 @RequiredArgsConstructor
 public class CamundaClient {
     private static final Logger LOGGER = LogManager.getLogger(CamundaClient.class);

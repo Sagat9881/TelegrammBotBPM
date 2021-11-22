@@ -17,12 +17,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
 
+import static com.apzakharov.telegrammBot.bot.BotContext.getFromCamundaClientContextMap;
+
 
 @Builder
 @RequiredArgsConstructor
 public class ChatBot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
+    private static final String REGISTRATION_COMMAND = "/start";
 
     private final ChatService chatService;
 
@@ -80,11 +83,23 @@ public class ChatBot extends TelegramLongPollingBot {
 
         if (chat == null) {
             try {
-                Long userId = chatService.createNewUser(chatId).getId();
-                LOGGER.info("NEW USER ID: " + userId);
+                User user = chatService.createNewUser(chatId);
+                LOGGER.info("NEW USER : " + user);
 
-                chat = chatService.createNewChat(chatId, userId);
+                chat = chatService.createNewChat(chatId, user.getId());
                 LOGGER.info("NEW CHAT ID: " + chatId + "\nNEW CHAT: " + chat);
+
+                Message message = Message.builder()
+                        .chatId(chatId)
+                        .userId(user.getId())
+                        .text(REGISTRATION_COMMAND)
+                        .build();
+                Message addedMessage = chatService.addMessage(message);
+
+                LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
+
+                getFromCamundaClientContextMap(getBotUsername())
+                        .processStart(chat,user,addedMessage.getText());
 
             } catch (Exception e) {
                 LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");

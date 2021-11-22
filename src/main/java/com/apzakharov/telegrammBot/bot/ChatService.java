@@ -30,7 +30,7 @@ public class ChatService {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatService.class);
 
-    private static final String REGISTRATION_COMMAND = "/start";
+
 
     @Transactional(readOnly = true)
     public Chat findById(Long id) {
@@ -112,15 +112,7 @@ public class ChatService {
                 .userId(userId)
                 .build();
 
-        Message message = Message.builder()
-                .chatId(chatId)
-                .userId(userId)
-                .text(REGISTRATION_COMMAND)
-                .build();
-
         Chat addedChat = addChat(chat);
-
-        LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
 
         LOGGER.info("CREATE NEW CHAT RESULT: " + "\n" + "NEW ADDED CHAT: " + addedChat);
 

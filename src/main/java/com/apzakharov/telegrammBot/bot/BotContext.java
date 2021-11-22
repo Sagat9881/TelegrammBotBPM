@@ -24,6 +24,7 @@ public class BotContext {
     private CamundaClient camundaClient;
 
     private static Map<String,ChatBot> chatBotContextMap = new HashMap<>();
+    private static Map<String,CamundaClient> camundaClientContextMap = new HashMap<>();
 
     private static final Logger LOGGER = LogManager.getLogger(BotContext.class);
 
@@ -33,6 +34,14 @@ public class BotContext {
 
     public static ChatBot getFromContextChatBotMap(String botName){
       return chatBotContextMap.get(botName);
+    }
+
+    public static void putInCamundaClientContextMap(CamundaClient camundaClient){
+        camundaClientContextMap.put(camundaClient.getBotName(),camundaClient);
+    }
+
+    public static CamundaClient getFromCamundaClientContextMap(String botName){
+        return camundaClientContextMap.get(botName);
     }
 
 
