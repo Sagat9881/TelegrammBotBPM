@@ -23,8 +23,6 @@ public class User {
     private Long stateId;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "default_answer")
-    private String defaultAnswer;
     @Column(name = "email")
     private String email;
     @Column(name = "admin")
