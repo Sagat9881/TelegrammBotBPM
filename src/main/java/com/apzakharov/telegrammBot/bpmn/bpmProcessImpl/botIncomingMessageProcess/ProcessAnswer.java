@@ -55,8 +55,8 @@ public class ProcessAnswer implements JavaDelegate {
 
             MessageCorrelationResult reciveResult = runtimeService
                     .createMessageCorrelation("NewIncomingMessage")
-                    .localVariableEquals("ChatID", String.valueOf(chatID))
-                    .setVariableLocal("Input", input)
+                    .processInstanceVariableEquals("ChatID", String.valueOf(chatID))
+                    .setVariable("Input", input)
                     .correlateWithResult();
 
 
