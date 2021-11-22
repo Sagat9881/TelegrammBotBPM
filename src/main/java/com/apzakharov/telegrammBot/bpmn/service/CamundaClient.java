@@ -35,7 +35,6 @@ public class CamundaClient {
     private static final Logger LOGGER = LogManager.getLogger(CamundaClient.class);
 
     private final RestTemplate template;
-    private final BotContext botContext;
     private final String botName;
 
     private static final String JSON_TYPE_STRING = "String";
