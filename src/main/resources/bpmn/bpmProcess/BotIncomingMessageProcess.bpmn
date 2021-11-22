@@ -35,7 +35,7 @@
       <bpmn:incoming>Flow_0hr41p2</bpmn:incoming>
       <bpmn:outgoing>Flow_0a8sbli</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0v8l2vv" name="Ответ  на сообщение" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessAnswer">
+    <bpmn:serviceTask id="Activity_0v8l2vv" name="Ответ  на сообщение" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessReceive">
       <bpmn:incoming>Flow_17luu96</bpmn:incoming>
       <bpmn:outgoing>Flow_13r94ng</bpmn:outgoing>
     </bpmn:serviceTask>

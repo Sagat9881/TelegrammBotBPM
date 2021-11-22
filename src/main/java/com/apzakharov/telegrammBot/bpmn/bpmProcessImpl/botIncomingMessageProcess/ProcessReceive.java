@@ -1,37 +1,34 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import com.apzakharov.telegrammBot.model.Message;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.camunda.bpm.ProcessEngineService;
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngineServices;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 
-import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.apzakharov.telegrammBot.bot.BotContext.getFromAwaitingChatMap;
-
 
 @Component
 @RequiredArgsConstructor
-public class ProcessAnswer implements JavaDelegate {
+public class ProcessReceive implements JavaDelegate {
 
-    private static final Logger LOGGER = LogManager.getLogger(ProcessAnswer.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProcessReceive.class);
+    private static final String NEW_MESSAGE_NAME = "NewIncomingMessage";
+    private static final String JSON_TYPE_STRING = "String";
     private final CamundaClient camundaClient;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        LOGGER.info("ProcessAnswer.execute START:  " + delegateExecution);
+        LOGGER.info("ProcessReceive.execute START:  " + delegateExecution);
 
 //      TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
         String input = (String) delegateExecution.getVariableTyped("Input").getValue();
@@ -57,23 +54,29 @@ public class ProcessAnswer implements JavaDelegate {
 
         camundaClient.addMessage(message);
         try {
-            ProcessEngineServices engineService = delegateExecution.getProcessEngineServices();
-            RuntimeService runtimeService = engineService.getRuntimeService();
-            String executionId = getFromAwaitingChatMap(delegateExecution.getProcessInstanceId());
+            Map<String, ProcessVariable> variablesMap = new HashMap<>();
+            variablesMap.put("ChatID",
+                    new ProcessVariable(JSON_TYPE_STRING, chatID.toString()));
 
-            Map<String,Object> correlationKeys =new HashMap<>();
-            correlationKeys.put("ChatID",chatID);
-            correlationKeys.put("Input",input);
+            Map<String, ProcessVariable> correlationKeyMap = new HashMap<>();
+            correlationKeyMap.put("Input",
+                    new ProcessVariable(JSON_TYPE_STRING, input));
 
-            LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
 
-            runtimeService
-                    .messageEventReceived("NewIncomingMessage",executionId,correlationKeys);
+            ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
+                    .builder()
+                    .messageName(NEW_MESSAGE_NAME)
+                    .correlationKeys(correlationKeyMap)
+                    .processVariables(variablesMap)
+                    .build();
+
+           camundaClient.createCorrelation(request);
 
 
         } catch (Exception e) {
-            e.getLocalizedMessage();
             LOGGER.info("NOT FOUND AWAITING MESSAGE CHAT FOR CHATID: " + chatID);
+            camundaClient.processSendMessage(chatID,outputText);
+
             return;
         }
 

@@ -3,6 +3,7 @@ package com.apzakharov.telegrammBot.bpmn.service;
 import com.apzakharov.telegrammBot.bot.BotContext;
 import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bot.ChatService;
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
@@ -41,6 +42,7 @@ public class CamundaClient {
 
     private static final String JSON_TYPE_STRING = "String";
     private static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
+    private static final String MessageCorrelateURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/message";
 
 //   private final ChatBot botService;
 
@@ -134,6 +136,36 @@ public class CamundaClient {
     public void addMessage(Message message) throws Exception{
         ChatBot chatBot = getFromContextChatBotMap(botName);
         chatBot.addMessage(message);
+    }
+
+    public void createCorrelation(ProcessStartMessageCorrelationRequest processBody) throws Exception{
+
+        //get body
+        LOGGER.info("======================");
+        LOGGER.info("CamundaClient.ProcessStart START : ");
+        LOGGER.info(" ");
+        LOGGER.info("\n"+"PROCESS BODY"+processBody+"\nPROCESS URL: "+MessageCorrelateURL);
+        LOGGER.info(" ");
+
+
+        SpinJsonNode request = Spin.JSON(processBody);
+        LOGGER.info("request: " + request);
+        // set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        LOGGER.info("headers: " + headers);
+        // compling Request Entity
+        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
+        LOGGER.info("entity to string: " + entity);
+        try {
+            ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(MessageCorrelateURL, entity, ProcessStartResult.class);
+            LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody());
+            LOGGER.info("======================");
+        } catch (Exception e){
+            LOGGER.info("CamundaClient.ProcessStart FAIL: ");
+            e.getLocalizedMessage();
+            LOGGER.info("======================");
+        }
     }
 
 
