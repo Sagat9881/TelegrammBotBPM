@@ -24,6 +24,8 @@ public class Chat {
     private  Long chatId;
     @Column(name = "user_id", nullable = false)
     private  Long userId;
+    @Column(name = "chatBot_name", nullable = false)
+    private  String chatBotName;
 
 //    private  LinkedHashMap<Message,Message> chatMap;
 

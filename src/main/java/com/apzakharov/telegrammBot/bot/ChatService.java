@@ -1,6 +1,5 @@
 package com.apzakharov.telegrammBot.bot;
 
-import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
 import com.apzakharov.telegrammBot.model.User;
@@ -18,6 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Log4j2
 @Service
@@ -26,10 +26,9 @@ public class ChatService {
 
     private final UserService userService;
     private final MessageService messageService;
-
     private final ChatRepository chatRepository;
 
-    private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
+    private static final Logger LOGGER = LogManager.getLogger(ChatService.class);
 
     private static final String REGISTRATION_COMMAND = "/start";
 
@@ -39,11 +38,10 @@ public class ChatService {
 
         Optional<Chat> optionalChat = chatRepository.findById(id);
 
-        Chat chat = optionalChat.orElseGet(() ->null);
+        Chat chat = optionalChat.orElseGet(() -> null);
         LOGGER.info("findById RESULT:  " + chat);
 
         return chat;
-
     }
 
     @Transactional(readOnly = true)
@@ -52,7 +50,7 @@ public class ChatService {
 
         Optional<Chat> optionalChat = chatRepository.findByUserId(user_id);
 
-        Chat chat = optionalChat.orElseGet(() ->null);
+        Chat chat = optionalChat.orElseGet(() -> null);
         LOGGER.info("findByUserId RESULT:  " + chat);
 
         return chat;
@@ -64,10 +62,29 @@ public class ChatService {
 
         Optional<Chat> optionalChat = chatRepository.findByChatId(chat_id);
 
-        Chat chat = optionalChat.orElseGet(() ->null);
+        Chat chat = optionalChat.orElseGet(() -> null);
         LOGGER.info("findByChatId RESULT:  " + chat);
 
         return chat;
+    }
+
+    @Transactional(readOnly = true)
+    public User findUserByChatIdOrCreateNew(Long chatId) throws Exception {
+        LOGGER.info("findUserByChatId START: chat_id " + chatId);
+
+        AtomicReference<User> userAtomic = new AtomicReference<>();
+
+        User user = userService.findByChatId(chatId).orElseGet(() -> {
+            try {
+                userAtomic.set(createNewUser(chatId));
+            } catch (Exception exception) {
+                exception.getLocalizedMessage();
+            }
+            return userAtomic.get();
+        });
+        LOGGER.info("findUserByChatId RESULT:  " + user);
+
+        return user;
     }
 
     @Transactional(readOnly = true)
@@ -82,29 +99,11 @@ public class ChatService {
     }
 
     @Transactional
-    public BotContext getBotContext(Chat chat, Message message) throws Exception {
-        LOGGER.info("reciveMessage START: \n" + "CHAT: " + chat + "MESSAGE: " + message);
-
-        Long chatId = chat.getChatId();
-        String input = message.getText();
-
-        User user = userService.findByChat_id(chatId);
-
-        return BotContext.of(chat, user, input);
-
+    public Message addMessage(Message message) throws Exception {
+        LOGGER.info("addMessage START " + "Message: " + message);
+        return addMessage(message);
     }
 
-    public Long createNewUser(Long chatId) throws Exception {
-        LOGGER.info("createNewUser START " + "CHATID: " + chatId);
-        User user = User.builder()
-                .chatId(chatId)
-                .build();
-
-        User addedUser = userService.addUser(user);
-
-        LOGGER.info("createNewUser RESULT: \nNEW ADDED USER: " + user);
-        return addedUser.getId();
-    }
 
     public Chat createNewChat(Long chatId, Long userId) throws Exception {
         LOGGER.info("createNewChat START: " + "CHATID: " + chatId + "USERID: " + userId);
@@ -121,24 +120,25 @@ public class ChatService {
 
         Chat addedChat = addChat(chat);
 
-        LOGGER.info("REGISTRATION COMMAND MESSAGE: "+ message);
+        LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
 
-        getBotContext(addedChat, message);
+        LOGGER.info("CREATE NEW CHAT RESULT: " + "\n" + "NEW ADDED CHAT: " + addedChat);
 
-        LOGGER.info("CREATE NEW CHAT RESULT: "+"\n"+"NEW ADDED CHAT: "+ addedChat);
         return chat;
 
     }
 
-    protected void sendMessage(BotContext context, String text) {
-        SendMessage message = new SendMessage()
-                .setChatId(context.getUser().getChatId())
-                .setText(text);
-        try {
-            context.getBot().execute(message);
-        } catch (TelegramApiException e) {
-            e.getLocalizedMessage();
-        }
+    public User createNewUser(Long chatId) throws Exception {
+        LOGGER.info("createNewUser START " + "CHATID: " + chatId);
+        User user = User.builder()
+                .chatId(chatId)
+                .build();
+
+        User addedUser = userService.addUser(user);
+
+        LOGGER.info("createNewUser RESULT: \nNEW ADDED USER: " + user);
+
+        return addedUser;
     }
 
 }

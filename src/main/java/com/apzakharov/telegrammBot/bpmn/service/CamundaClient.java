@@ -2,10 +2,14 @@ package com.apzakharov.telegrammBot.bpmn.service;
 
 import com.apzakharov.telegrammBot.bot.BotContext;
 import com.apzakharov.telegrammBot.bot.ChatBot;
+import com.apzakharov.telegrammBot.bot.ChatService;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartRequestBody;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
+import com.apzakharov.telegrammBot.model.Chat;
+import com.apzakharov.telegrammBot.model.Message;
 import com.apzakharov.telegrammBot.model.User;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,13 +25,18 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+import static com.apzakharov.telegrammBot.bot.BotContext.getFromContextChatBotMap;
+
+
+
+@Builder
 @RequiredArgsConstructor
 public class CamundaClient {
     private static final Logger LOGGER = LogManager.getLogger(CamundaClient.class);
 
     private final RestTemplate template;
-    private final ChatBot botService;
+    private final BotContext botContext;
+    private final String botName;
 
     private static final String JSON_TYPE_STRING = "String";
     private static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
@@ -68,15 +77,11 @@ public class CamundaClient {
         }
     }
 
-    public void processStart(@Nonnull BotContext contex) throws Exception {
+    public void processStart (Chat chat,User user, String input) throws Exception {
 
-        LOGGER.info("Start New UserProcessAnswer for contex: \n" + contex.toString());
+        LOGGER.info("Start New UserProcessAnswer for \nChat: \n" + chat+"\nUser: \n"+user+"\n Input: \n"+input);
 
-        User user = contex.getUser();
-        Long chatID = user.getChatId();
-        String input = contex.getInput();
-
-        LOGGER.info("Context for process: \n" + contex.toString());
+        Long chatID = chat.getChatId();
 
         try {
             Map<String, ProcessVariable> variables = new HashMap<>();
@@ -114,9 +119,24 @@ public class CamundaClient {
 
 
     }
+
     public void processSendMessage(Long chatID, String textToSend) throws Exception{
-        botService.sendMessage(chatID,textToSend);
+        ChatBot chatBot = getFromContextChatBotMap(botName);
+        chatBot.sendMessage(chatID,textToSend);
     }
+
+    public Chat findChatByChatId(Long chatID) throws Exception{
+        ChatBot chatBot = getFromContextChatBotMap(botName);
+        return chatBot.findByChatId(chatID);
+    }
+
+    public void addMessage(Message message) throws Exception{
+        ChatBot chatBot = getFromContextChatBotMap(botName);
+        chatBot.addMessage(message);
+    }
+//    public void findByChat_id(Long chatID) throws Exception{
+//        botService.findByChat_id(chatID);
+//    }
 
 
 }

@@ -1,9 +1,7 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
-import com.apzakharov.telegrammBot.bot.ChatBot;
+import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import com.apzakharov.telegrammBot.model.Message;
-import com.apzakharov.telegrammBot.service.MessageService;
-import com.apzakharov.telegrammBot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,9 +19,7 @@ import org.springframework.stereotype.Component;
 public class ProcessAnswer implements JavaDelegate {
 
     private static final Logger LOGGER = LogManager.getLogger(ProcessAnswer.class);
-    private final ChatBot botService;
-    private final UserService userService;
-    private final MessageService messageService;
+    CamundaClient camundaClient;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -38,7 +34,7 @@ public class ProcessAnswer implements JavaDelegate {
         Long userId = null;
 
         try {
-            userId = userService.findByChat_id(chatID).getId();
+            userId = camundaClient.findChatByChatId(chatID).getUserId();
         } catch (Exception e) {
             LOGGER.info("NOT FOUND USER FOR CHATID: " + chatID);
             e.getLocalizedMessage();
@@ -50,7 +46,7 @@ public class ProcessAnswer implements JavaDelegate {
                 .text(outputText)
                 .build();
 
-        messageService.addMessage(message);
+        camundaClient.addMessage(message);
         try {
             ProcessEngine engine = delegateExecution.getProcessEngine();
             RuntimeService runtimeService = engine.getRuntimeService();
@@ -64,7 +60,7 @@ public class ProcessAnswer implements JavaDelegate {
             delegateExecution.getProcessEngineServices()
                     .getRuntimeService()
                     .createMessageCorrelation("NewIncomingMessage")
-                    .processInstanceVariableEquals("ChatID",String.valueOf(chatID))
+                    .processInstanceVariableEquals("ChatID", String.valueOf(chatID))
                     .setVariableLocal("Input", input)
                     .correlate();
 

@@ -8,6 +8,7 @@ import com.apzakharov.telegrammBot.model.User;
 import com.apzakharov.telegrammBot.repo.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,8 @@ public class UserService {
 
 
     @Transactional(readOnly = true)
-    public User findByChat_id(Long id) {
-        return userRepository.findByChatId(id);
+    public Optional<User> findByChatId(Long Chat_id) {
+        return userRepository.findByChatId(Chat_id);
     }
 
     @Transactional(readOnly = true)

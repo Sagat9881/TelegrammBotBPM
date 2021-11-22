@@ -1,56 +1,43 @@
 package com.apzakharov.telegrammBot.bot;
 
+import com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessAnswer;
+import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.User;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.*;
 
 @Data
-@ToString
+@RequiredArgsConstructor
+@Component
 public class BotContext {
+
     private ChatBot bot;
-    private Chat chat;
-    private final User user;
-    private final String input;
+    private CamundaClient camundaClient;
 
-    public static BotContext of(ChatBot bot, Chat chat,User user, String text) {
-        return new BotContext(bot, chat, user, text);
-    }
-    public static BotContext of( Chat chat,User user, String text) {
-        return new BotContext(chat, user, text);
-    }
-    public static BotContext of( ChatBot bot,User user, String text) {
-        return new BotContext(bot, user, text);
+    private static Map<String,ChatBot> chatBotContextMap = new HashMap<>();
+
+    private static final Logger LOGGER = LogManager.getLogger(BotContext.class);
+
+    public static void putInContextChatBotMap(ChatBot chatBot){
+        chatBotContextMap.put(chatBot.getBotUsername(),chatBot);
     }
 
-    private BotContext(ChatBot bot,Chat chat, User user, String input) {
-        this.bot   = bot;
-        this.user  = user;
-        this.input = input;
-        this.chat  = chat;
+    public static ChatBot getFromContextChatBotMap(String botName){
+      return chatBotContextMap.get(botName);
     }
 
-    private BotContext(Chat chat, User user, String input) {
-        this.user  = user;
-        this.input = input;
-        this.chat  = chat;
-    }
 
-    private BotContext(ChatBot bot,User user, String input) {
-        this.user  = user;
-        this.input = input;
-        this.bot   = bot;
-    }
 
-    public ChatBot getBot() {
-        return bot;
-    }
 
-    public User getUser() {
-        return user;
-    }
 
-    public String getInput() {
-        return input;
-    }
+
 }

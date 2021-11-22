@@ -1,13 +1,13 @@
 package com.apzakharov.telegrammBot.bot;
 
-import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
+import com.apzakharov.telegrammBot.model.User;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,28 +16,23 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
-import java.util.Map;
 
-@Component
+
+@Builder
 @RequiredArgsConstructor
-@PropertySource("classpath:telegram.properties")
 public class ChatBot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
-    private final CamundaClient camundaClient;
+
+    private final ChatService chatService;
 
     private static final String BROADCAST = "broadcast ";
     private static final String LIST_USERS = "users";
-    private org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate;
+//    private org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate;
 
-    @Value("${bot.name}")
-    private String botName;
+    private final String botName;
 
-    @Value("${bot.token}")
-    private String botToken;
-
-    private final ChatService chatBot;
-    private final Map<String, Object> chatMap;
+    private final String botToken;
 
     @Override
     public String toString() {
@@ -57,6 +52,7 @@ public class ChatBot extends TelegramLongPollingBot {
         return botToken;
     }
 
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
         LOGGER.info("UPDATE RECIVE START : ");
@@ -65,14 +61,14 @@ public class ChatBot extends TelegramLongPollingBot {
             return;
         }
 
-        messageFromUpdate = update.getMessage();
+        org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate = update.getMessage();
         LOGGER.info("INCOME MESSAGE: " + messageFromUpdate);
 
         Chat chat = null;
         Long chatId = update.getMessage().getChatId();
 
         try {
-            chat = chatBot.findByChat_id(chatId);
+            chat = chatService.findByChat_id(chatId);
 
             LOGGER.info("CHATID: " + chatId);
             LOGGER.info("CHAT: " + chat);
@@ -84,10 +80,10 @@ public class ChatBot extends TelegramLongPollingBot {
 
         if (chat == null) {
             try {
-                Long userId = chatBot.createNewUser(chatId);
+                Long userId = chatService.createNewUser(chatId).getId();
                 LOGGER.info("NEW USER ID: " + userId);
 
-                chat = chatBot.createNewChat(chatId, userId);
+                chat = chatService.createNewChat(chatId, userId);
                 LOGGER.info("NEW CHAT ID: " + chatId + "\nNEW CHAT: " + chat);
 
             } catch (Exception e) {
@@ -95,18 +91,21 @@ public class ChatBot extends TelegramLongPollingBot {
                 return;
             }
         }
+        User user = chatService.findUserByChatIdOrCreateNew(chatId);
 
-        Message message = Message.builder()
-                .chatId(chatId)
-                .userId(chat.getUserId())
-                .text(messageFromUpdate.getText())
-                .build();
+        Message message = chatService.addMessage(
+                Message.builder()
+                        .chatId(chatId)
+                        .userId(chat.getUserId())
+                        .text(messageFromUpdate.getText())
+                        .build()
+        );
 
         LOGGER.info("Message: " + message);
 
         try {
-            BotContext context = chatBot.getBotContext(chat, message);
-            camundaClient.processStart(context);
+
+            sendMessage(chat.getChatId(), message.getText());
 
             LOGGER.info("reciveMessage END");
         } catch (Exception e) {
@@ -145,6 +144,26 @@ public class ChatBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.getLocalizedMessage();
         }
+    }
+
+    public void addMessage(Message message) {
+        try {
+            chatService.addMessage(message);
+        }catch (Exception e){
+            LOGGER.info("ADD MESSAGE FAIL: \n"+e.getLocalizedMessage());
+        }
+
+    }
+
+    public Chat findByChatId(Long chatId) {
+        try {
+           return chatService.findByChat_id(chatId);
+        }catch (Exception e){
+            LOGGER.info("findByChatId FAIL: \n"+e.getLocalizedMessage());
+        }
+
+        return null;
+
     }
 
 

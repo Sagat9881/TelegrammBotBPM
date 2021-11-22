@@ -25,7 +25,6 @@ public class ProcessCommand implements JavaDelegate {
     private static final String TYPE_LONG = "java.lang.Long";
     private static final String ProcessURLTemplate = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key";
 
-    private final ChatBot botService;
     private final CamundaClient camundaClient;
 
     @Override
