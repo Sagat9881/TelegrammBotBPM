@@ -92,9 +92,15 @@ public class CamundaClient {
             variables.put("User",
                     new ProcessVariable(user.toString(), JSON_TYPE_STRING));
             variables.put("ChatID",
-                    new ProcessVariable(chatID.toString(), JSON_TYPE_STRING));
+                    ProcessVariable.builder()
+                            .value(chatID.toString())
+                            .type( JSON_TYPE_STRING).build());
+
             variables.put("Input",
-                    new ProcessVariable(input, JSON_TYPE_STRING));
+                    ProcessVariable.builder()
+                            .value(input)
+                            .type( JSON_TYPE_STRING).build());
+
 
             LOGGER.info("Variabls for process: " + variables.toString());
 
