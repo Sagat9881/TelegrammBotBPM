@@ -47,9 +47,11 @@ public class ProcessCommand implements JavaDelegate {
 
             String value = (String) delegateExecution.getVariableTyped(variableName).getValue();
 
-            variablesForDelegate.put(variableName,
-                    new ProcessVariable(JSON_TYPE_STRING, value));
-
+            variablesForDelegate.put(variableName,ProcessVariable
+                    .builder()
+                    .type(JSON_TYPE_STRING)
+                    .value(value)
+                    .build());
         });
 
         processBody.setVariables(variablesForDelegate);
