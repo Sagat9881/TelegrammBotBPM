@@ -101,7 +101,7 @@ public class ChatService {
     @Transactional
     public Message addMessage(Message message) throws Exception {
         LOGGER.info("addMessage START " + "Message: " + message);
-        return addMessage(message);
+        return messageService.addMessage(message);
     }
 
 
