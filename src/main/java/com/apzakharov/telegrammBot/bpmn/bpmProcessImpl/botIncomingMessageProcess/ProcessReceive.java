@@ -54,12 +54,12 @@ public class ProcessReceive implements JavaDelegate {
 
         camundaClient.addMessage(message);
         try {
-            Map<String, ProcessVariable> variablesMap = new HashMap<>();
-            variablesMap.put("ChatID",
+            Map<String, ProcessVariable>  correlationKeyMap= new HashMap<>();
+            correlationKeyMap.put("ChatID",
                     new ProcessVariable(JSON_TYPE_STRING, chatID.toString()));
 
-            Map<String, ProcessVariable> correlationKeyMap = new HashMap<>();
-            correlationKeyMap.put("Input",
+            Map<String, ProcessVariable> variablesMap = new HashMap<>();
+            variablesMap.put("Input",
                     new ProcessVariable(JSON_TYPE_STRING, input));
 
 
