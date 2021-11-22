@@ -19,7 +19,6 @@ public class ProcessMessageSend implements JavaDelegate {
         Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
 
         String textToSend = (String) delegateExecution.getVariableTyped("TextToSend").getValue();
-        String needAnswer = (String) delegateExecution.getVariableTyped("NeedAnswer").getValue();
         camundaClient.processSendMessage(chatID, textToSend);
 
 //        if(needAnswer.equals("true")){
