@@ -56,11 +56,11 @@ public class ProcessReceive implements JavaDelegate {
         try {
             Map<String, ProcessVariable>  correlationKeyMap= new HashMap<>();
             correlationKeyMap.put("ChatID",
-                    new ProcessVariable(JSON_TYPE_STRING, chatID.toString()));
+                    new ProcessVariable(chatID.toString(), JSON_TYPE_STRING ));
 
             Map<String, ProcessVariable> variablesMap = new HashMap<>();
             variablesMap.put("Input",
-                    new ProcessVariable(JSON_TYPE_STRING, input));
+                    new ProcessVariable(input,JSON_TYPE_STRING));
 
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest

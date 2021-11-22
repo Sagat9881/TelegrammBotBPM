@@ -90,11 +90,11 @@ public class CamundaClient {
             Map<String, ProcessVariable> variables = new HashMap<>();
 
             variables.put("User",
-                    new ProcessVariable(JSON_TYPE_STRING, user.toString()));
+                    new ProcessVariable(user.toString(), JSON_TYPE_STRING));
             variables.put("ChatID",
-                    new ProcessVariable(JSON_TYPE_STRING, chatID.toString()));
+                    new ProcessVariable(chatID.toString(), JSON_TYPE_STRING));
             variables.put("Input",
-                    new ProcessVariable(JSON_TYPE_STRING, input));
+                    new ProcessVariable(input, JSON_TYPE_STRING));
 
             LOGGER.info("Variabls for process: " + variables.toString());
 
