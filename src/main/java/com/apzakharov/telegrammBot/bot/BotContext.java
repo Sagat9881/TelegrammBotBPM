@@ -25,6 +25,7 @@ public class BotContext {
 
     private static Map<String,ChatBot> chatBotContextMap = new HashMap<>();
     private static Map<String,CamundaClient> camundaClientContextMap = new HashMap<>();
+    private static Map<String,String> awaitingChatMap = new HashMap<>();
 
     private static final Logger LOGGER = LogManager.getLogger(BotContext.class);
 
@@ -42,6 +43,18 @@ public class BotContext {
 
     public static CamundaClient getFromCamundaClientContextMap(String botName){
         return camundaClientContextMap.get(botName);
+    }
+
+    public static void putInAwaitingChatMap(String processId,String executionId){
+        awaitingChatMap.put(processId,executionId);
+    }
+
+    public static String getFromAwaitingChatMap(String processId){
+        String executionId = awaitingChatMap.get(processId);
+        awaitingChatMap.remove(processId);
+
+        return executionId;
+
     }
 
 

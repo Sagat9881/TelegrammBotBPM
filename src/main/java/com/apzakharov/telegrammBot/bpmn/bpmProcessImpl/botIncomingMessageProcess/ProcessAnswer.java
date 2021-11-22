@@ -5,7 +5,9 @@ import com.apzakharov.telegrammBot.model.Message;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.camunda.bpm.ProcessEngineService;
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -13,6 +15,11 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.apzakharov.telegrammBot.bot.BotContext.getFromAwaitingChatMap;
 
 
 @Component
@@ -41,6 +48,7 @@ public class ProcessAnswer implements JavaDelegate {
             e.getLocalizedMessage();
         }
 
+
         Message message = Message.builder()
                 .chatId(chatID)
                 .userId(userId)
@@ -49,15 +57,18 @@ public class ProcessAnswer implements JavaDelegate {
 
         camundaClient.addMessage(message);
         try {
-            ProcessEngine engine = delegateExecution.getProcessEngine();
-            RuntimeService runtimeService = engine.getRuntimeService();
+            ProcessEngineServices engineService = delegateExecution.getProcessEngineServices();
+            RuntimeService runtimeService = engineService.getRuntimeService();
+            String executionId = getFromAwaitingChatMap(delegateExecution.getProcessInstanceId());
+
+            Map<String,Object> correlationKeys =new HashMap<>();
+            correlationKeys.put("ChatID",chatID);
+            correlationKeys.put("Input",input);
+
             LOGGER.info("Start MessageCorrelation for chatID: " + chatID + "\n Input text: \n" + input);
 
-            MessageCorrelationResult reciveResult = runtimeService
-                    .createMessageCorrelation("NewIncomingMessage")
-                    .processInstanceVariableEquals("ChatID", String.valueOf(chatID))
-                    .setVariable("Input", input)
-                    .correlateWithResult();
+            runtimeService
+                    .messageEventReceived("NewIncomingMessage",executionId,correlationKeys);
 
 
         } catch (Exception e) {

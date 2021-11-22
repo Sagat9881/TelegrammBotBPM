@@ -135,6 +135,8 @@ public class CamundaClient {
         ChatBot chatBot = getFromContextChatBotMap(botName);
         chatBot.addMessage(message);
     }
+
+
 //    public void findByChat_id(Long chatID) throws Exception{
 //        botService.findByChat_id(chatID);
 //    }
