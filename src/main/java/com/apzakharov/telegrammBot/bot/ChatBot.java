@@ -100,36 +100,38 @@ public class ChatBot extends TelegramLongPollingBot {
                 LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
 
                 getFromCamundaClientContextMap(getBotUsername())
-                        .processStart(chat,user,addedMessage.getText());
+                        .processStart(chat, user, addedMessage.getText());
 
             } catch (Exception e) {
                 LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
                 return;
             }
+        } else {
+            try {
+                User user = chatService.findUserByChatIdOrCreateNew(chatId);
+
+                Message message = chatService.addMessage(
+                        Message.builder()
+                                .chatId(chatId)
+                                .userId(chat.getUserId())
+                                .text(messageFromUpdate.getText())
+                                .build()
+                );
+
+                LOGGER.info("Message: " + message);
+
+
+                getFromCamundaClientContextMap(getBotUsername())
+                        .processStart(chat, user, message.getText());
+
+                LOGGER.info("reciveMessage END");
+            } catch (Exception e) {
+                LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+                return;
+            }
+
+
         }
-        User user = chatService.findUserByChatIdOrCreateNew(chatId);
-
-        Message message = chatService.addMessage(
-                Message.builder()
-                        .chatId(chatId)
-                        .userId(chat.getUserId())
-                        .text(messageFromUpdate.getText())
-                        .build()
-        );
-
-        LOGGER.info("Message: " + message);
-
-        try {
-
-            getFromCamundaClientContextMap(getBotUsername())
-                    .processStart(chat,user,message.getText());
-
-            LOGGER.info("reciveMessage END");
-        } catch (Exception e) {
-            LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
-            return;
-        }
-
         LOGGER.info("UPDATE RECIVE END");
     }
 
@@ -166,17 +168,17 @@ public class ChatBot extends TelegramLongPollingBot {
     public void addMessage(Message message) {
         try {
             chatService.addMessage(message);
-        }catch (Exception e){
-            LOGGER.info("ADD MESSAGE FAIL: \n"+e.getLocalizedMessage());
+        } catch (Exception e) {
+            LOGGER.info("ADD MESSAGE FAIL: \n" + e.getLocalizedMessage());
         }
 
     }
 
     public Chat findByChatId(Long chatId) {
         try {
-           return chatService.findByChat_id(chatId);
-        }catch (Exception e){
-            LOGGER.info("findByChatId FAIL: \n"+e.getLocalizedMessage());
+            return chatService.findByChat_id(chatId);
+        } catch (Exception e) {
+            LOGGER.info("findByChatId FAIL: \n" + e.getLocalizedMessage());
         }
 
         return null;
