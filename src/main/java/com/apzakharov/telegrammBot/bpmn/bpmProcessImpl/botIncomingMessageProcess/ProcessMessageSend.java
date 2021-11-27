@@ -7,9 +7,14 @@ import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.impl.BpmnModelInstanceImpl;
 import org.camunda.bpm.model.bpmn.instance.BoundaryEvent;
 import org.camunda.bpm.model.bpmn.instance.FlowElement;
+import org.camunda.bpm.model.bpmn.instance.Relationship;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.putInAwaitingChatMap;
 
@@ -33,24 +38,35 @@ public class ProcessMessageSend implements JavaDelegate {
         String executionId = delegateExecution.getId();
 
         ProcessEngineServices runtimeService = delegateExecution.getProcessEngineServices();
-        FlowElement bpmnModelElementInstance = delegateExecution.getBpmnModelElementInstance();
+        FlowElement bpmnFlowModelElementInstance = delegateExecution.getBpmnModelElementInstance();
+        BpmnModelInstance bpmnModelElementInstance = delegateExecution.getBpmnModelInstance();
 
-        String bpmnModelElementInstanceName = bpmnModelElementInstance.getName();
+        List<Relationship> relationshipList = (List<Relationship>) bpmnModelElementInstance.getDefinitions().getRelationships();
+        String bpmnModelElementInstanceName = bpmnFlowModelElementInstance.getName();
+
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        bpmnModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> {
-            System.out.println("bpmnModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :"+categoryValue.toString());
+        System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstance);
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
+        bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> {
+            System.out.println("bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :"+categoryValue.toString());
+        });
+
+        System.out.println("===================================================================");
+        relationshipList.forEach(relationship -> {
+            System.out.println("bpmnModelElementInstance.getDefinitions().getRelationships() -> :"+relationship.toString());
         });
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
+        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnModelElementInstance.getChildElementsByType(BoundaryEvent.class));
+        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnFlowModelElementInstance.getChildElementsByType(BoundaryEvent.class));
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
