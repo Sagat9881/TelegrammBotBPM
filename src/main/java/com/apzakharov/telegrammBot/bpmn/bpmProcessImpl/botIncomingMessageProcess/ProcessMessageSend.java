@@ -41,7 +41,7 @@ public class ProcessMessageSend implements JavaDelegate {
         System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnModelElementInstance.getCategoryValueRefs() : "+bpmnModelElementInstance.getCategoryValueRefs());
+        System.out.println("bpmnModelElementInstance.getCategoryValueRefs() : "+bpmnModelElementInstance.getCategoryValueRefs().stream().toString());
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         System.out.println("bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
