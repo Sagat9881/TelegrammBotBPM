@@ -47,7 +47,7 @@ public class CamundaClient {
 //   private final ChatBot botService;
 
 
-    public void processStart(String processURL, ProcessStartRequestBody processBody) {
+    public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
         //get body
         LOGGER.info("======================");
         LOGGER.info("CamundaClient.ProcessStart START : ");
@@ -73,14 +73,17 @@ public class CamundaClient {
             ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
             LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody());
             LOGGER.info("======================");
+
+            return processStartResult.getBody();
         } catch (Exception e){
             LOGGER.info("CamundaClient.ProcessStart FAIL: ");
             e.getLocalizedMessage();
             LOGGER.info("======================");
         }
+        return null;
     }
 
-    public void processStart (Chat chat,User user, String input) throws Exception {
+    public ProcessStartResult processStart (Chat chat,User user, String input) throws Exception {
 
         LOGGER.info("Start New UserProcessAnswer for \nChat: \n" + chat+"\nUser: \n"+user+"\n Input: \n"+input);
 
@@ -109,13 +112,15 @@ public class CamundaClient {
 
             LOGGER.info("StartProcess for Url: \n" + ProcessURL + "\n" + " and body: \n" + processBody.toString());
 
-            processStart(ProcessURL, processBody);
+           return processStart(ProcessURL, processBody);
 
 //            user.setStateId(BotStateBPMN.PROCESS.getBotStateBPMNID());
         } catch (Exception ex) {
             ex.getLocalizedMessage();
 //            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
         }
+
+        return null;
 
 //        requestVariables.accumulate("variables",processBody.getVariables());
 //        Spin
@@ -148,7 +153,7 @@ public class CamundaClient {
 
         //get body
         LOGGER.info("======================");
-        LOGGER.info("CamundaClient.ProcessStart START : ");
+        LOGGER.info("CamundaClient.createCorrelation START : ");
         LOGGER.info(" ");
         LOGGER.info("\n"+"PROCESS BODY"+processBody+"\nPROCESS URL: "+MessageCorrelateURL);
         LOGGER.info(" ");

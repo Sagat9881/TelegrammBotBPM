@@ -1,5 +1,6 @@
 package com.apzakharov.telegrammBot.bot;
 
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
 import com.apzakharov.telegrammBot.model.User;
@@ -8,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -108,7 +108,7 @@ public class ChatBot extends TelegramLongPollingBot {
             }
         } else {
             try {
-                User user = chatService.findUserByChatIdOrCreateNew(chatId);
+                User user = chatService.findUserByChatId(chatId);
 
                 Message message = chatService.addMessage(
                         Message.builder()
@@ -121,7 +121,7 @@ public class ChatBot extends TelegramLongPollingBot {
                 LOGGER.info("Message: " + message);
 
 
-                getFromCamundaClientContextMap(getBotUsername())
+                ProcessStartResult processStartResult = getFromCamundaClientContextMap(getBotUsername())
                         .processStart(chat, user, message.getText());
 
                 LOGGER.info("reciveMessage END");

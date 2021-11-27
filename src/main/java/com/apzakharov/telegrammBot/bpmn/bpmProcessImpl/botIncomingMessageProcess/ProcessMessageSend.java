@@ -3,8 +3,12 @@ package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProces
 import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import lombok.RequiredArgsConstructor;
+import org.camunda.bpm.engine.ProcessEngineServices;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.model.bpmn.instance.BoundaryEvent;
+import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.springframework.stereotype.Component;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.putInAwaitingChatMap;
@@ -28,6 +32,24 @@ public class ProcessMessageSend implements JavaDelegate {
         String processId = delegateExecution.getProcessInstanceId();
         String executionId = delegateExecution.getId();
 
+        ProcessEngineServices runtimeService = delegateExecution.getProcessEngineServices();
+        FlowElement bpmnModelElementInstance = delegateExecution.getBpmnModelElementInstance();
+
+        String bpmnModelElementInstanceName = bpmnModelElementInstance.getName();
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
+        System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstanceName);
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
+        System.out.println("bpmnModelElementInstance.getCategoryValueRefs() : "+bpmnModelElementInstance.getCategoryValueRefs());
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
+        System.out.println("bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
+        System.out.println("bpmnModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnModelElementInstance.getChildElementsByType(BoundaryEvent.class));
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
 
         if(isNeedAnswer.equalsIgnoreCase(TRUE)){

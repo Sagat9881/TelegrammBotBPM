@@ -69,19 +69,12 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public User findUserByChatIdOrCreateNew(Long chatId) throws Exception {
+    public User findUserByChatId(Long chatId) throws Exception {
         LOGGER.info("findUserByChatId START: chat_id " + chatId);
 
         AtomicReference<User> userAtomic = new AtomicReference<>();
 
-        User user = userService.findByChatId(chatId).orElseGet(() -> {
-            try {
-                userAtomic.set(createNewUser(chatId));
-            } catch (Exception exception) {
-                exception.getLocalizedMessage();
-            }
-            return userAtomic.get();
-        });
+        User user = userService.findByChatId(chatId).orElseGet(() -> null);
         LOGGER.info("findUserByChatId RESULT:  " + user);
 
         return user;

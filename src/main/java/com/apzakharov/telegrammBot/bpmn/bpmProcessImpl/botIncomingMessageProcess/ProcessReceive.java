@@ -52,6 +52,8 @@ public class ProcessReceive implements JavaDelegate {
                 .text(input)
                 .build();
 
+        
+
         camundaClient.addMessage(message);
         try {
             ProcessVariable chatIdVar = ProcessVariable.builder()

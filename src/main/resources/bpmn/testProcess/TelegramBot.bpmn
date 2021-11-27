@@ -67,25 +67,17 @@
         <bpmn:flowNodeRef>Activity_0nbxzev</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1qpe97w</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_083tqjf</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1441wxz</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>NewIncomingMessage</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0j42gq3</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_06j7hvi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1441wxz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0j42gq3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NewIncomingMessage</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_1v7ufi5" sourceRef="Event_0ol7xcl" targetRef="Activity_0nbxzev" />
     <bpmn:sequenceFlow id="Flow_0u5al0h" sourceRef="Activity_0nbxzev" targetRef="Activity_1qpe97w" />
     <bpmn:sequenceFlow id="Flow_0rlv3gg" sourceRef="Activity_1441wxz" targetRef="Activity_1qpe97w" />
-    <bpmn:sequenceFlow id="Flow_0mnozyi" sourceRef="Gateway_06j7hvi" targetRef="Activity_1441wxz">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">{!isValidNumber }</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0p28897" sourceRef="Gateway_06j7hvi" targetRef="Activity_083tqjf">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">{isValidNumber }</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0mnozyi" sourceRef="Gateway_06j7hvi" targetRef="Activity_1441wxz" />
     <bpmn:sequenceFlow id="Flow_0p0ohxd" sourceRef="Activity_083tqjf" targetRef="Event_1b6p7x4" />
-    <bpmn:sequenceFlow id="Flow_0osckpx" name="isValidNumber ?" sourceRef="Activity_0j42gq3" targetRef="Gateway_06j7hvi">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">{isValidNumber }</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_1b6p7x4">
       <bpmn:incoming>Flow_0p0ohxd</bpmn:incoming>
     </bpmn:endEvent>
@@ -130,10 +122,18 @@
 Чао! </camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0p28897</bpmn:incoming>
-      <bpmn:incoming>Flow_1ygygu7</bpmn:incoming>
+      <bpmn:incoming>Flow_1ff4w0p</bpmn:incoming>
       <bpmn:outgoing>Flow_0p0ohxd</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0yctjag" sourceRef="Activity_0j42gq3" targetRef="Gateway_06j7hvi" />
+    <bpmn:exclusiveGateway id="Gateway_06j7hvi" name="Номер валидный (похож на цифры?)" default="Flow_0mnozyi">
+      <bpmn:incoming>Flow_0yctjag</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mnozyi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ff4w0p</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1ff4w0p" sourceRef="Gateway_06j7hvi" targetRef="Activity_083tqjf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isValidNumber}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1441wxz" name="Отправка сообщения об ошибке" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -149,27 +149,23 @@
       <bpmn:incoming>Flow_0mnozyi</bpmn:incoming>
       <bpmn:outgoing>Flow_0rlv3gg</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="NewIncomingMessage" name="NewIncomingMessage">
-      <bpmn:outgoing>Flow_1ygygu7</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0y3xjmy" messageRef="Message_11tt8e3" />
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1ygygu7" sourceRef="NewIncomingMessage" targetRef="Activity_083tqjf" />
-    <bpmn:task id="Activity_0j42gq3" name="Валидация ответа, сохранение в БД">
+    <bpmn:scriptTask id="Activity_0j42gq3" name="Валидация ответа, сохранение в БД" scriptFormat="JavaScript" camunda:resultVariable="isValidNumber">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
-          <camunda:outputParameter name="isValidNumber">
-            <camunda:script scriptFormat="JavaScript">Input.replace(/[^+\d]/g, '').startsWith([0-9]);</camunda:script>
-          </camunda:outputParameter>
+          <camunda:outputParameter name="isValidNumber">${isValidNumber}</camunda:outputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:outgoing>Flow_0osckpx</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:exclusiveGateway id="Gateway_06j7hvi" name="Номер валидный (похож на цифры?)">
-      <bpmn:incoming>Flow_0osckpx</bpmn:incoming>
-      <bpmn:outgoing>Flow_0mnozyi</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0p28897</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
+      <bpmn:incoming>Flow_1xvdbhw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yctjag</bpmn:outgoing>
+      <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1xvdbhw" sourceRef="NewIncomingMessage" targetRef="Activity_0j42gq3" />
+    <bpmn:boundaryEvent id="NewIncomingMessage" name="NewIncomingMessage" attachedToRef="Activity_1qpe97w">
+      <bpmn:outgoing>Flow_1xvdbhw</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1r39gjq" messageRef="Message_11tt8e3" />
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmn:message id="Message_13w4w3x" name="new_incoming_message" />
   <bpmn:message id="Message_0vkg1b5" name="Message_2lmtlic" />
@@ -249,29 +245,29 @@
       <bpmndi:BPMNShape id="Lane_16tpeah_di" bpmnElement="Lane_16tpeah" isHorizontal="true">
         <dc:Bounds x="170" y="530" width="1068" height="499" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0osckpx_di" bpmnElement="Flow_0osckpx">
-        <di:waypoint x="810" y="810" />
-        <di:waypoint x="965" y="810" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="827" y="782" width="81" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNEdge id="Flow_1xvdbhw_di" bpmnElement="Flow_1xvdbhw">
+        <di:waypoint x="578" y="750" />
+        <di:waypoint x="690" y="750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ff4w0p_di" bpmnElement="Flow_1ff4w0p">
+        <di:waypoint x="955" y="750" />
+        <di:waypoint x="1030" y="750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yctjag_di" bpmnElement="Flow_0yctjag">
+        <di:waypoint x="790" y="750" />
+        <di:waypoint x="905" y="750" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0p0ohxd_di" bpmnElement="Flow_0p0ohxd">
         <di:waypoint x="1130" y="750" />
         <di:waypoint x="1152" y="750" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0p28897_di" bpmnElement="Flow_0p28897">
-        <di:waypoint x="990" y="785" />
-        <di:waypoint x="990" y="750" />
-        <di:waypoint x="1030" y="750" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mnozyi_di" bpmnElement="Flow_0mnozyi">
-        <di:waypoint x="990" y="835" />
-        <di:waypoint x="990" y="910" />
-        <di:waypoint x="810" y="910" />
+        <di:waypoint x="930" y="775" />
+        <di:waypoint x="930" y="910" />
+        <di:waypoint x="790" y="910" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0rlv3gg_di" bpmnElement="Flow_0rlv3gg">
-        <di:waypoint x="710" y="910" />
+        <di:waypoint x="690" y="910" />
         <di:waypoint x="510" y="910" />
         <di:waypoint x="510" y="790" />
       </bpmndi:BPMNEdge>
@@ -282,10 +278,6 @@
       <bpmndi:BPMNEdge id="Flow_1v7ufi5_di" bpmnElement="Flow_1v7ufi5">
         <di:waypoint x="238" y="750" />
         <di:waypoint x="300" y="750" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ygygu7_di" bpmnElement="Flow_1ygygu7">
-        <di:waypoint x="648" y="750" />
-        <di:waypoint x="1030" y="750" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1b6p7x4_di" bpmnElement="Event_1b6p7x4">
         <dc:Bounds x="1152" y="732" width="36" height="36" />
@@ -302,22 +294,22 @@
       <bpmndi:BPMNShape id="Activity_00tf32k_di" bpmnElement="Activity_083tqjf">
         <dc:Bounds x="1030" y="710" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06cpoz2_di" bpmnElement="Activity_1441wxz">
-        <dc:Bounds x="710" y="870" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1xca6kv_di" bpmnElement="NewIncomingMessage">
-        <dc:Bounds x="612" y="732" width="36" height="36" />
+      <bpmndi:BPMNShape id="Gateway_06j7hvi_di" bpmnElement="Gateway_06j7hvi" isMarkerVisible="true">
+        <dc:Bounds x="905" y="725" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="586" y="775" width="88" height="27" />
+          <dc:Bounds x="885" y="670" width="89" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1u2zd2q_di" bpmnElement="Activity_0j42gq3">
-        <dc:Bounds x="710" y="770" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_06cpoz2_di" bpmnElement="Activity_1441wxz">
+        <dc:Bounds x="690" y="870" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_06j7hvi_di" bpmnElement="Gateway_06j7hvi" isMarkerVisible="true">
-        <dc:Bounds x="965" y="785" width="50" height="50" />
+      <bpmndi:BPMNShape id="Activity_1cv59a0_di" bpmnElement="Activity_0j42gq3">
+        <dc:Bounds x="690" y="710" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0b5wpfn_di" bpmnElement="NewIncomingMessage">
+        <dc:Bounds x="542" y="732" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="775" y="689" width="89" height="40" />
+          <dc:Bounds x="516" y="775" width="88" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
