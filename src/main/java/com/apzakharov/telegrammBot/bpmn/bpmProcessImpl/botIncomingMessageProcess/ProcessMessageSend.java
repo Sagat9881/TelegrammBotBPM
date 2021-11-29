@@ -14,6 +14,7 @@ import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.camunda.bpm.model.bpmn.instance.Relationship;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.putInAwaitingChatMap;
@@ -41,7 +42,7 @@ public class ProcessMessageSend implements JavaDelegate {
         FlowElement bpmnFlowModelElementInstance = delegateExecution.getBpmnModelElementInstance();
         BpmnModelInstance bpmnModelElementInstance = delegateExecution.getBpmnModelInstance();
 
-        List<Relationship> relationshipList = (List<Relationship>) bpmnModelElementInstance.getDefinitions().getRelationships();
+        Collection<Relationship> relationshipList =  bpmnModelElementInstance.getDefinitions().getRelationships();
         String bpmnModelElementInstanceName = bpmnFlowModelElementInstance.getName();
 
         System.out.println("===================================================================");
