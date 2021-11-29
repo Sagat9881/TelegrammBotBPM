@@ -43,16 +43,20 @@ public class ProcessMessageSend implements JavaDelegate {
         BpmnModelInstance bpmnModelElementInstance = delegateExecution.getBpmnModelInstance();
 
         Collection<Relationship> relationshipList =  bpmnModelElementInstance.getDefinitions().getRelationships();
-        String bpmnModelElementInstanceName = bpmnFlowModelElementInstance.getName();
+        String bpmnFlowModelElementInstanceName = bpmnFlowModelElementInstance.getName();
+        String bpmnModelElementInstanceName = bpmnModelElementInstance.toString();
+        Collection<BoundaryEvent> bpmnBoundaryEventList = bpmnModelElementInstance.getModelElementsByType(BoundaryEvent.class);
 
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
+        System.out.println("getBpmnModelElementInstance().getName() : "+bpmnFlowModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstance);
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
+        System.out.println("relationshipList: "+relationshipList);
+        System.out.println("bpmnBoundaryEventList: "+bpmnBoundaryEventList);
         bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> {
             System.out.println("bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :"+categoryValue.toString());
         });
@@ -60,6 +64,10 @@ public class ProcessMessageSend implements JavaDelegate {
         System.out.println("===================================================================");
         relationshipList.forEach(relationship -> {
             System.out.println("bpmnModelElementInstance.getDefinitions().getRelationships() -> :"+relationship.toString());
+        });
+
+        bpmnBoundaryEventList.forEach(boundaryEvent -> {
+            System.out.println("bpmnBoundaryEventList.forEach(boundaryEvent -> "+boundaryEvent.toString());
         });
 
         System.out.println("===================================================================");
