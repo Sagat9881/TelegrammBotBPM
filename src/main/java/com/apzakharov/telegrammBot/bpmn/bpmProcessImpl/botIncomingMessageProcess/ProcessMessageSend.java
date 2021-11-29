@@ -49,26 +49,30 @@ public class ProcessMessageSend implements JavaDelegate {
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("getBpmnModelElementInstance().getName() : "+bpmnFlowModelElementInstanceName);
+        System.out.println("bpmnFlowModelElementInstanceName : "+bpmnFlowModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("getBpmnModelElementInstance().getName() : "+bpmnModelElementInstanceName);
+        System.out.println("bpmnModelElementInstanceName : "+bpmnModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         System.out.println("relationshipList: "+relationshipList);
         System.out.println("bpmnBoundaryEventList: "+bpmnBoundaryEventList);
+        System.out.println("===================================================================");
         bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> {
             System.out.println("bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :"+categoryValue.toString());
         });
+        System.out.println("===================================================================");
 
         System.out.println("===================================================================");
         relationshipList.forEach(relationship -> {
             System.out.println("bpmnModelElementInstance.getDefinitions().getRelationships() -> :"+relationship.toString());
         });
-
+        System.out.println("===================================================================");
+        System.out.println("===================================================================");
         bpmnBoundaryEventList.forEach(boundaryEvent -> {
             System.out.println("bpmnBoundaryEventList.forEach(boundaryEvent -> "+boundaryEvent.toString());
         });
+        System.out.println("===================================================================");
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
