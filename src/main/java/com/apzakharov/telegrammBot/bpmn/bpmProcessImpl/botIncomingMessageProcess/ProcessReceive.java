@@ -81,7 +81,7 @@ public class ProcessReceive implements JavaDelegate {
                         .builder()
                         .businessKey(k)
                         .messageName(v)
-                        .correlationKeys(correlationKeyMap)
+//                        .correlationKeys(correlationKeyMap)
                         .processVariables(variablesMap)
                         .build());
             });
