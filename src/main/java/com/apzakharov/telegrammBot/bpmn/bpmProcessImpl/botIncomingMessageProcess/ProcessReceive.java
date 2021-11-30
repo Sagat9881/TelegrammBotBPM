@@ -13,8 +13,12 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.apzakharov.telegrammBot.bot.BotContext.getFromAwaitingChatMap;
 
 
 @Component
@@ -52,40 +56,49 @@ public class ProcessReceive implements JavaDelegate {
                 .text(input)
                 .build();
 
-        
 
-        camundaClient.addMessage(message);
+        ProcessVariable chatIdVar = ProcessVariable.builder()
+                .value(chatID.toString())
+                .type(JSON_TYPE_STRING)
+                .build();
+
+        ProcessVariable inputVar = ProcessVariable.builder()
+                .value(input)
+                .type(JSON_TYPE_STRING)
+                .build();
+
+        Map<String, ProcessVariable> correlationKeyMap = new HashMap<>();
+        correlationKeyMap.put("ChatID", chatIdVar);
+
+        Map<String, ProcessVariable> variablesMap = new HashMap<>();
+        variablesMap.put("Input", inputVar);
+        variablesMap.put("ChatID", chatIdVar);
+        List<ProcessStartMessageCorrelationRequest> correlationRequestList = new ArrayList<>();
         try {
-            ProcessVariable chatIdVar = ProcessVariable.builder()
-                                                    .value(chatID.toString())
-                                                    .type( JSON_TYPE_STRING)
-                                                    .build();
+            Map<String, String> buisnessCorrelation = getFromAwaitingChatMap(String.valueOf(chatID));
+            buisnessCorrelation.forEach((k, v) -> {
+                correlationRequestList.add(ProcessStartMessageCorrelationRequest
+                        .builder()
+                        .businessKey(k)
+                        .messageName(v)
+                        .correlationKeys(correlationKeyMap)
+                        .processVariables(variablesMap)
+                        .build());
+            });
 
-            ProcessVariable inputVar = ProcessVariable.builder()
-                                                    .value(input)
-                                                    .type( JSON_TYPE_STRING)
-                                                    .build();
-
-            Map<String, ProcessVariable>  correlationKeyMap= new HashMap<>();
-            correlationKeyMap.put("ChatID",chatIdVar);
-
-            Map<String, ProcessVariable> variablesMap = new HashMap<>();
-            variablesMap.put("Input",inputVar);
-            variablesMap.put("ChatID", chatIdVar);
-
-            ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
-                    .builder()
-                    .messageName(NEW_MESSAGE_NAME)
-                    .correlationKeys(correlationKeyMap)
-                    .processVariables(variablesMap)
-                    .build();
-
-           camundaClient.createCorrelation(request);
+            correlationRequestList.forEach(processBody -> {
+                try {
+                    camundaClient.createCorrelation(processBody);
+                } catch (Exception e) {
+                    LOGGER.info("CANT CORRELATE MESSAGE FOR CHATID: " + chatID + "\nMESSAGENAME: " + processBody.getMessageName() + "\nBUISNESSKEY: " + processBody.getBusinessKey());
+                }
+            });
+            camundaClient.addMessage(message);
 
 
         } catch (Exception e) {
             LOGGER.info("NOT FOUND AWAITING MESSAGE CHAT FOR CHATID: " + chatID);
-            camundaClient.processSendMessage(chatID,outputText);
+            camundaClient.processSendMessage(chatID, outputText);
 
             return;
         }

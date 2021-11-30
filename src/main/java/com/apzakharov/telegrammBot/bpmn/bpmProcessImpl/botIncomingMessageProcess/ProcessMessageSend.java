@@ -14,9 +14,7 @@ import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.camunda.bpm.model.bpmn.instance.Relationship;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.putInAwaitingChatMap;
 
@@ -27,6 +25,7 @@ public class ProcessMessageSend implements JavaDelegate {
     private final CamundaClient camundaClient;
     private static final String TRUE = "true";
     private static final String FALSE = "false";
+    private static final String sep = "/";
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -91,6 +90,16 @@ public class ProcessMessageSend implements JavaDelegate {
             }
             return false;
         }).findFirst().orElseGet(() -> null);
+
+        if(Objects.nonNull(boundaryEvent)){
+            String boundaryEventName = boundaryEvent.getName();
+            String businessKey = boundaryEventName+sep+delegateExecution.getCurrentActivityName()+sep+delegateExecution.getCurrentActivityId();
+
+            Map<String,String> correlationKeys = new HashMap<>();
+            correlationKeys.put(businessKey,boundaryEventName);
+
+            putInAwaitingChatMap(String.valueOf(chatID),correlationKeys);
+        }
 
         System.out.println("boundaryEvent name: " + Objects.requireNonNull(boundaryEvent).getName());
         System.out.println("boundaryEventAttachTo name: " +Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
