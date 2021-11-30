@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+
 @Data
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class BotContext {
 
     private ChatBot bot;
@@ -19,7 +20,7 @@ public class BotContext {
 
     private static Map<String,ChatBot> chatBotContextMap = new HashMap<>();
     private static Map<String,CamundaClient> camundaClientContextMap = new HashMap<>();
-    private static Map<String,String> awaitingChatMap = new HashMap<>();
+    private static Map<String,Map<String,String>> awaitingChatMap = new HashMap<>();
 
     private static final Logger LOGGER = LogManager.getLogger(BotContext.class);
 
@@ -28,7 +29,7 @@ public class BotContext {
     }
 
     public static ChatBot getFromContextChatBotMap(String botName){
-      return chatBotContextMap.get(botName);
+        return chatBotContextMap.get(botName);
     }
 
     public static void putInCamundaClientContextMap(CamundaClient camundaClient){
@@ -39,15 +40,15 @@ public class BotContext {
         return camundaClientContextMap.get(botName);
     }
 
-    public static void putInAwaitingChatMap(String processId,String executionId){
-        awaitingChatMap.put(processId,executionId);
+    public static void putInAwaitingChatMap(String chatID,Map<String,String> messageNameAndBusinessKey){
+        awaitingChatMap.put(chatID,messageNameAndBusinessKey);
     }
 
-    public static String getFromAwaitingChatMap(String processId){
-        String executionId = awaitingChatMap.get(processId);
-        awaitingChatMap.remove(processId);
+    public static Map<String,String> getFromAwaitingChatMap(String chatID){
+        Map<String,String> messageNameAndBusinessKey = awaitingChatMap.get(chatID);
+        awaitingChatMap.remove(chatID);
 
-        return executionId;
+        return messageNameAndBusinessKey;
 
     }
 

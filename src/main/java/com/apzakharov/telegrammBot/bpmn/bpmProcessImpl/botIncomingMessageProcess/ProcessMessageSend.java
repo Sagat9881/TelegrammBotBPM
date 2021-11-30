@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.putInAwaitingChatMap;
 
@@ -42,51 +43,62 @@ public class ProcessMessageSend implements JavaDelegate {
         FlowElement bpmnFlowModelElementInstance = delegateExecution.getBpmnModelElementInstance();
         BpmnModelInstance bpmnModelElementInstance = delegateExecution.getBpmnModelInstance();
 
-        Collection<Relationship> relationshipList =  bpmnModelElementInstance.getDefinitions().getRelationships();
+        Collection<Relationship> relationshipList = bpmnModelElementInstance.getDefinitions().getRelationships();
         String bpmnFlowModelElementInstanceName = bpmnFlowModelElementInstance.getName();
         String bpmnModelElementInstanceName = bpmnModelElementInstance.toString();
         Collection<BoundaryEvent> bpmnBoundaryEventList = bpmnModelElementInstance.getModelElementsByType(BoundaryEvent.class);
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnFlowModelElementInstanceName : "+bpmnFlowModelElementInstanceName);
+        System.out.println("bpmnFlowModelElementInstanceName : " + bpmnFlowModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnModelElementInstanceName : "+bpmnModelElementInstanceName);
+        System.out.println("bpmnModelElementInstanceName : " + bpmnModelElementInstanceName);
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("relationshipList: "+relationshipList);
-        System.out.println("bpmnBoundaryEventList: "+bpmnBoundaryEventList);
+        System.out.println("relationshipList: " + relationshipList);
+        System.out.println("bpmnBoundaryEventList: " + bpmnBoundaryEventList);
         System.out.println("===================================================================");
         bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> {
-            System.out.println("bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :"+categoryValue.toString());
+            System.out.println("bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :" + categoryValue.toString());
         });
         System.out.println("===================================================================");
 
         System.out.println("===================================================================");
         relationshipList.forEach(relationship -> {
-            System.out.println("bpmnModelElementInstance.getDefinitions().getRelationships() -> :"+relationship.toString());
+            System.out.println("bpmnModelElementInstance.getDefinitions().getRelationships() -> :" + relationship.toString());
         });
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         bpmnBoundaryEventList.forEach(boundaryEvent -> {
-            System.out.println("bpmnBoundaryEventList.forEach(boundaryEvent -> "+boundaryEvent.toString());
+            System.out.println("bpmnBoundaryEventList.forEach(boundaryEvent -> " + boundaryEvent.toString());
         });
         System.out.println("===================================================================");
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
+        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " + bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
         System.out.println("===================================================================");
         System.out.println("===================================================================");
-        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : "+bpmnFlowModelElementInstance.getChildElementsByType(BoundaryEvent.class));
+        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " + bpmnFlowModelElementInstance.getChildElementsByType(BoundaryEvent.class));
         System.out.println("===================================================================");
         System.out.println("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
 
-        if(isNeedAnswer.equalsIgnoreCase(TRUE)){
-            putInAwaitingChatMap(processId,executionId);
-        }
+        BoundaryEvent boundaryEvent = bpmnBoundaryEventList.stream().filter((boundaryEventItem) -> {
+            if (boundaryEventItem.getAttachedTo().getName().equals(delegateExecution.getCurrentActivityName())) {
+                return true;
+            }
+            return false;
+        }).findFirst().orElseGet(() -> null);
+
+        System.out.println("boundaryEvent name: " + Objects.requireNonNull(boundaryEvent).getName());
+        System.out.println("boundaryEventAttachTo name: " +Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
+        System.out.println("boundaryEventAttachTo name: " +Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
+        System.out.println("delegateExecution.getCurrentActivityName(): "+ delegateExecution.getCurrentActivityName());
+        System.out.println("===================================================================");
+
+
 //        if(needAnswer.equals("true")){
 //            botService.putInAwaitingChatMap(String.valueOf(chatID),delegateExecution.getProcessInstance().getProcessInstanceId())
 //        }
