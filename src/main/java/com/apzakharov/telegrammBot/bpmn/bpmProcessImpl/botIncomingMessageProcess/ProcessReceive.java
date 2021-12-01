@@ -70,15 +70,18 @@ public class ProcessReceive implements JavaDelegate {
 
         Map<String, ProcessVariable> variablesMap = new HashMap<>();
         variablesMap.put("Input", inputVar);
-
+        ProcessStartMessageCorrelationRequest buisnessCorrelation = null;
         try {
-            ProcessStartMessageCorrelationRequest buisnessCorrelation = getFromAwaitingChatMap(String.valueOf(chatID));
+            buisnessCorrelation = getFromAwaitingChatMap(String.valueOf(chatID));
             buisnessCorrelation.setCorrelationKeys(correlationKeyMap);
             buisnessCorrelation.setProcessVariables(variablesMap);
 
             camundaClient.addMessage(message);
             camundaClient.createCorrelation(buisnessCorrelation);
-        } catch (Exception e) {
+        } catch (NullPointerException exception){
+            LOGGER.info("CANT CORRELATE MESSAGE FOR CHATID: SOMETHING NULL \nCHATID" + chatID+",\nREQUEST: " +buisnessCorrelation);
+        }
+        catch (Exception e) {
             LOGGER.info("CANT CORRELATE MESSAGE FOR CHATID: " + chatID );
         }
 

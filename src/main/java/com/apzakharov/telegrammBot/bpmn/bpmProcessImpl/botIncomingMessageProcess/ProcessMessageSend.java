@@ -48,7 +48,7 @@ public class ProcessMessageSend implements JavaDelegate {
         String bpmnModelElementInstanceName = bpmnModelElementInstance.toString();
         Collection<BoundaryEvent> bpmnBoundaryEventList = bpmnModelElementInstance.getModelElementsByType(BoundaryEvent.class);
 
-      
+
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
