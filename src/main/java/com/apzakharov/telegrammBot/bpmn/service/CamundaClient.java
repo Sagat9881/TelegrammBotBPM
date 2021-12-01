@@ -170,7 +170,7 @@ public class CamundaClient {
         LOGGER.info("entity to string: " + entity);
         try {
             ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(MessageCorrelateURL, entity, ProcessStartResult.class);
-            LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody());
+            LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody()+"\nPRcOESS URL: "+MessageCorrelateURL);
             LOGGER.info("======================");
         } catch (Exception e){
             LOGGER.info("CamundaClient.ProcessStart FAIL: ");

@@ -70,7 +70,6 @@ public class ProcessReceive implements JavaDelegate {
 
         Map<String, ProcessVariable> variablesMap = new HashMap<>();
         variablesMap.put("Input", inputVar);
-        variablesMap.put("ChatID", chatIdVar);
 
         try {
             ProcessStartMessageCorrelationRequest buisnessCorrelation = getFromAwaitingChatMap(String.valueOf(chatID));

@@ -65,12 +65,12 @@
         <bpmn:flowNodeRef>Event_1b6p7x4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0ol7xcl</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0nbxzev</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1qpe97w</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_083tqjf</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1441wxz</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0j42gq3</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>NewIncomingMessage</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_06j7hvi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1qpe97w</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NewIncomingMessage</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_1v7ufi5" sourceRef="Event_0ol7xcl" targetRef="Activity_0nbxzev" />
@@ -96,22 +96,6 @@
       <bpmn:incoming>Flow_1v7ufi5</bpmn:incoming>
       <bpmn:outgoing>Flow_0u5al0h</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:serviceTask id="Activity_1qpe97w" name="Отправка приветствия" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
-          <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
-          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
-          <camunda:inputParameter name="TextToSend">Добрый день! 
-
-Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
-          <camunda:outputParameter name="ChatID">${ChatID}</camunda:outputParameter>
-          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0rlv3gg</bpmn:incoming>
-      <bpmn:incoming>Flow_0u5al0h</bpmn:incoming>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_083tqjf" name="Отправка завершающего сообщения" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -158,15 +142,30 @@
       <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_1xvdbhw" sourceRef="NewIncomingMessage" targetRef="Activity_0j42gq3" />
-    <bpmn:boundaryEvent id="NewIncomingMessage" name="NewIncomingMessage" attachedToRef="Activity_1qpe97w">
-      <bpmn:outgoing>Flow_1xvdbhw</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1r39gjq" messageRef="Message_11tt8e3" />
-    </bpmn:boundaryEvent>
     <bpmn:inclusiveGateway id="Gateway_06j7hvi" name="Номер валидный (похож на цифры?)" default="Flow_0mnozyi">
       <bpmn:incoming>Flow_0yctjag</bpmn:incoming>
       <bpmn:outgoing>Flow_0mnozyi</bpmn:outgoing>
       <bpmn:outgoing>Flow_1ff4w0p</bpmn:outgoing>
     </bpmn:inclusiveGateway>
+    <bpmn:sendTask id="Activity_1qpe97w" name="Отправка приветствия" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
+          <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
+          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
+          <camunda:inputParameter name="TextToSend">Добрый день! 
+
+Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
+          <camunda:outputParameter name="ChatID">${ChatID}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0u5al0h</bpmn:incoming>
+      <bpmn:incoming>Flow_0rlv3gg</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:boundaryEvent id="NewIncomingMessage" name="NewIncomingMessage" attachedToRef="Activity_1qpe97w">
+      <bpmn:outgoing>Flow_1xvdbhw</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1873kb8" messageRef="Message_11tt8e3" />
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmn:message id="Message_13w4w3x" name="new_incoming_message" />
   <bpmn:message id="Message_0vkg1b5" name="Message_2lmtlic" />
@@ -237,7 +236,7 @@
       <bpmndi:BPMNShape id="Activity_1fd96yc_di" bpmnElement="Activity_19kxajp">
         <dc:Bounds x="400" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1d3iepe_di" bpmnElement="Event_0525git">
+      <bpmndi:BPMNShape id="Event_199qc09_di" bpmnElement="Event_0525git">
         <dc:Bounds x="1122" y="302" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Participant_0i7ewpe_di" bpmnElement="Participant_0i7ewpe" isHorizontal="true">
@@ -289,9 +288,6 @@
       <bpmndi:BPMNShape id="Activity_0nbxzev_di" bpmnElement="Activity_0nbxzev">
         <dc:Bounds x="300" y="710" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_099ev7n_di" bpmnElement="Activity_1qpe97w">
-        <dc:Bounds x="460" y="710" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_00tf32k_di" bpmnElement="Activity_083tqjf">
         <dc:Bounds x="1030" y="710" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -307,7 +303,10 @@
           <dc:Bounds x="885" y="670" width="89" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0b5wpfn_di" bpmnElement="NewIncomingMessage">
+      <bpmndi:BPMNShape id="Activity_1ryc63y_di" bpmnElement="Activity_1qpe97w">
+        <dc:Bounds x="460" y="710" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0n2teae_di" bpmnElement="NewIncomingMessage">
         <dc:Bounds x="542" y="732" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="516" y="775" width="88" height="27" />
