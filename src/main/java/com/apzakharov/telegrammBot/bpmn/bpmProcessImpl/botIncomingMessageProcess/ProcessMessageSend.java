@@ -91,6 +91,8 @@ public class ProcessMessageSend implements JavaDelegate {
         BoundaryEvent boundaryEvent = null;
 
         bpmnBoundaryEventList.forEach((boundaryEventItem) -> {
+            System.out.println("boundaryEventItem.getAttachedTo().getName(): " +boundaryEventItem.getAttachedTo().getName());
+
 
             ModelElementType modelElementType = delegateExecution
                     .getBpmnModelInstance()
@@ -99,15 +101,27 @@ public class ProcessMessageSend implements JavaDelegate {
                             .getAttachedTo()
                             .getName());
 
-
+            System.out.println("ModelElementType.getTypeName(): " +modelElementType.getTypeName());
             delegateExecution
                     .getBpmnModelInstance()
                     .getModelElementsByType(modelElementType).stream().filter(modelElementInstance -> {
+
+                System.out.println("modelElementInstance\n" +
+                        "                        .getParentElement()\n" +
+                        "                        .getDomElement()\n" +
+                        "                        .getLocalName(): " +
+                                                                    modelElementInstance
+                                                                    .getParentElement()
+                                                                    .getDomElement()
+                                                                    .getLocalName());
+
                 if (modelElementInstance
                         .getParentElement()
                         .getDomElement()
                         .getLocalName().equals(boundaryEventItem.getAttachedTo().getName())) {
                     boundaryEventAtomic.set(boundaryEventItem);
+                    System.out.println("oundaryEventItem.getName()(): " +boundaryEventItem.getName());
+
                     return true;
                 }
 
