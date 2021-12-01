@@ -88,12 +88,14 @@ public class ProcessMessageSend implements JavaDelegate {
         camundaClient.processSendMessage(chatID, textToSend);
 
         BoundaryEvent boundaryEvent =  bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> {
-            if (!boundaryEvent1.cancelActivity()) return true;
+            System.out.println(" boundaryEvent1.cancelActivity() : "+boundaryEvent1.cancelActivity());
+            if (boundaryEvent1.cancelActivity()) return true;
 
             return false;
 
         })).findFirst().orElseGet(()->null);
 
+        System.out.println(" BoundaryEvent boundaryEvent : "+boundaryEvent);
         if (Objects.nonNull(boundaryEvent)) {
 
             String businessKey =  delegateExecution.getCurrentActivityId();
@@ -103,7 +105,7 @@ public class ProcessMessageSend implements JavaDelegate {
                     .builder()
                     .businessKey(businessKey)
                     .build();
-
+            System.out.println("ProcessStartMessageCorrelationRequest request: "+request);
             putInAwaitingChatMap(String.valueOf(chatID), request);
         }
 
