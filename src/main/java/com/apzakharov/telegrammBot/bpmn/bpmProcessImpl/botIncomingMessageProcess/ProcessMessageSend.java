@@ -87,59 +87,20 @@ public class ProcessMessageSend implements JavaDelegate {
         System.out.println("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
 
-        AtomicReference<BoundaryEvent> boundaryEventAtomic = new AtomicReference<>();
-        BoundaryEvent boundaryEvent = null;
+        BoundaryEvent boundaryEvent =  bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> {
+            if (!boundaryEvent1.cancelActivity()) return true;
 
-        bpmnBoundaryEventList.forEach((boundaryEventItem) -> {
-            System.out.println("boundaryEventItem.getAttachedTo().getName(): " +boundaryEventItem.getAttachedTo().getName());
+            return false;
 
-
-            ModelElementType modelElementType = delegateExecution
-                    .getBpmnModelInstance()
-                    .getModel()
-                    .getTypeForName(boundaryEventItem
-                            .getAttachedTo()
-                            .getName());
-
-            System.out.println("ModelElementType.getTypeName(): " +modelElementType.getTypeName());
-            delegateExecution
-                    .getBpmnModelInstance()
-                    .getModelElementsByType(modelElementType).stream().filter(modelElementInstance -> {
-
-                System.out.println("modelElementInstance\n" +
-                        "                        .getParentElement()\n" +
-                        "                        .getDomElement()\n" +
-                        "                        .getLocalName(): " +
-                                                                    modelElementInstance
-                                                                    .getParentElement()
-                                                                    .getDomElement()
-                                                                    .getLocalName());
-
-                if (modelElementInstance
-                        .getParentElement()
-                        .getDomElement()
-                        .getLocalName().equals(boundaryEventItem.getAttachedTo().getName())) {
-                    boundaryEventAtomic.set(boundaryEventItem);
-                    System.out.println("oundaryEventItem.getName()(): " +boundaryEventItem.getName());
-
-                    return true;
-                }
-
-                return false;
-            });
-        });
-
-        boundaryEvent = boundaryEventAtomic.get();
-
+        })).findFirst().orElseGet(()->null);
 
         if (Objects.nonNull(boundaryEvent)) {
-            String boundaryEventName = boundaryEvent.getName();
-            String businessKey = boundaryEventName + sep + delegateExecution.getCurrentActivityName() + sep + delegateExecution.getCurrentActivityId();
+
+            String businessKey =  delegateExecution.getCurrentActivityId();
             delegateExecution.setProcessBusinessKey(businessKey);
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
                     .builder()
-                    .messageName(boundaryEventName)
                     .businessKey(businessKey)
                     .build();
 
