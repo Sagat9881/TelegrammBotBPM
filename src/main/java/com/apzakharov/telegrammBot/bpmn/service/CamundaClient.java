@@ -169,7 +169,8 @@ public class CamundaClient {
         HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
         LOGGER.info("entity to string: " + entity);
         try {
-            ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(MessageCorrelateURL, entity, ProcessStartResult.class);
+
+            ResponseEntity<HttpEntity> processStartResult = template.postForEntity(MessageCorrelateURL, entity, HttpEntity.class);
             LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody()+"\nPRcOESS URL: "+MessageCorrelateURL);
             LOGGER.info("======================");
         } catch (Exception e){
