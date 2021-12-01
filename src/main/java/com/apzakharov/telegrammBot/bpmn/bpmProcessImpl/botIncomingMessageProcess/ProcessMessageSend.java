@@ -89,7 +89,7 @@ public class ProcessMessageSend implements JavaDelegate {
 
         BoundaryEvent boundaryEvent =  bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> {
             System.out.println(" boundaryEvent1.cancelActivity() : "+boundaryEvent1.cancelActivity());
-            if (boundaryEvent1.cancelActivity()) return true;
+            if (boundaryEvent1.getAttachedTo().getName().equals(delegateExecution.getCurrentActivityName())) return true;
 
             return false;
 
@@ -109,9 +109,9 @@ public class ProcessMessageSend implements JavaDelegate {
             putInAwaitingChatMap(String.valueOf(chatID), request);
         }
 
-        System.out.println("boundaryEvent name: " + Objects.requireNonNull(boundaryEvent).getName());
-        System.out.println("boundaryEventAttachTo name: " + Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
-        System.out.println("boundaryEventAttachTo name: " + Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
+        System.out.println("boundaryEvent name: " + boundaryEvent!= null ? boundaryEvent.getAttachedTo().getName():null);
+        System.out.println("boundaryEventAttachTo name: " + boundaryEvent!= null? boundaryEvent.getAttachedTo().getName():null);
+        System.out.println("boundaryEventAttachTo name: " + boundaryEvent!= null? boundaryEvent.getAttachedTo().getName():null);
         System.out.println("delegateExecution.getCurrentActivityName(): " + delegateExecution.getCurrentActivityName());
         System.out.println("===================================================================");
 
