@@ -1,5 +1,6 @@
 package com.apzakharov.telegrammBot.bot;
 
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class BotContext {
 
     private static Map<String,ChatBot> chatBotContextMap = new HashMap<>();
     private static Map<String,CamundaClient> camundaClientContextMap = new HashMap<>();
-    private static Map<String,Map<String,String>> awaitingChatMap = new HashMap<>();
+    private static Map<String,ProcessStartMessageCorrelationRequest> awaitingChatMap = new HashMap<>();
 
     private static final Logger LOGGER = LogManager.getLogger(BotContext.class);
 
@@ -40,15 +41,15 @@ public class BotContext {
         return camundaClientContextMap.get(botName);
     }
 
-    public static void putInAwaitingChatMap(String chatID,Map<String,String> messageNameAndBusinessKey){
-        awaitingChatMap.put(chatID,messageNameAndBusinessKey);
+    public static void putInAwaitingChatMap(String chatID, ProcessStartMessageCorrelationRequest request){
+        awaitingChatMap.put(chatID,request);
     }
 
-    public static Map<String,String> getFromAwaitingChatMap(String chatID){
-        Map<String,String> messageNameAndBusinessKey = awaitingChatMap.get(chatID);
+    public static ProcessStartMessageCorrelationRequest getFromAwaitingChatMap(String chatID){
+        ProcessStartMessageCorrelationRequest request = awaitingChatMap.get(chatID);
         awaitingChatMap.remove(chatID);
 
-        return messageNameAndBusinessKey;
+        return request;
 
     }
 

@@ -49,13 +49,11 @@ public class ProcessReceive implements JavaDelegate {
             e.getLocalizedMessage();
         }
 
-
         Message message = Message.builder()
                 .chatId(chatID)
                 .userId(userId)
                 .text(input)
                 .build();
-
 
         ProcessVariable chatIdVar = ProcessVariable.builder()
                 .value(chatID.toString())
@@ -73,57 +71,19 @@ public class ProcessReceive implements JavaDelegate {
         Map<String, ProcessVariable> variablesMap = new HashMap<>();
         variablesMap.put("Input", inputVar);
         variablesMap.put("ChatID", chatIdVar);
-        List<ProcessStartMessageCorrelationRequest> correlationRequestList = new ArrayList<>();
+
         try {
-            Map<String, String> buisnessCorrelation = getFromAwaitingChatMap(String.valueOf(chatID));
-            buisnessCorrelation.forEach((k, v) -> {
-                correlationRequestList.add(ProcessStartMessageCorrelationRequest
-                        .builder()
-                        .businessKey(k)
-                        .messageName(v)
-//                        .correlationKeys(correlationKeyMap)
-                        .processVariables(variablesMap)
-                        .build());
-            });
+            ProcessStartMessageCorrelationRequest buisnessCorrelation = getFromAwaitingChatMap(String.valueOf(chatID));
+            buisnessCorrelation.setCorrelationKeys(correlationKeyMap);
+            buisnessCorrelation.setProcessVariables(variablesMap);
 
-            correlationRequestList.forEach(processBody -> {
-                try {
-                    camundaClient.createCorrelation(processBody);
-                } catch (Exception e) {
-                    LOGGER.info("CANT CORRELATE MESSAGE FOR CHATID: " + chatID + "\nMESSAGENAME: " + processBody.getMessageName() + "\nBUISNESSKEY: " + processBody.getBusinessKey());
-                }
-            });
             camundaClient.addMessage(message);
-
-
+            camundaClient.createCorrelation(buisnessCorrelation);
         } catch (Exception e) {
-            LOGGER.info("NOT FOUND AWAITING MESSAGE CHAT FOR CHATID: " + chatID);
-            camundaClient.processSendMessage(chatID, outputText);
-
-            return;
+            LOGGER.info("CANT CORRELATE MESSAGE FOR CHATID: " + chatID );
         }
 
         LOGGER.info("Result MessageCorrelation for chatID: " + chatID + "\n Result: пока хз, надо найти как логгировать");
-
-
-//        LOGGER.info("======================");
-//        LOGGER.info("MEESAGE SEND PROCESS START: \n");
-//        LOGGER.info("=========");
-//        LOGGER.info("VARIABELS:  ");
-//        LOGGER.info("CHATID: " + chatID);
-//        LOGGER.info("INPUT: " + input);
-//        LOGGER.info("OUTPUT_TEXT: " + outputText);
-//        LOGGER.info("=========");
-//
-//        try {
-//            botService.sendMessage(chatID, outputText);
-//        } catch (Exception e) {
-//            LOGGER.info("START MESSAGE SEND PROCESS FAIL: ");
-//            e.getLocalizedMessage();
-//        }
-//
-//        LOGGER.info("END MESSAGE SEND PROCESS \n");
-//        LOGGER.info("======================\n");
 
     }
 

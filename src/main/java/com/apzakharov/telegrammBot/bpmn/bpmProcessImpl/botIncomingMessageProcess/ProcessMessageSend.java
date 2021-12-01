@@ -1,6 +1,7 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
 import com.apzakharov.telegrammBot.bot.ChatBot;
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.ProcessEngineServices;
@@ -94,11 +95,15 @@ public class ProcessMessageSend implements JavaDelegate {
         if(Objects.nonNull(boundaryEvent)){
             String boundaryEventName = boundaryEvent.getName();
             String businessKey = boundaryEventName+sep+delegateExecution.getCurrentActivityName()+sep+delegateExecution.getCurrentActivityId();
+            delegateExecution.setProcessBusinessKey(businessKey);
 
-            Map<String,String> correlationKeys = new HashMap<>();
-            correlationKeys.put(businessKey,boundaryEventName);
+            ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
+                    .builder()
+                    .messageName(boundaryEventName)
+                    .businessKey(businessKey)
+                    .build();
 
-            putInAwaitingChatMap(String.valueOf(chatID),correlationKeys);
+            putInAwaitingChatMap(String.valueOf(chatID),request);
         }
 
         System.out.println("boundaryEvent name: " + Objects.requireNonNull(boundaryEvent).getName());
