@@ -1,21 +1,21 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
-import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.ProcessEngineServices;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import org.camunda.bpm.model.bpmn.impl.BpmnModelInstanceImpl;
 import org.camunda.bpm.model.bpmn.instance.BoundaryEvent;
 import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.camunda.bpm.model.bpmn.instance.Relationship;
+import org.camunda.bpm.model.xml.instance.ModelElementInstance;
+import org.camunda.bpm.model.xml.type.ModelElementType;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.putInAwaitingChatMap;
 
@@ -47,6 +47,8 @@ public class ProcessMessageSend implements JavaDelegate {
         String bpmnFlowModelElementInstanceName = bpmnFlowModelElementInstance.getName();
         String bpmnModelElementInstanceName = bpmnModelElementInstance.toString();
         Collection<BoundaryEvent> bpmnBoundaryEventList = bpmnModelElementInstance.getModelElementsByType(BoundaryEvent.class);
+
+      
 
         System.out.println("===================================================================");
         System.out.println("===================================================================");
@@ -85,16 +87,40 @@ public class ProcessMessageSend implements JavaDelegate {
         System.out.println("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
 
-        BoundaryEvent boundaryEvent = bpmnBoundaryEventList.stream().filter((boundaryEventItem) -> {
-            if (boundaryEventItem.getAttachedTo().getName().equals(delegateExecution.getCurrentActivityName())) {
-                return true;
-            }
-            return false;
-        }).findFirst().orElseGet(() -> null);
+        AtomicReference<BoundaryEvent> boundaryEventAtomic = new AtomicReference<>();
+        BoundaryEvent boundaryEvent = null;
 
-        if(Objects.nonNull(boundaryEvent)){
+        bpmnBoundaryEventList.forEach((boundaryEventItem) -> {
+
+            ModelElementType modelElementType = delegateExecution
+                    .getBpmnModelInstance()
+                    .getModel()
+                    .getTypeForName(boundaryEventItem
+                            .getAttachedTo()
+                            .getName());
+
+
+            delegateExecution
+                    .getBpmnModelInstance()
+                    .getModelElementsByType(modelElementType).stream().filter(modelElementInstance -> {
+                if (modelElementInstance
+                        .getParentElement()
+                        .getDomElement()
+                        .getLocalName().equals(boundaryEventItem.getAttachedTo().getName())) {
+                    boundaryEventAtomic.set(boundaryEventItem);
+                    return true;
+                }
+
+                return false;
+            });
+        });
+
+        boundaryEvent = boundaryEventAtomic.get();
+
+
+        if (Objects.nonNull(boundaryEvent)) {
             String boundaryEventName = boundaryEvent.getName();
-            String businessKey = boundaryEventName+sep+delegateExecution.getCurrentActivityName()+sep+delegateExecution.getCurrentActivityId();
+            String businessKey = boundaryEventName + sep + delegateExecution.getCurrentActivityName() + sep + delegateExecution.getCurrentActivityId();
             delegateExecution.setProcessBusinessKey(businessKey);
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
@@ -103,13 +129,13 @@ public class ProcessMessageSend implements JavaDelegate {
                     .businessKey(businessKey)
                     .build();
 
-            putInAwaitingChatMap(String.valueOf(chatID),request);
+            putInAwaitingChatMap(String.valueOf(chatID), request);
         }
 
         System.out.println("boundaryEvent name: " + Objects.requireNonNull(boundaryEvent).getName());
-        System.out.println("boundaryEventAttachTo name: " +Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
-        System.out.println("boundaryEventAttachTo name: " +Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
-        System.out.println("delegateExecution.getCurrentActivityName(): "+ delegateExecution.getCurrentActivityName());
+        System.out.println("boundaryEventAttachTo name: " + Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
+        System.out.println("boundaryEventAttachTo name: " + Objects.requireNonNull(boundaryEvent).getAttachedTo().getName());
+        System.out.println("delegateExecution.getCurrentActivityName(): " + delegateExecution.getCurrentActivityName());
         System.out.println("===================================================================");
 
 
