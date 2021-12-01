@@ -14,14 +14,11 @@ import java.util.*;
 @Data
 @Component
 @RequiredArgsConstructor
-public class BotContext {
+public  class BotContext {
 
-    private ChatBot bot;
-    private CamundaClient camundaClient;
-
-    private static Map<String,ChatBot> chatBotContextMap = new HashMap<>();
-    private static Map<String,CamundaClient> camundaClientContextMap = new HashMap<>();
-    private static Map<String,ProcessStartMessageCorrelationRequest> awaitingChatMap = new HashMap<>();
+    private static final Map<String,ChatBot> chatBotContextMap = new HashMap<>();
+    private static final Map<String,CamundaClient> camundaClientContextMap = new HashMap<>();
+    private static final Map<String,ProcessStartMessageCorrelationRequest> awaitingChatMap = new HashMap<>();
 
     private static final Logger LOGGER = LogManager.getLogger(BotContext.class);
 
@@ -52,9 +49,6 @@ public class BotContext {
         return request;
 
     }
-
-
-
 
 
 

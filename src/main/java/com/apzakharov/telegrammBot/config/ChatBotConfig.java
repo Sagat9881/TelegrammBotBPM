@@ -3,6 +3,7 @@ package com.apzakharov.telegrammBot.config;
 import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bot.ChatService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class ChatBotConfig {
     private final ChatService chatService;
 
     @Bean
+    @Qualifier
     public ChatBot chatBot() {
         ChatBot chatBot =ChatBot.builder()
                                 .botName(botName)
