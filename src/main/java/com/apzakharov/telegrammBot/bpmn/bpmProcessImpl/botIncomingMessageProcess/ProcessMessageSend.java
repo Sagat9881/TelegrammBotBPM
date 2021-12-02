@@ -1,8 +1,11 @@
 package com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess;
 
+import com.apzakharov.telegrammBot.bot.ChatBot;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
 import com.apzakharov.telegrammBot.bpmn.service.CamundaClient;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -27,6 +30,7 @@ public class ProcessMessageSend implements JavaDelegate {
     private static final String TRUE = "true";
     private static final String FALSE = "false";
     private static final String sep = "/";
+    private static final Logger LOGGER = LogManager.getLogger(ProcessMessageSend.class);
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -34,12 +38,7 @@ public class ProcessMessageSend implements JavaDelegate {
         Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
 
         String textToSend = (String) delegateExecution.getVariableTyped("TextToSend").getValue();
-        String isNeedAnswer = (String) delegateExecution.getVariableTyped("isNeedAnswer").getValue();
 
-        String processId = delegateExecution.getProcessInstanceId();
-        String executionId = delegateExecution.getId();
-
-        ProcessEngineServices runtimeService = delegateExecution.getProcessEngineServices();
         FlowElement bpmnFlowModelElementInstance = delegateExecution.getBpmnModelElementInstance();
         BpmnModelInstance bpmnModelElementInstance = delegateExecution.getBpmnModelInstance();
 
@@ -48,78 +47,89 @@ public class ProcessMessageSend implements JavaDelegate {
         String bpmnModelElementInstanceName = bpmnModelElementInstance.toString();
         Collection<BoundaryEvent> bpmnBoundaryEventList = bpmnModelElementInstance.getModelElementsByType(BoundaryEvent.class);
 
-
-
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
-        System.out.println("bpmnFlowModelElementInstanceName : " + bpmnFlowModelElementInstanceName);
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
-        System.out.println("bpmnModelElementInstanceName : " + bpmnModelElementInstanceName);
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
-        System.out.println("relationshipList: " + relationshipList);
-        System.out.println("bpmnBoundaryEventList: " + bpmnBoundaryEventList);
-        System.out.println("===================================================================");
-        bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> {
-            System.out.println("bpmnFlowModelElementInstance.getCategoryValueRefs().forEach(categoryValue -> :" + categoryValue.toString());
-        });
-        System.out.println("===================================================================");
-
-        System.out.println("===================================================================");
+        LOGGER.info("===================================================================");
+        LOGGER.info("bpmnFlowModelElementInstanceName : " + bpmnFlowModelElementInstanceName);
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info("bpmnModelElementInstanceName : " + bpmnModelElementInstanceName);
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info("relationshipList: " + relationshipList);
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info("bpmnBoundaryEventList: " + bpmnBoundaryEventList);
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info("===================================================================");
+        LOGGER.info("relationshipList: ");
+        LOGGER.info("bpmnModelElementInstance.getDefinitions().getRelationships() ->");
         relationshipList.forEach(relationship -> {
-            System.out.println("bpmnModelElementInstance.getDefinitions().getRelationships() -> :" + relationship.toString());
+            LOGGER.info("   relationship.getType() :" + relationship.getType());
+            LOGGER.info("   relationship.getSources() :" + relationship.getSources());
+            LOGGER.info("   relationship.getTargets() :" + relationship.getTargets());
+            LOGGER.info("   relationship.getElementType().getTypeName() :" + relationship.getElementType().getTypeName());
         });
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info(" ");
+        LOGGER.info("bpmnBoundaryEventList: ");
+        LOGGER.info(bpmnBoundaryEventList);
+        LOGGER.info(" ");
+        LOGGER.info("bpmnBoundaryEventList.forEach(boundaryEvent -> " );
         bpmnBoundaryEventList.forEach(boundaryEvent -> {
-            System.out.println("bpmnBoundaryEventList.forEach(boundaryEvent -> " + boundaryEvent.toString());
+            LOGGER.info("   boundaryEvent.getAttachedTo(): "+boundaryEvent.getAttachedTo());
+            LOGGER.info("   boundaryEvent.getName(): "+boundaryEvent.getName());
+            LOGGER.info("   boundaryEvent.getId() "+boundaryEvent.getId());
+            LOGGER.info(" ");
         });
-        System.out.println("===================================================================");
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info(" ");
+        LOGGER.info("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " );
+        LOGGER.info(bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
+        LOGGER.info(" ");
+        LOGGER.info("===================================================================");
+        LOGGER.info("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " );
+        LOGGER.info(bpmnFlowModelElementInstance.getChildElementsByType(BoundaryEvent.class));
+        LOGGER.info(" ");
 
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
-        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " + bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
-        System.out.println("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " + bpmnFlowModelElementInstance.getChildElementsByType(BoundaryEvent.class));
-        System.out.println("===================================================================");
-        System.out.println("===================================================================");
+        LOGGER.info("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
+        LOGGER.info("bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> ");
+        BoundaryEvent boundaryEvent =  bpmnBoundaryEventList.stream().filter((boundaryEventItem -> {
+            LOGGER.info("   boundaryEventItem.cancelActivity() : "+boundaryEventItem.cancelActivity());
+            boolean isValidMessageEvent = boundaryEventItem
+                    .getAttachedTo()
+                    .getName()
+                    .equals(delegateExecution.getCurrentActivityName());
 
-        BoundaryEvent boundaryEvent =  bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> {
-            System.out.println(" boundaryEvent1.cancelActivity() : "+boundaryEvent1.cancelActivity());
-            if (boundaryEvent1.getAttachedTo().getName().equals(delegateExecution.getCurrentActivityName())) return true;
+            LOGGER.info("   boundaryEventItem.getName() : "+boundaryEventItem.getName());
+            LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : "+boundaryEventItem.getName());
+            LOGGER.info("   isValidMessageEvent : "+isValidMessageEvent);
 
-            return false;
+            if (isValidMessageEvent) return true;
+
+            else return false;
 
         })).findFirst().orElseGet(()->null);
 
-        System.out.println(" BoundaryEvent boundaryEvent : "+boundaryEvent);
+        LOGGER.info(" BoundaryEvent boundaryEvent.getName() : "+boundaryEvent.getName());
+        LOGGER.info(" BoundaryEvent boundaryEvent.getId() : "+boundaryEvent.getId());
+
         if (Objects.nonNull(boundaryEvent)) {
 
             String businessKey =  delegateExecution.getCurrentActivityId();
             delegateExecution.setProcessBusinessKey(businessKey);
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
-                    .builder()
+                    .builder().messageName(boundaryEvent.getName())
                     .businessKey(businessKey)
                     .build();
-            System.out.println("ProcessStartMessageCorrelationRequest request: "+request);
+            LOGGER.info("ProcessStartMessageCorrelationRequest request: ");
+            LOGGER.info(request);
             putInAwaitingChatMap(String.valueOf(chatID), request);
         }
 
-        System.out.println("boundaryEvent name: " + boundaryEvent!= null ? boundaryEvent.getAttachedTo().getName():null);
-        System.out.println("boundaryEventAttachTo name: " + boundaryEvent!= null? boundaryEvent.getAttachedTo().getName():null);
-        System.out.println("boundaryEventAttachTo name: " + boundaryEvent!= null? boundaryEvent.getAttachedTo().getName():null);
-        System.out.println("delegateExecution.getCurrentActivityName(): " + delegateExecution.getCurrentActivityName());
-        System.out.println("===================================================================");
-
-
-//        if(needAnswer.equals("true")){
-//            botService.putInAwaitingChatMap(String.valueOf(chatID),delegateExecution.getProcessInstance().getProcessInstanceId())
-//        }
-//       Map<String,Object> variables = delegateExecution.getVariables();
-
+        LOGGER.info("===================================================================");
     }
 }
