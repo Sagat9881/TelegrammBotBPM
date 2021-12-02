@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
+import java.util.Optional;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.getFromCamundaClientContextMap;
 
@@ -58,37 +59,46 @@ public class ChatBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        LOGGER.info("UPDATE RECIVE START : ");
+        LOGGER.info("========================================================================================");
+        LOGGER.info("onUpdateReceived : update" + update);
         if (!update.hasMessage() || !update.getMessage().hasText()) {
             LOGGER.info("FAIL: message is not exist ");
+            LOGGER.info("========================================================================================");
             return;
         }
-
+        LOGGER.info("========================================================================================");
         org.telegram.telegrambots.meta.api.objects.Message messageFromUpdate = update.getMessage();
-        LOGGER.info("INCOME MESSAGE: " + messageFromUpdate);
-
+        LOGGER.info("update.getMessage(): " + messageFromUpdate);
+        LOGGER.info("========================================================================================");
         Chat chat = null;
         Long chatId = update.getMessage().getChatId();
 
         try {
+            LOGGER.info("========================================================================================");
             chat = chatService.findByChat_id(chatId);
 
             LOGGER.info("CHATID: " + chatId);
             LOGGER.info("CHAT: " + chat);
+            LOGGER.info("========================================================================================");
         } catch (Exception e) {
-            LOGGER.info("FIND CHAT PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+            LOGGER.info("FIND CHAT PROCESS FAIL: " + e.getClass().getSimpleName());
+            LOGGER.info("========================================================================================");
             return;
         }
 
 
         if (chat == null) {
             try {
+                LOGGER.info("========================================================================================");
                 User user = chatService.createNewUser(chatId);
-                LOGGER.info("NEW USER : " + user);
+                LOGGER.info("chatID : " + chatId);
+                LOGGER.info("chatService.createNewUser(chatId) : " + user);
 
                 chat = chatService.createNewChat(chatId, user.getId());
-                LOGGER.info("NEW CHAT ID: " + chatId + "\nNEW CHAT: " + chat);
-
+                LOGGER.info("user.getId(): " + user.getId());
+                LOGGER.info("chatId: " + chatId);
+                LOGGER.info("chatService.createNewChat(chatId, user.getId()): " + chat);
+                LOGGER.info("========================================================================================");
                 Message message = Message.builder()
                         .chatId(chatId)
                         .userId(user.getId())
@@ -96,14 +106,15 @@ public class ChatBot extends TelegramLongPollingBot {
                         .build();
 
                 Message addedMessage = chatService.addMessage(message);
-
+                LOGGER.info("========================================================================================");
                 LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
-
+                LOGGER.info("========================================================================================");
                 getFromCamundaClientContextMap(getBotUsername())
                         .processStart(chat, user, addedMessage.getText());
 
             } catch (Exception e) {
-                LOGGER.info("NEW USER PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+                LOGGER.info("NEW USER PROCESS FAIL: " + e.getClass().getSimpleName());
+                LOGGER.info("========================================================================================");
                 return;
             }
         } else {
@@ -117,38 +128,42 @@ public class ChatBot extends TelegramLongPollingBot {
                                 .text(messageFromUpdate.getText())
                                 .build()
                 );
-
+                LOGGER.info("========================================================================================");
                 LOGGER.info("Message: " + message);
-
+                LOGGER.info("========================================================================================");
 
                 ProcessStartResult processStartResult = getFromCamundaClientContextMap(getBotUsername())
                         .processStart(chat, user, message.getText());
 
-                LOGGER.info("reciveMessage END");
+                LOGGER.info("onUpdateReceived END");
+                LOGGER.info("========================================================================================");
             } catch (Exception e) {
-                LOGGER.info("RECIVE MESSAGE PROCESS FAIL: \nExeptionMessage:\n" + e.getLocalizedMessage() + "\n");
+                LOGGER.info("RECIVE MESSAGE PROCESS FAIL: " + e.getClass().getSimpleName());
+                LOGGER.info("========================================================================================");
                 return;
             }
-
-
         }
-        LOGGER.info("UPDATE RECIVE END");
     }
 
     public void sendMessage(Long chatId, String text) {
-        LOGGER.info("Bot service try to sendMessag. ChatID: " + chatId + ", and text: " + text);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatBot.sendMessag. ChatID: " + chatId + ", and text: " + text);
         SendMessage message = new SendMessage()
                 .setChatId(chatId)
                 .setText(text);
 
         LOGGER.info("messageText: " + message.getText() + ", messageChatID: " + message.getChatId() + "messageMethod: " + message.getMethod());
+        LOGGER.info("========================================================================================");
         try {
             execute(message);
+            LOGGER.info("ChatBot.sendMessage END");
+            LOGGER.info("========================================================================================");
         } catch (TelegramApiException e) {
-            e.getLocalizedMessage();
+            LOGGER.info("ChatBot.sendMessage PROCESS FAIL: " + e.getClass().getSimpleName());
+            LOGGER.info("========================================================================================");
+            return;
 
         }
-        LOGGER.info("ChatBot.sendMessage END");
     }
 
     private void sendPhoto(long chatId) {
@@ -166,22 +181,36 @@ public class ChatBot extends TelegramLongPollingBot {
     }
 
     public void addMessage(Message message) {
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatBot.addMessage: message: " + message);
         try {
             chatService.addMessage(message);
+            LOGGER.info("ChatBot.addMessage END");
+            LOGGER.info("========================================================================================");
         } catch (Exception e) {
-            LOGGER.info("ADD MESSAGE FAIL: \n" + e.getLocalizedMessage());
+            LOGGER.info("ChatBot.addMessage: PROCESS FAIL: " + e.getClass().getSimpleName());
+            LOGGER.info("========================================================================================");
+            return;
         }
 
     }
 
     public Chat findByChatId(Long chatId) {
+        LOGGER.info("ChatBot.findByChatId: chatId: "+chatId);
+        LOGGER.info("========================================================================================");
+        Chat chat = null;
         try {
-            return chatService.findByChat_id(chatId);
+            LOGGER.info("========================================================================================");
+            Optional<Chat> chatOptional = Optional.of(chatService.findByChat_id(chatId));
+            chat = chatOptional.orElseGet(() -> null);
+            LOGGER.info("ChatBot.findByChatId: chat: "+chat);
+            LOGGER.info("========================================================================================");
         } catch (Exception e) {
-            LOGGER.info("findByChatId FAIL: \n" + e.getLocalizedMessage());
+            LOGGER.info("ChatBot.findByChatId: PROCESS FAI: \n" + e.getClass().getSimpleName());
+            LOGGER.info("========================================================================================");
         }
 
-        return null;
+        return chat;
 
     }
 

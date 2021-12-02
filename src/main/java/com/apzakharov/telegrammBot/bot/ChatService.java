@@ -31,15 +31,16 @@ public class ChatService {
     private static final Logger LOGGER = LogManager.getLogger(ChatService.class);
 
 
-
     @Transactional(readOnly = true)
     public Chat findById(Long id) {
-        LOGGER.info("findById START: id " + id);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.findById : id " + id);
 
         Optional<Chat> optionalChat = chatRepository.findById(id);
 
         Chat chat = optionalChat.orElseGet(() -> null);
-        LOGGER.info("findById RESULT:  " + chat);
+        LOGGER.info("ChatService.findById:  chat" + chat);
+        LOGGER.info("========================================================================================");
 
         return chat;
     }
@@ -58,24 +59,27 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public Chat findByChat_id(Long chat_id) throws Exception {
-        LOGGER.info("findByChatId START: chat_id " + chat_id);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.findByChatId: chat_id " + chat_id);
 
         Optional<Chat> optionalChat = chatRepository.findByChatId(chat_id);
 
         Chat chat = optionalChat.orElseGet(() -> null);
-        LOGGER.info("findByChatId RESULT:  " + chat);
-
+        LOGGER.info("ChatService.findByChatId:  chat" + chat);
+        LOGGER.info("========================================================================================");
         return chat;
     }
 
     @Transactional(readOnly = true)
     public User findUserByChatId(Long chatId) throws Exception {
-        LOGGER.info("findUserByChatId START: chat_id " + chatId);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.findUserByChatId START: chat_id " + chatId);
 
         AtomicReference<User> userAtomic = new AtomicReference<>();
 
         User user = userService.findByChatId(chatId).orElseGet(() -> null);
-        LOGGER.info("findUserByChatId RESULT:  " + user);
+        LOGGER.info("ChatService.findUserByChatId :  user: " + user);
+        LOGGER.info("========================================================================================");
 
         return user;
     }
@@ -87,19 +91,29 @@ public class ChatService {
 
     @Transactional
     public Chat addChat(Chat chat) throws Exception {
-        LOGGER.info("addChat START " + "CHAT: " + chat);
-        return chatRepository.save(chat);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.addChat :  chat: " + chat);
+        Chat addedChat = chatRepository.save(chat);
+        LOGGER.info("ChatService.addChat :  addedChat: " + addedChat);
+        LOGGER.info("========================================================================================");
+        return addedChat;
     }
 
     @Transactional
     public Message addMessage(Message message) throws Exception {
-        LOGGER.info("addMessage START " + "Message: " + message);
-        return messageService.addMessage(message);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.addMessage :  message: " + message);
+        Message addedMessage = messageService.addMessage(message);
+        LOGGER.info("ChatService.addMessage :  addedMessage: " + addedMessage);
+        LOGGER.info("========================================================================================");
+        return addedMessage;
     }
 
 
     public Chat createNewChat(Long chatId, Long userId) throws Exception {
-        LOGGER.info("createNewChat START: " + "CHATID: " + chatId + "USERID: " + userId);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.createNewChat :  chatId: " + chatId+" userId: "+userId);
+
         Chat chat = Chat.builder()
                 .chatId(chatId)
                 .userId(userId)
@@ -107,21 +121,24 @@ public class ChatService {
 
         Chat addedChat = addChat(chat);
 
-        LOGGER.info("CREATE NEW CHAT RESULT: " + "\n" + "NEW ADDED CHAT: " + addedChat);
+        LOGGER.info("ChatService.createNewChat :  addedChat: " + addedChat);
+        LOGGER.info("========================================================================================");
 
         return chat;
-
     }
 
     public User createNewUser(Long chatId) throws Exception {
-        LOGGER.info("createNewUser START " + "CHATID: " + chatId);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("ChatService.createNewUser :  chatId: " + chatId);
+
         User user = User.builder()
                 .chatId(chatId)
                 .build();
 
         User addedUser = userService.addUser(user);
 
-        LOGGER.info("createNewUser RESULT: \nNEW ADDED USER: " + user);
+        LOGGER.info("ChatService.createNewUser :  addedUser: " + addedUser);
+        LOGGER.info("========================================================================================");
 
         return addedUser;
     }

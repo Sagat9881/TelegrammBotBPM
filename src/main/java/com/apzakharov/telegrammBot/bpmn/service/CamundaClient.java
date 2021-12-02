@@ -49,44 +49,71 @@ public class CamundaClient {
 
     public ProcessStartResult processStart(String processURL, ProcessStartRequestBody processBody) {
         //get body
-        LOGGER.info("======================");
+        LOGGER.info("========================================================================================");
         LOGGER.info("CamundaClient.ProcessStart START : ");
         LOGGER.info(" ");
-        LOGGER.info("\n"+"PROCESS BODY"+processBody+"\nPROCESS URL: "+processURL);
-        LOGGER.info(" ");
-
+        LOGGER.info("CamundaClient.ProcessStart: processURL: "+processURL);
+        LOGGER.info("CamundaClient.ProcessStart: processBody:");
+        LOGGER.info(processBody);
+        LOGGER.info("========================================================================================");
+        ProcessStartResult processStartResult = null;
         Map<String, Object> requestVariables = new HashMap<>();
+
         requestVariables.put("variables", processBody.getVariables());
-        LOGGER.info("requestVariables to string: " + requestVariables);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("CamundaClient.ProcessStart: requestVariables to string: ");
+        LOGGER.info(requestVariables);
+        LOGGER.info(" ");
         SpinJsonNode request = Spin.JSON(requestVariables);
-        LOGGER.info("request: " + request);
+
+        LOGGER.info("CamundaClient.ProcessStart: SpinJsonNode request: ");
+        LOGGER.info(request);
+        LOGGER.info(" ");
         // set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        LOGGER.info("headers: " + headers);
+
+        LOGGER.info("CamundaClient.ProcessStart: headers: ");
+        LOGGER.info(headers);
+        LOGGER.info(" ");
         // compling Request Entity
         HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
-        LOGGER.info("entity to string: " + entity);
+        LOGGER.info("CamundaClient.ProcessStart: HttpEntity<String> entity to string: ");
+        LOGGER.info(entity.toString());
+        LOGGER.info(" ");
+        LOGGER.info("CamundaClient.ProcessStart: HttpEntity<String> entity: ");
+        LOGGER.info(entity);
+        LOGGER.info("========================================================================================");
 
         // send request and TODO: parse result
         try {
-            ResponseEntity<ProcessStartResult> processStartResult = template.postForEntity(processURL, entity, ProcessStartResult.class);
-            LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody());
-            LOGGER.info("======================");
+           ResponseEntity<ProcessStartResult> processStartResultResponseEntity= template.postForEntity(processURL, entity, ProcessStartResult.class);
+            LOGGER.info("CamundaClient.ProcessStart: getStatusCode(): " + processStartResultResponseEntity.getStatusCode());
+            LOGGER.info("CamundaClient.ProcessStart: getBody(): ");
+            LOGGER.info(processStartResultResponseEntity.getBody());
+            LOGGER.info("========================================================================================");
 
-            return processStartResult.getBody();
+            processStartResult = processStartResultResponseEntity.getBody();
         } catch (Exception e){
-            LOGGER.info("CamundaClient.ProcessStart FAIL: ");
-            e.getLocalizedMessage();
-            LOGGER.info("======================");
+            LOGGER.info("CamundaClient.ProcessStart FAIL: "+e.getClass().getSimpleName());
+            LOGGER.info("========================================================================================");
         }
-        return null;
+        return processStartResult;
     }
 
     public ProcessStartResult processStart (Chat chat,User user, String input) throws Exception {
-
-        LOGGER.info("Start New UserProcessAnswer for \nChat: \n" + chat+"\nUser: \n"+user+"\n Input: \n"+input);
-
+        LOGGER.info("========================================================================================");
+        LOGGER.info("CamundaClient.ProcessStart START : ");
+        LOGGER.info(" ");
+        LOGGER.info("CamundaClient.ProcessStart: input: "+input);
+        LOGGER.info("CamundaClient.ProcessStart: user:");
+        LOGGER.info(user);
+        LOGGER.info(" ");
+        LOGGER.info("CamundaClient.ProcessStart: chat:");
+        LOGGER.info(chat);
+        LOGGER.info(" ");
+        LOGGER.info("========================================================================================");
+        ProcessStartResult result = null;
         Long chatID = chat.getChatId();
 
         try {
@@ -105,22 +132,23 @@ public class CamundaClient {
                             .type( JSON_TYPE_STRING).build());
 
 
-            LOGGER.info("Variabls for process: " + variables.toString());
-
             ProcessStartRequestBody processBody = new ProcessStartRequestBody();
             processBody.setVariables(variables);
 
-            LOGGER.info("StartProcess for Url: \n" + ProcessURL + "\n" + " and body: \n" + processBody.toString());
+            result = processStart(ProcessURL, processBody);
 
-           return processStart(ProcessURL, processBody);
-
-//            user.setStateId(BotStateBPMN.PROCESS.getBotStateBPMNID());
+            LOGGER.info("CamundaClient.ProcessStart: processStart(ProcessURL, processBody): ");
+            LOGGER.info("CamundaClient.ProcessStart: processStart(ProcessURL, processBody): ProcessURL: ");
+            LOGGER.info(ProcessURL);
+            LOGGER.info(" ");
+            LOGGER.info("CamundaClient.ProcessStart: processStart(ProcessURL, processBody): processBody: ");
+            LOGGER.info(processBody);
+            LOGGER.info("========================================================================================");
         } catch (Exception ex) {
-            ex.getLocalizedMessage();
-//            user.setStateId(BotStateBPMN.ERROR.getBotStateBPMNID());
+            LOGGER.info("CamundaClient.ProcessStart: PROCESS FAIL: "+ ex.getClass().getSimpleName());
         }
 
-        return null;
+        return result;
 
 //        requestVariables.accumulate("variables",processBody.getVariables());
 //        Spin
@@ -152,31 +180,49 @@ public class CamundaClient {
     public void createCorrelation(ProcessStartMessageCorrelationRequest processBody) throws Exception{
 
         //get body
-        LOGGER.info("======================");
-        LOGGER.info("CamundaClient.createCorrelation START : ");
+        LOGGER.info("========================================================================================");
+        LOGGER.info("CamundaClient.createCorrelation : ");
         LOGGER.info(" ");
-        LOGGER.info("\n"+"PROCESS BODY"+processBody+"\nPROCESS URL: "+MessageCorrelateURL);
+        LOGGER.info("CamundaClient.createCorrelation :  MessageCorrelateURL:");
+        LOGGER.info(MessageCorrelateURL);
+        LOGGER.info("CamundaClient.createCorrelation : processBody: ");
+        LOGGER.info(processBody);
         LOGGER.info(" ");
 
-
+       Object processStartResult = null;
         SpinJsonNode request = Spin.JSON(processBody);
-        LOGGER.info("request: " + request);
-        // set headers
+        LOGGER.info("CamundaClient.createCorrelation: SpinJsonNode request: ");
+        LOGGER.info(request);
+        LOGGER.info(" ");
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        LOGGER.info("headers: " + headers);
-        // compling Request Entity
+
+        LOGGER.info("CamundaClient.createCorrelation: headers: ");
+        LOGGER.info(headers);
+        LOGGER.info(" ");
+
+
         HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
-        LOGGER.info("entity to string: " + entity);
+
+        LOGGER.info("CamundaClient.createCorrelation: HttpEntity<String> entity to string: ");
+        LOGGER.info(entity.toString());
+        LOGGER.info(" ");
+        LOGGER.info("CamundaClient.createCorrelation: HttpEntity<String> entity: ");
+        LOGGER.info(entity);
+        LOGGER.info("========================================================================================");
         try {
 
-            ResponseEntity<HttpEntity> processStartResult = template.postForEntity(MessageCorrelateURL, entity, HttpEntity.class);
-            LOGGER.info("processStartResult status: " + processStartResult.getStatusCode() + "\n processStartResult body: " + processStartResult.getBody()+"\nPRcOESS URL: "+MessageCorrelateURL);
-            LOGGER.info("======================");
+            ResponseEntity<HttpEntity>  createCorrelationResultResponseEntity= template.postForEntity(MessageCorrelateURL, entity, HttpEntity.class);
+            LOGGER.info("CamundaClient.createCorrelation: getStatusCode(): " + createCorrelationResultResponseEntity.getStatusCode());
+            LOGGER.info("CamundaClient.createCorrelation: getBody(): ");
+            LOGGER.info(createCorrelationResultResponseEntity.getBody());
+            LOGGER.info("========================================================================================");
+
+            processStartResult = createCorrelationResultResponseEntity.getBody();
         } catch (Exception e){
-            LOGGER.info("CamundaClient.ProcessStart FAIL: ");
-            e.getLocalizedMessage();
-            LOGGER.info("======================");
+            LOGGER.info("CamundaClient.createCorrelation FAIL: "+e.getClass().getSimpleName());
+            LOGGER.info("========================================================================================");
         }
     }
 
