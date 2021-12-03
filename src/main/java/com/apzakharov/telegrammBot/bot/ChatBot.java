@@ -116,8 +116,9 @@ public class ChatBot extends TelegramLongPollingBot {
                 LOGGER.info("========================================================================================");
                 LOGGER.info("REGISTRATION COMMAND MESSAGE: " + message);
                 LOGGER.info("========================================================================================");
+
                 getFromCamundaClientContextMap(getBotUsername())
-                        .processStart(chat, user, addedMessage.getText());
+                        .startCommand(chat.getChatId(), addedMessage.getText());
 
             } catch (Exception e) {
                 LOGGER.info("NEW USER PROCESS FAIL: " + e.getClass().getSimpleName());
