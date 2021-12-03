@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1fhe7q7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:collaboration id="Collaboration_1jx4vr5">
+    <bpmn:participant id="Participant_0vcw847" name="Процесс регистрации нового пользователя" processRef="start" />
+  </bpmn:collaboration>
+  <bpmn:process id="start" name="start" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_0omoyzm">
+      <bpmn:lane id="Lane_04zh97f" name="Чат-бот">
+        <bpmn:flowNodeRef>Event_1mpehxt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1qxflb6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1d639pu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_07nupvz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1saxq1n</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_06uzmfm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1eoa69t</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_09v7x7u</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0i53uba</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:endEvent id="Event_1mpehxt">
+      <bpmn:incoming>Flow_1l5pqsl</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="Event_1qxflb6">
+      <bpmn:outgoing>Flow_19hcx4p</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_1d639pu" name="Обработка входящих переменных ">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
+          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
+          <camunda:outputParameter name="ChatID">${ChatID}</camunda:outputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_19hcx4p</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mwzj6u</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:serviceTask id="Activity_07nupvz" name="Отправка завершающего сообщения" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="isNeedAnswer">false</camunda:inputParameter>
+          <camunda:inputParameter name="TextToSend">Спасибо! 
+
+Больше я пока ничего не умею, так что такие дела. 
+
+Чао! </camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13lgael</bpmn:incoming>
+      <bpmn:outgoing>Flow_1l5pqsl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1saxq1n" name="Отправка сообщения об ошибке" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
+          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
+          <camunda:inputParameter name="TextToSend">Давай по новой, кто-бы ты ни был. 
+
+
+Я ничерта не понел шо там за номер такой  ._.</camunda:inputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ebu54k</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k55994</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sendTask id="Activity_06uzmfm" name="Отправка приветствия" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
+          <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
+          <camunda:inputParameter name="TextToSend">Добрый день! 
+
+Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0k55994</bpmn:incoming>
+      <bpmn:incoming>Flow_1mwzj6u</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:inclusiveGateway id="Gateway_1eoa69t" name="Номер валидный (похож на цифры?)" default="Flow_1ebu54k">
+      <bpmn:incoming>Flow_0aerx0c</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ebu54k</bpmn:outgoing>
+      <bpmn:outgoing>Flow_13lgael</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:scriptTask id="Activity_09v7x7u" name="Валидация ответа, сохранение в БД" scriptFormat="JavaScript" camunda:resultVariable="isValidNumber">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
+          <camunda:outputParameter name="isValidNumber">${isValidNumber}</camunda:outputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:intermediateCatchEvent id="Event_0i53uba" name="NewIncomingMessage">
+      <bpmn:outgoing>Flow_0aerx0c</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_15mvig4" messageRef="Message_1fbvf2r" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0aerx0c" sourceRef="Event_0i53uba" targetRef="Gateway_1eoa69t" />
+    <bpmn:sequenceFlow id="Flow_1ebu54k" sourceRef="Gateway_1eoa69t" targetRef="Activity_1saxq1n" />
+    <bpmn:sequenceFlow id="Flow_13lgael" sourceRef="Gateway_1eoa69t" targetRef="Activity_07nupvz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">!isNaN(parseInt(Input));</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1l5pqsl" sourceRef="Activity_07nupvz" targetRef="Event_1mpehxt" />
+    <bpmn:sequenceFlow id="Flow_0k55994" sourceRef="Activity_1saxq1n" targetRef="Activity_06uzmfm" />
+    <bpmn:sequenceFlow id="Flow_1mwzj6u" sourceRef="Activity_1d639pu" targetRef="Activity_06uzmfm" />
+    <bpmn:sequenceFlow id="Flow_19hcx4p" sourceRef="Event_1qxflb6" targetRef="Activity_1d639pu" />
+  </bpmn:process>
+  <bpmn:message id="Message_1fbvf2r" name="NewIncomingMessage" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1jx4vr5">
+      <bpmndi:BPMNShape id="Participant_0vcw847_di" bpmnElement="Participant_0vcw847" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1098" height="499" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04zh97f_di" bpmnElement="Lane_04zh97f" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1068" height="499" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0aerx0c_di" bpmnElement="Flow_0aerx0c">
+        <di:waypoint x="698" y="300" />
+        <di:waypoint x="925" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ebu54k_di" bpmnElement="Flow_1ebu54k">
+        <di:waypoint x="950" y="325" />
+        <di:waypoint x="950" y="460" />
+        <di:waypoint x="810" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13lgael_di" bpmnElement="Flow_13lgael">
+        <di:waypoint x="975" y="300" />
+        <di:waypoint x="1050" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l5pqsl_di" bpmnElement="Flow_1l5pqsl">
+        <di:waypoint x="1150" y="300" />
+        <di:waypoint x="1172" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k55994_di" bpmnElement="Flow_0k55994">
+        <di:waypoint x="710" y="460" />
+        <di:waypoint x="530" y="460" />
+        <di:waypoint x="530" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mwzj6u_di" bpmnElement="Flow_1mwzj6u">
+        <di:waypoint x="420" y="300" />
+        <di:waypoint x="480" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19hcx4p_di" bpmnElement="Flow_19hcx4p">
+        <di:waypoint x="258" y="300" />
+        <di:waypoint x="320" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1mpehxt_di" bpmnElement="Event_1mpehxt">
+        <dc:Bounds x="1172" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qxflb6_di" bpmnElement="Event_1qxflb6">
+        <dc:Bounds x="222" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1d639pu_di" bpmnElement="Activity_1d639pu">
+        <dc:Bounds x="320" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_07nupvz_di" bpmnElement="Activity_07nupvz">
+        <dc:Bounds x="1050" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1saxq1n_di" bpmnElement="Activity_1saxq1n">
+        <dc:Bounds x="710" y="420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06uzmfm_di" bpmnElement="Activity_06uzmfm">
+        <dc:Bounds x="480" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1eoa69t_di" bpmnElement="Gateway_1eoa69t">
+        <dc:Bounds x="925" y="275" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="906" y="225" width="89" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09v7x7u_di" bpmnElement="Activity_09v7x7u">
+        <dc:Bounds x="680" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i53uba_di" bpmnElement="Event_0i53uba">
+        <dc:Bounds x="662" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="626" y="206" width="88" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

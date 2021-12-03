@@ -128,7 +128,7 @@ public class CamundaClient {
                             .value(chatID.toString())
                             .type( JSON_TYPE_STRING).build());
 
-            variables.put("Input",
+            variables.put("input",
                     ProcessVariable.builder()
                             .value(input)
                             .type( JSON_TYPE_STRING).build());
@@ -244,7 +244,7 @@ public class CamundaClient {
                 .type(JSON_TYPE_STRING)
                 .value(String.valueOf(chatID))
                 .build());
-        variablesForDelegate.put("Input",ProcessVariable
+        variablesForDelegate.put("input",ProcessVariable
                 .builder()
                 .type(JSON_TYPE_STRING)
                 .value(String.valueOf(input))
