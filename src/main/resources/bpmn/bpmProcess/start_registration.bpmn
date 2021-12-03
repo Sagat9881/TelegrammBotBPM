@@ -26,10 +26,10 @@
     <bpmn:task id="Activity_1d639pu" name="Обработка входящих переменных ">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
-          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
-          <camunda:outputParameter name="ChatID">${ChatID}</camunda:outputParameter>
-          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+          <camunda:inputParameter name="input">${input}</camunda:inputParameter>
+          <camunda:inputParameter name="chatID">${chatID}</camunda:inputParameter>
+          <camunda:outputParameter name="chatID">${chatID}</camunda:outputParameter>
+          <camunda:outputParameter name="input">${input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_19hcx4p</bpmn:incoming>
@@ -67,12 +67,12 @@
     <bpmn:sendTask id="Activity_06uzmfm" name="Отправка приветствия" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
+          <camunda:inputParameter name="chatID">${chatID}</camunda:inputParameter>
           <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
           <camunda:inputParameter name="TextToSend">Добрый день! 
 
 Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
-          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+          <camunda:outputParameter name="input">${input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0k55994</bpmn:incoming>
@@ -94,6 +94,11 @@
       <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:intermediateCatchEvent id="Event_0i53uba" name="NewIncomingMessage">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="input">${input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0aerx0c</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_15mvig4" messageRef="Message_1fbvf2r" />
     </bpmn:intermediateCatchEvent>

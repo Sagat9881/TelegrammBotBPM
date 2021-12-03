@@ -38,11 +38,11 @@ public class ProcessMessageSend implements JavaDelegate {
         LOGGER.info("ProcessMessageSend.execute :  CurrentActivityName: " + delegateExecution.getCurrentActivityName());
 
         //TODO: унинфицоравть получение переменных по DRY (запилить параметризированный метод)
-        Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("ChatID").getValue());
+        Long chatID = Long.valueOf((String) delegateExecution.getVariableTyped("chatID").getValue());
 
-        String textToSend = (String) delegateExecution.getVariableTyped("TextToSend").getValue();
-        LOGGER.info("ProcessMessageSend.execute :  TextToSend: " + textToSend);
-        LOGGER.info("ProcessMessageSend.execute :  ChatID: " + chatID);
+        String textToSend = (String) delegateExecution.getVariableTyped("textToSend").getValue();
+        LOGGER.info("ProcessMessageSend.execute :  textToSend: " + textToSend);
+        LOGGER.info("ProcessMessageSend.execute :  chatID: " + chatID);
         LOGGER.info("========================================================================================");
         FlowElement bpmnFlowModelElementInstance = delegateExecution.getBpmnModelElementInstance();
         BpmnModelInstance bpmnModelElementInstance = delegateExecution.getBpmnModelInstance();
