@@ -106,7 +106,7 @@ public class ProcessMessageSend implements JavaDelegate {
             boolean isValidMessageEvent = boundaryEventItem
                     .getAttachedTo()
                     .getName()
-                    .equals(delegateExecution.getCurrentActivityName());
+                    .equals(delegateExecution.getCurrentActivityName())||boundaryEventItem.cancelActivity();
 
             LOGGER.info("   boundaryEventItem.getName() : "+boundaryEventItem.getName());
             LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : "+boundaryEventItem.getName());
@@ -127,7 +127,8 @@ public class ProcessMessageSend implements JavaDelegate {
             delegateExecution.setProcessBusinessKey(businessKey);
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
-                    .builder().messageName(boundaryEvent.getName())
+                    .builder()
+//                    .messageName(boundaryEvent.getName())
                     .businessKey(businessKey)
                     .build();
             LOGGER.info("ProcessStartMessageCorrelationRequest request: ");
