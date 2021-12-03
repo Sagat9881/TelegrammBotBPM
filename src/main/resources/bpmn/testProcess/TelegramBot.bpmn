@@ -67,16 +67,15 @@
         <bpmn:flowNodeRef>Activity_0nbxzev</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_083tqjf</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1441wxz</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0j42gq3</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_06j7hvi</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1qpe97w</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>NewIncomingMessage</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_06j7hvi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0j42gq3</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_1v7ufi5" sourceRef="Event_0ol7xcl" targetRef="Activity_0nbxzev" />
     <bpmn:sequenceFlow id="Flow_0u5al0h" sourceRef="Activity_0nbxzev" targetRef="Activity_1qpe97w" />
     <bpmn:sequenceFlow id="Flow_0rlv3gg" sourceRef="Activity_1441wxz" targetRef="Activity_1qpe97w" />
-    <bpmn:sequenceFlow id="Flow_0mnozyi" sourceRef="Gateway_06j7hvi" targetRef="Activity_1441wxz" />
     <bpmn:sequenceFlow id="Flow_0p0ohxd" sourceRef="Activity_083tqjf" targetRef="Event_1b6p7x4" />
     <bpmn:endEvent id="Event_1b6p7x4">
       <bpmn:incoming>Flow_0p0ohxd</bpmn:incoming>
@@ -110,10 +109,6 @@
       <bpmn:incoming>Flow_1ff4w0p</bpmn:incoming>
       <bpmn:outgoing>Flow_0p0ohxd</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0yctjag" sourceRef="Activity_0j42gq3" targetRef="Gateway_06j7hvi" />
-    <bpmn:sequenceFlow id="Flow_1ff4w0p" sourceRef="Gateway_06j7hvi" targetRef="Activity_083tqjf">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isValidNumber}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1441wxz" name="Отправка сообщения об ошибке" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -129,6 +124,33 @@
       <bpmn:incoming>Flow_0mnozyi</bpmn:incoming>
       <bpmn:outgoing>Flow_0rlv3gg</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sendTask id="Activity_1qpe97w" name="Отправка приветствия" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
+          <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
+          <camunda:inputParameter name="TextToSend">Добрый день! 
+
+Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
+          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0u5al0h</bpmn:incoming>
+      <bpmn:incoming>Flow_0rlv3gg</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:boundaryEvent id="NewIncomingMessage" name="NewIncomingMessage" attachedToRef="Activity_1qpe97w">
+      <bpmn:outgoing>Flow_1vacs97</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_044q0q7" messageRef="Message_11tt8e3" />
+    </bpmn:boundaryEvent>
+    <bpmn:inclusiveGateway id="Gateway_06j7hvi" name="Номер валидный (похож на цифры?)" default="Flow_0mnozyi">
+      <bpmn:incoming>Flow_1vacs97</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ff4w0p</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0mnozyi</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1ff4w0p" sourceRef="Gateway_06j7hvi" targetRef="Activity_083tqjf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">!isNaN(parseInt(Input));</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0mnozyi" sourceRef="Gateway_06j7hvi" targetRef="Activity_1441wxz" />
     <bpmn:scriptTask id="Activity_0j42gq3" name="Валидация ответа, сохранение в БД" scriptFormat="JavaScript" camunda:resultVariable="isValidNumber">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -137,36 +159,9 @@
           <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0ie3coy</bpmn:incoming>
-      <bpmn:outgoing>Flow_0yctjag</bpmn:outgoing>
       <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:inclusiveGateway id="Gateway_06j7hvi" name="Номер валидный (похож на цифры?)" default="Flow_0mnozyi">
-      <bpmn:incoming>Flow_0yctjag</bpmn:incoming>
-      <bpmn:outgoing>Flow_0mnozyi</bpmn:outgoing>
-      <bpmn:outgoing>Flow_1ff4w0p</bpmn:outgoing>
-    </bpmn:inclusiveGateway>
-    <bpmn:sendTask id="Activity_1qpe97w" name="Отправка приветствия" camunda:class="com.apzakharov.telegrammBot.bpmn.bpmProcessImpl.botIncomingMessageProcess.ProcessMessageSend">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="ChatID">${ChatID}</camunda:inputParameter>
-          <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
-          <camunda:inputParameter name="Input">${Input}</camunda:inputParameter>
-          <camunda:inputParameter name="TextToSend">Добрый день! 
-
-Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
-          <camunda:outputParameter name="Output_0d6oko3" />
-          <camunda:outputParameter name="Input">${Input}</camunda:outputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0u5al0h</bpmn:incoming>
-      <bpmn:incoming>Flow_0rlv3gg</bpmn:incoming>
-    </bpmn:sendTask>
-    <bpmn:boundaryEvent id="NewIncomingMessage" name="NewIncomingMessage" attachedToRef="Activity_1qpe97w">
-      <bpmn:outgoing>Flow_0ie3coy</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_044q0q7" messageRef="Message_11tt8e3" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0ie3coy" sourceRef="NewIncomingMessage" targetRef="Activity_0j42gq3" />
+    <bpmn:sequenceFlow id="Flow_1vacs97" sourceRef="NewIncomingMessage" targetRef="Gateway_06j7hvi" />
   </bpmn:process>
   <bpmn:message id="Message_13w4w3x" name="new_incoming_message" />
   <bpmn:message id="Message_0vkg1b5" name="Message_2lmtlic" />
@@ -251,10 +246,6 @@
         <di:waypoint x="955" y="750" />
         <di:waypoint x="1030" y="750" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0yctjag_di" bpmnElement="Flow_0yctjag">
-        <di:waypoint x="790" y="750" />
-        <di:waypoint x="905" y="750" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0p0ohxd_di" bpmnElement="Flow_0p0ohxd">
         <di:waypoint x="1130" y="750" />
         <di:waypoint x="1152" y="750" />
@@ -277,9 +268,9 @@
         <di:waypoint x="238" y="750" />
         <di:waypoint x="300" y="750" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ie3coy_di" bpmnElement="Flow_0ie3coy">
+      <bpmndi:BPMNEdge id="Flow_1vacs97_di" bpmnElement="Flow_1vacs97">
         <di:waypoint x="578" y="750" />
-        <di:waypoint x="690" y="750" />
+        <di:waypoint x="905" y="750" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1b6p7x4_di" bpmnElement="Event_1b6p7x4">
         <dc:Bounds x="1152" y="732" width="36" height="36" />
@@ -296,17 +287,17 @@
       <bpmndi:BPMNShape id="Activity_06cpoz2_di" bpmnElement="Activity_1441wxz">
         <dc:Bounds x="690" y="870" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1cv59a0_di" bpmnElement="Activity_0j42gq3">
-        <dc:Bounds x="690" y="710" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_04wvu83_di" bpmnElement="Gateway_06j7hvi">
         <dc:Bounds x="905" y="725" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="885" y="670" width="89" height="40" />
+          <dc:Bounds x="885.5" y="675" width="89" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ryc63y_di" bpmnElement="Activity_1qpe97w">
         <dc:Bounds x="460" y="710" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cv59a0_di" bpmnElement="Activity_0j42gq3">
+        <dc:Bounds x="660" y="580" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1soiaoi_di" bpmnElement="NewIncomingMessage">
         <dc:Bounds x="542" y="732" width="36" height="36" />

@@ -26,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.apzakharov.telegrammBot.bot.BotContext.getFromContextChatBotMap;
 
@@ -43,6 +44,7 @@ public class CamundaClient {
     private static final String JSON_TYPE_STRING = "String";
     private static final String ProcessURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key/process-incoming-message/start";
     private static final String MessageCorrelateURL = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/message";
+    private static final String ProcessURLTemplate = "http://telegramm-bot-bpm.herokuapp.com/engine-rest/process-definition/key";
 
 //   private final ChatBot botService;
 
@@ -177,7 +179,7 @@ public class CamundaClient {
         chatBot.addMessage(message);
     }
 
-    public void createCorrelation(ProcessStartMessageCorrelationRequest processBody) throws Exception{
+    public ProcessStartResult createCorrelation(ProcessStartMessageCorrelationRequest processBody) throws Exception{
 
         //get body
         LOGGER.info("========================================================================================");
@@ -189,7 +191,7 @@ public class CamundaClient {
         LOGGER.info(processBody);
         LOGGER.info(" ");
 
-       Object processStartResult = null;
+        ProcessStartResult processStartResult = null;
         SpinJsonNode request = Spin.JSON(processBody);
         LOGGER.info("CamundaClient.createCorrelation: SpinJsonNode request: ");
         LOGGER.info(request);
@@ -213,7 +215,7 @@ public class CamundaClient {
         LOGGER.info("========================================================================================");
         try {
 
-            ResponseEntity<HttpEntity>  createCorrelationResultResponseEntity= template.postForEntity(MessageCorrelateURL, entity, HttpEntity.class);
+            ResponseEntity<ProcessStartResult>  createCorrelationResultResponseEntity= template.postForEntity(MessageCorrelateURL, entity, ProcessStartResult.class);
             LOGGER.info("CamundaClient.createCorrelation: getStatusCode(): " + createCorrelationResultResponseEntity.getStatusCode());
             LOGGER.info("CamundaClient.createCorrelation: getBody(): ");
             LOGGER.info(createCorrelationResultResponseEntity.getBody());
@@ -224,8 +226,52 @@ public class CamundaClient {
             LOGGER.info("CamundaClient.createCorrelation FAIL: "+e.getClass().getSimpleName());
             LOGGER.info("========================================================================================");
         }
+
+        return processStartResult;
     }
 
+    public ProcessStartResult startCommand(Long chatID, String input) throws Exception{
+        ProcessStartResult processStartResult = null;
+        LOGGER.info("========================================================================================");
+        LOGGER.info("CamundaClient.startCommand :  chatID: " + chatID + " command: " + input);
+        LOGGER.info("========================================================================================");
+
+        ProcessStartRequestBody processBody = new ProcessStartRequestBody();
+        Map<String, ProcessVariable> variablesForDelegate = new HashMap<>();
+
+        variablesForDelegate.put("chatID",ProcessVariable
+                .builder()
+                .type(JSON_TYPE_STRING)
+                .value(String.valueOf(chatID))
+                .build());
+        variablesForDelegate.put("Input",ProcessVariable
+                .builder()
+                .type(JSON_TYPE_STRING)
+                .value(String.valueOf(input))
+                .build());
+
+        processBody.setVariables(variablesForDelegate);
+        LOGGER.info("========================================================================================");
+        LOGGER.info("CamundaClient.startCommand : variablesForDelegate: ");
+        LOGGER.info(variablesForDelegate);
+        LOGGER.info(" ");
+        LOGGER.info("CamundaClient.startCommand : processBody: ");
+        LOGGER.info(processBody);
+        LOGGER.info("========================================================================================");
+
+        String processURL = ProcessURLTemplate + input + "/start";
+
+        try {
+            LOGGER.info("========================================================================================");
+            LOGGER.info("CamundaClient.startCommand : processURL: +" + processURL);
+            processStartResult= processStart(processURL, processBody);
+        } catch (Exception e) {
+            LOGGER.info("CamundaClient.startCommand : PROCESS FAIL: " + e.getClass().getSimpleName());
+        }
+        LOGGER.info("========================================================================================");
+
+        return processStartResult;
+    }
 
 //    public void findByChat_id(Long chatID) throws Exception{
 //        botService.findByChat_id(chatID);

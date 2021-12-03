@@ -1,6 +1,8 @@
 package com.apzakharov.telegrammBot.bot;
 
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartMessageCorrelationRequest;
 import com.apzakharov.telegrammBot.bpmn.dto.ProcessStartResult;
+import com.apzakharov.telegrammBot.bpmn.dto.ProcessVariable;
 import com.apzakharov.telegrammBot.model.Chat;
 import com.apzakharov.telegrammBot.model.Message;
 import com.apzakharov.telegrammBot.model.User;
@@ -16,8 +18,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import static com.apzakharov.telegrammBot.bot.BotContext.getFromAwaitingChatMap;
 import static com.apzakharov.telegrammBot.bot.BotContext.getFromCamundaClientContextMap;
 
 
@@ -27,6 +33,7 @@ public class ChatBot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatBot.class);
     private static final String REGISTRATION_COMMAND = "/start";
+    private static final String JSON_TYPE_STRING = "String";
 
     private final ChatService chatService;
 
@@ -115,7 +122,6 @@ public class ChatBot extends TelegramLongPollingBot {
             } catch (Exception e) {
                 LOGGER.info("NEW USER PROCESS FAIL: " + e.getClass().getSimpleName());
                 LOGGER.info("========================================================================================");
-                return;
             }
         } else {
             try {
@@ -132,22 +138,45 @@ public class ChatBot extends TelegramLongPollingBot {
                 LOGGER.info("Message: " + message);
                 LOGGER.info("========================================================================================");
 
-                ProcessStartResult processStartResult = getFromCamundaClientContextMap(getBotUsername())
-                        .processStart(chat, user, message.getText());
+                if (message.getText().contains("/")) {
+                    ProcessStartResult processStartResult = getFromCamundaClientContextMap(getBotUsername())
+                            .startCommand(chat.getChatId(), message.getText());
 
-                LOGGER.info("onUpdateReceived END");
+                    LOGGER.info("onUpdateReceived END: processStartResult");
+                    LOGGER.info(processStartResult);
+
+                } else {
+
+                    ProcessStartMessageCorrelationRequest request = getFromAwaitingChatMap(String.valueOf(chatId));
+                    Map<String, ProcessVariable> processVariabelsMap = new HashMap<>();
+
+                    processVariabelsMap.put("Input", ProcessVariable.builder()
+                            .value(message.getText())
+                            .type(JSON_TYPE_STRING)
+                            .build());
+
+                    request.setProcessVariables(processVariabelsMap);
+
+                    ProcessStartResult messageCorrelationStartResult = getFromCamundaClientContextMap(getBotUsername())
+                            .createCorrelation(request);
+
+                    LOGGER.info("onUpdateReceived END: messageCorrelationStartResult: ");
+                    LOGGER.info(messageCorrelationStartResult);
+
+                }
+
                 LOGGER.info("========================================================================================");
             } catch (Exception e) {
-                LOGGER.info("RECIVE MESSAGE PROCESS FAIL: " + e.getClass().getSimpleName());
+                LOGGER.info("RECEIVE MESSAGE PROCESS FAIL: " + e.getClass().getSimpleName());
                 LOGGER.info("========================================================================================");
-                return;
+
             }
         }
     }
 
     public void sendMessage(Long chatId, String text) {
         LOGGER.info("========================================================================================");
-        LOGGER.info("ChatBot.sendMessag. ChatID: " + chatId + ", and text: " + text);
+        LOGGER.info("ChatBot.sendMessage. ChatID: " + chatId + ", and text: " + text);
         SendMessage message = new SendMessage()
                 .setChatId(chatId)
                 .setText(text);
@@ -196,14 +225,14 @@ public class ChatBot extends TelegramLongPollingBot {
     }
 
     public Chat findByChatId(Long chatId) {
-        LOGGER.info("ChatBot.findByChatId: chatId: "+chatId);
+        LOGGER.info("ChatBot.findByChatId: chatId: " + chatId);
         LOGGER.info("========================================================================================");
         Chat chat = null;
         try {
             LOGGER.info("========================================================================================");
             Optional<Chat> chatOptional = Optional.of(chatService.findByChat_id(chatId));
             chat = chatOptional.orElseGet(() -> null);
-            LOGGER.info("ChatBot.findByChatId: chat: "+chat);
+            LOGGER.info("ChatBot.findByChatId: chat: " + chat);
             LOGGER.info("========================================================================================");
         } catch (Exception e) {
             LOGGER.info("ChatBot.findByChatId: PROCESS FAI: \n" + e.getClass().getSimpleName());
