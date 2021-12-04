@@ -10,9 +10,9 @@ import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import org.camunda.bpm.model.bpmn.instance.BoundaryEvent;
-import org.camunda.bpm.model.bpmn.instance.FlowElement;
-import org.camunda.bpm.model.bpmn.instance.Relationship;
+import org.camunda.bpm.model.bpmn.impl.instance.BoundaryEventImpl;
+import org.camunda.bpm.model.bpmn.impl.instance.IntermediateCatchEventImpl;
+import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,7 @@ public class ProcessMessageSend implements JavaDelegate {
     private static final String FALSE = "false";
     private static final String sep = "/";
     private static final Logger LOGGER = LogManager.getLogger(ProcessMessageSend.class);
+    private static final String MESSAGE_INTERMEDIATE_CATCH_EVENT_TYPE_NAME = "false";
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -51,6 +52,7 @@ public class ProcessMessageSend implements JavaDelegate {
         String bpmnFlowModelElementInstanceName = bpmnFlowModelElementInstance.getName();
         String bpmnModelElementInstanceName = bpmnModelElementInstance.toString();
         Collection<BoundaryEvent> bpmnBoundaryEventList = bpmnModelElementInstance.getModelElementsByType(BoundaryEvent.class);
+        Collection<IntermediateCatchEvent> bpmnIntermediateCatchEventList = bpmnModelElementInstance.getModelElementsByType(IntermediateCatchEvent.class);
 
         LOGGER.info("===================================================================");
         LOGGER.info("bpmnFlowModelElementInstanceName : " + bpmnFlowModelElementInstanceName);
@@ -74,61 +76,117 @@ public class ProcessMessageSend implements JavaDelegate {
             LOGGER.info("   relationship.getTargets() :" + relationship.getTargets());
             LOGGER.info("   relationship.getElementType().getTypeName() :" + relationship.getElementType().getTypeName());
         });
+        LOGGER.info("===================================================================");
+        LOGGER.info("bpmnIntermediateCatchEventList: ");
+        LOGGER.info("bpmnModelElementInstance.getModelElementsByType(IntermediateCatchEvent.class); ->");
+        LOGGER.info("items: ");
+        bpmnIntermediateCatchEventList.forEach(catchEvent -> {
+            LOGGER.info(" item: ");
+            LOGGER.info("   catchEvent.getName() :" + catchEvent.getName());
+            LOGGER.info("   catchEvent.getPreviousNodes().singleResult().getName()" + catchEvent.getPreviousNodes().singleResult().getName());
+            LOGGER.info("   catchEvent.getIncoming().forEach(sequenceFlow -> : ");
+            LOGGER.info("   items: ");
+            catchEvent.getIncoming().forEach(sequenceFlow -> {
+                LOGGER.info("     item: ");
+                LOGGER.info("       sequenceFlow.getName() :" + sequenceFlow.getName());
+                LOGGER.info("       sequenceFlow.getSource() :" + sequenceFlow.getSource());
+                LOGGER.info("       sequenceFlow.getTarget() :" + sequenceFlow.getTarget());
+                LOGGER.info("       sequenceFlow.getElementType().getTypeName() :" + sequenceFlow.getElementType().getTypeName());
+                LOGGER.info("---------------------------------------------------- ");
+
+            });
+            LOGGER.info("   catchEvent.getOutgoing().forEach(sequenceFlow -> : ");
+            LOGGER.info("   items: ");
+            catchEvent.getOutgoing().forEach(sequenceFlow -> {
+                LOGGER.info("     item: ");
+                LOGGER.info("       sequenceFlow.getName() :" + sequenceFlow.getName());
+                LOGGER.info("       sequenceFlow.getSource() :" + sequenceFlow.getSource());
+                LOGGER.info("       sequenceFlow.getTarget() :" + sequenceFlow.getTarget());
+                LOGGER.info("       sequenceFlow.getElementType().getTypeName() :" + sequenceFlow.getElementType().getTypeName());
+                LOGGER.info("---------------------------------------------------- ");
+
+            });
+            LOGGER.info("---------------------------------------------------- ");
+        });
         LOGGER.info(" ");
         LOGGER.info("===================================================================");
         LOGGER.info(" ");
         LOGGER.info("bpmnBoundaryEventList: ");
         LOGGER.info(bpmnBoundaryEventList);
         LOGGER.info(" ");
-        LOGGER.info("bpmnBoundaryEventList.forEach(boundaryEvent -> " );
+        LOGGER.info("bpmnBoundaryEventList.forEach(boundaryEvent -> ");
+        LOGGER.info("items: ");
         bpmnBoundaryEventList.forEach(boundaryEvent -> {
-            LOGGER.info("   boundaryEvent.getAttachedTo(): "+boundaryEvent.getAttachedTo());
-            LOGGER.info("   boundaryEvent.getName(): "+boundaryEvent.getName());
-            LOGGER.info("   boundaryEvent.getId() "+boundaryEvent.getId());
-            LOGGER.info(" ");
+            LOGGER.info(" item: ");
+            LOGGER.info("   boundaryEvent.getAttachedTo(): " + boundaryEvent.getAttachedTo());
+            LOGGER.info("   boundaryEvent.getName(): " + boundaryEvent.getName());
+            LOGGER.info("   boundaryEvent.getId() " + boundaryEvent.getId());
+            LOGGER.info("---------------------------------------------------- ");
         });
         LOGGER.info(" ");
         LOGGER.info("===================================================================");
         LOGGER.info(" ");
-        LOGGER.info("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " );
+        LOGGER.info("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : ");
         LOGGER.info(bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class));
         LOGGER.info(" ");
         LOGGER.info("===================================================================");
-        LOGGER.info("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : " );
+        LOGGER.info("bpmnFlowModelElementInstance.getUniqueChildElementByType(BoundaryEvent.class) : ");
         LOGGER.info(bpmnFlowModelElementInstance.getChildElementsByType(BoundaryEvent.class));
         LOGGER.info(" ");
-
         LOGGER.info("===================================================================");
         camundaClient.processSendMessage(chatID, textToSend);
-        LOGGER.info("bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> ");
-        BoundaryEvent boundaryEvent =  bpmnBoundaryEventList.stream().filter((boundaryEventItem -> {
-            LOGGER.info("   boundaryEventItem.cancelActivity() : "+boundaryEventItem.cancelActivity());
-            boolean isValidMessageEvent = boundaryEventItem
-                    .getAttachedTo()
-                    .getName()
-                    .equals(delegateExecution.getCurrentActivityName())||boundaryEventItem.cancelActivity();
 
-            LOGGER.info("   boundaryEventItem.getName() : "+boundaryEventItem.getName());
-            LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : "+boundaryEventItem.getName());
-            LOGGER.info("   isValidMessageEvent : "+isValidMessageEvent);
+        LOGGER.info("===================================================================");
+        LOGGER.info("bpmnBoundaryEventList.stream().filter((boundaryEvent1 -> ");
+        LOGGER.info("items: ");
+
+        IntermediateCatchEvent intermediateCatchEvent = bpmnIntermediateCatchEventList.stream().filter((intermediateCatchEventItem) -> {
+            LOGGER.info("   intermediateCatchEventItem.getName() : " + intermediateCatchEventItem.getName());
+            boolean isValidMessageEvent = intermediateCatchEventItem
+                    .getParentElement()
+                    .getDomElement()
+                    .getLocalName()
+                    .equals(delegateExecution.getCurrentActivityName());
+
+            LOGGER.info("   boundaryEventItem.getName() : " + intermediateCatchEventItem.getName());
+            LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : " + intermediateCatchEventItem.getName());
+            LOGGER.info("   isValidMessageEvent : " + isValidMessageEvent);
 
             if (isValidMessageEvent) return true;
 
             else return false;
 
-        })).findFirst().orElseGet(()->null);
+        }).findFirst().orElseGet(() -> null);
 
-        LOGGER.info(" BoundaryEvent boundaryEvent.getName() : "+boundaryEvent.getName());
-        LOGGER.info(" BoundaryEvent boundaryEvent.getId() : "+boundaryEvent.getId());
+        BoundaryEvent boundaryEvent = bpmnBoundaryEventList.stream().filter((boundaryEventItem) -> {
+            LOGGER.info("  item: ");
+            LOGGER.info("   boundaryEventItem.cancelActivity() : " + boundaryEventItem.cancelActivity());
+            boolean isValidMessageEvent = boundaryEventItem
+                    .getAttachedTo()
+                    .getName()
+                    .equals(delegateExecution.getCurrentActivityName()) || boundaryEventItem.cancelActivity();
 
-        if (Objects.nonNull(boundaryEvent)) {
+            LOGGER.info("   boundaryEventItem.getName() : " + boundaryEventItem.getName());
+            LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : " + boundaryEventItem.getName());
+            LOGGER.info("   isValidMessageEvent : " + isValidMessageEvent);
+            LOGGER.info(" ");
 
-            String businessKey =  delegateExecution.getCurrentActivityId();
+            if (isValidMessageEvent) return true;
+
+            else return false;
+
+        }).findFirst().orElseGet(() ->null);
+
+        CatchEvent catchEvent = intermediateCatchEvent;
+
+        if (Objects.nonNull(catchEvent)) {
+
+            String businessKey = delegateExecution.getCurrentActivityId();
             delegateExecution.setProcessBusinessKey(businessKey);
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
                     .builder()
-//                    .messageName(boundaryEvent.getName())
+                    .messageName(catchEvent.getName())
                     .businessKey(businessKey)
                     .build();
             LOGGER.info("ProcessStartMessageCorrelationRequest request: ");

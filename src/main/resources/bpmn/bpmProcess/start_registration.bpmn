@@ -13,8 +13,8 @@
         <bpmn:flowNodeRef>Activity_1saxq1n</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_06uzmfm</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1eoa69t</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NewIncomingMessage</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_09v7x7u</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_0i53uba</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:endEvent id="Event_1mpehxt">
@@ -39,7 +39,7 @@
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="isNeedAnswer">false</camunda:inputParameter>
-          <camunda:inputParameter name="TextToSend">Спасибо! 
+          <camunda:inputParameter name="textToSend">Спасибо! 
 
 Больше я пока ничего не умею, так что такие дела. 
 
@@ -69,10 +69,9 @@
         <camunda:inputOutput>
           <camunda:inputParameter name="chatID">${chatID}</camunda:inputParameter>
           <camunda:inputParameter name="isNeedAnswer">true</camunda:inputParameter>
-          <camunda:inputParameter name="TextToSend">Добрый день! 
+          <camunda:inputParameter name="textToSend">Добрый день! 
 
 Для дальнейшей работы, пожалуйста, введите ваш номер телефона: </camunda:inputParameter>
-          <camunda:outputParameter name="input">${input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0k55994</bpmn:incoming>
@@ -83,6 +82,24 @@
       <bpmn:outgoing>Flow_1ebu54k</bpmn:outgoing>
       <bpmn:outgoing>Flow_13lgael</bpmn:outgoing>
     </bpmn:inclusiveGateway>
+    <bpmn:intermediateCatchEvent id="NewIncomingMessage" name="NewIncomingMessage">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="input">${input}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0aerx0c</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_15mvig4" messageRef="Message_1fbvf2r" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0aerx0c" sourceRef="NewIncomingMessage" targetRef="Gateway_1eoa69t" />
+    <bpmn:sequenceFlow id="Flow_1ebu54k" sourceRef="Gateway_1eoa69t" targetRef="Activity_1saxq1n" />
+    <bpmn:sequenceFlow id="Flow_13lgael" sourceRef="Gateway_1eoa69t" targetRef="Activity_07nupvz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">!isNaN(parseInt(input));</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1l5pqsl" sourceRef="Activity_07nupvz" targetRef="Event_1mpehxt" />
+    <bpmn:sequenceFlow id="Flow_0k55994" sourceRef="Activity_1saxq1n" targetRef="Activity_06uzmfm" />
+    <bpmn:sequenceFlow id="Flow_1mwzj6u" sourceRef="Activity_1d639pu" targetRef="Activity_06uzmfm" />
+    <bpmn:sequenceFlow id="Flow_19hcx4p" sourceRef="Event_1qxflb6" targetRef="Activity_1d639pu" />
     <bpmn:scriptTask id="Activity_09v7x7u" name="Валидация ответа, сохранение в БД" scriptFormat="JavaScript" camunda:resultVariable="isValidNumber">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -93,24 +110,6 @@
       </bpmn:extensionElements>
       <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:intermediateCatchEvent id="Event_0i53uba" name="NewIncomingMessage">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:outputParameter name="input">${input}</camunda:outputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:outgoing>Flow_0aerx0c</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_15mvig4" messageRef="Message_1fbvf2r" />
-    </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_0aerx0c" sourceRef="Event_0i53uba" targetRef="Gateway_1eoa69t" />
-    <bpmn:sequenceFlow id="Flow_1ebu54k" sourceRef="Gateway_1eoa69t" targetRef="Activity_1saxq1n" />
-    <bpmn:sequenceFlow id="Flow_13lgael" sourceRef="Gateway_1eoa69t" targetRef="Activity_07nupvz">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript">!isNaN(parseInt(Input));</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1l5pqsl" sourceRef="Activity_07nupvz" targetRef="Event_1mpehxt" />
-    <bpmn:sequenceFlow id="Flow_0k55994" sourceRef="Activity_1saxq1n" targetRef="Activity_06uzmfm" />
-    <bpmn:sequenceFlow id="Flow_1mwzj6u" sourceRef="Activity_1d639pu" targetRef="Activity_06uzmfm" />
-    <bpmn:sequenceFlow id="Flow_19hcx4p" sourceRef="Event_1qxflb6" targetRef="Activity_1d639pu" />
   </bpmn:process>
   <bpmn:message id="Message_1fbvf2r" name="NewIncomingMessage" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -121,35 +120,35 @@
       <bpmndi:BPMNShape id="Lane_04zh97f_di" bpmnElement="Lane_04zh97f" isHorizontal="true">
         <dc:Bounds x="190" y="80" width="1068" height="499" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0aerx0c_di" bpmnElement="Flow_0aerx0c">
-        <di:waypoint x="698" y="300" />
-        <di:waypoint x="925" y="300" />
+      <bpmndi:BPMNEdge id="Flow_19hcx4p_di" bpmnElement="Flow_19hcx4p">
+        <di:waypoint x="258" y="300" />
+        <di:waypoint x="320" y="300" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ebu54k_di" bpmnElement="Flow_1ebu54k">
-        <di:waypoint x="950" y="325" />
-        <di:waypoint x="950" y="460" />
-        <di:waypoint x="810" y="460" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13lgael_di" bpmnElement="Flow_13lgael">
-        <di:waypoint x="975" y="300" />
-        <di:waypoint x="1050" y="300" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1l5pqsl_di" bpmnElement="Flow_1l5pqsl">
-        <di:waypoint x="1150" y="300" />
-        <di:waypoint x="1172" y="300" />
+      <bpmndi:BPMNEdge id="Flow_1mwzj6u_di" bpmnElement="Flow_1mwzj6u">
+        <di:waypoint x="420" y="300" />
+        <di:waypoint x="480" y="300" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0k55994_di" bpmnElement="Flow_0k55994">
         <di:waypoint x="710" y="460" />
         <di:waypoint x="530" y="460" />
         <di:waypoint x="530" y="340" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1mwzj6u_di" bpmnElement="Flow_1mwzj6u">
-        <di:waypoint x="420" y="300" />
-        <di:waypoint x="480" y="300" />
+      <bpmndi:BPMNEdge id="Flow_1l5pqsl_di" bpmnElement="Flow_1l5pqsl">
+        <di:waypoint x="1150" y="300" />
+        <di:waypoint x="1172" y="300" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_19hcx4p_di" bpmnElement="Flow_19hcx4p">
-        <di:waypoint x="258" y="300" />
-        <di:waypoint x="320" y="300" />
+      <bpmndi:BPMNEdge id="Flow_13lgael_di" bpmnElement="Flow_13lgael">
+        <di:waypoint x="975" y="300" />
+        <di:waypoint x="1050" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ebu54k_di" bpmnElement="Flow_1ebu54k">
+        <di:waypoint x="950" y="325" />
+        <di:waypoint x="950" y="460" />
+        <di:waypoint x="810" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0aerx0c_di" bpmnElement="Flow_0aerx0c">
+        <di:waypoint x="698" y="300" />
+        <di:waypoint x="925" y="300" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1mpehxt_di" bpmnElement="Event_1mpehxt">
         <dc:Bounds x="1172" y="282" width="36" height="36" />
@@ -175,14 +174,14 @@
           <dc:Bounds x="906" y="225" width="89" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_09v7x7u_di" bpmnElement="Activity_09v7x7u">
-        <dc:Bounds x="680" y="130" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0i53uba_di" bpmnElement="Event_0i53uba">
+      <bpmndi:BPMNShape id="Event_0i53uba_di" bpmnElement="NewIncomingMessage">
         <dc:Bounds x="662" y="282" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="626" y="206" width="88" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09v7x7u_di" bpmnElement="Activity_09v7x7u">
+        <dc:Bounds x="760" y="100" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
