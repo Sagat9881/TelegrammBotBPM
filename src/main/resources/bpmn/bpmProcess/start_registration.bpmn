@@ -76,6 +76,7 @@
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0k55994</bpmn:incoming>
       <bpmn:incoming>Flow_1mwzj6u</bpmn:incoming>
+      <bpmn:outgoing>Flow_1o95pvo</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:inclusiveGateway id="Gateway_1eoa69t" name="Номер валидный (похож на цифры?)" default="Flow_1ebu54k">
       <bpmn:incoming>Flow_0aerx0c</bpmn:incoming>
@@ -88,6 +89,7 @@
           <camunda:outputParameter name="input">${input}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1o95pvo</bpmn:incoming>
       <bpmn:outgoing>Flow_0aerx0c</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_15mvig4" messageRef="Message_1fbvf2r" />
     </bpmn:intermediateCatchEvent>
@@ -110,6 +112,7 @@
       </bpmn:extensionElements>
       <bpmn:script>!isNaN(parseInt(Input));</bpmn:script>
     </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1o95pvo" sourceRef="Activity_06uzmfm" targetRef="NewIncomingMessage" />
   </bpmn:process>
   <bpmn:message id="Message_1fbvf2r" name="NewIncomingMessage" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -150,6 +153,10 @@
         <di:waypoint x="698" y="300" />
         <di:waypoint x="925" y="300" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1o95pvo_di" bpmnElement="Flow_1o95pvo">
+        <di:waypoint x="580" y="300" />
+        <di:waypoint x="662" y="300" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1mpehxt_di" bpmnElement="Event_1mpehxt">
         <dc:Bounds x="1172" y="282" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -177,7 +184,7 @@
       <bpmndi:BPMNShape id="Event_0i53uba_di" bpmnElement="NewIncomingMessage">
         <dc:Bounds x="662" y="282" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="626" y="206" width="88" height="27" />
+          <dc:Bounds x="636" y="236" width="88" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_09v7x7u_di" bpmnElement="Activity_09v7x7u">

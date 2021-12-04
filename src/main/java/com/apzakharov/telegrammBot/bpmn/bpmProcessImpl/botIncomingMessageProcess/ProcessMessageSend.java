@@ -141,15 +141,18 @@ public class ProcessMessageSend implements JavaDelegate {
         LOGGER.info("items: ");
 
         IntermediateCatchEvent intermediateCatchEvent = bpmnIntermediateCatchEventList.stream().filter((intermediateCatchEventItem) -> {
-            LOGGER.info("   intermediateCatchEventItem.getName() : " + intermediateCatchEventItem.getName());
+            LOGGER.info("   intermediateCatchEventItem.getTextContent() : " + intermediateCatchEventItem.getTextContent());
             boolean isValidMessageEvent = intermediateCatchEventItem
-                    .getParentElement()
-                    .getDomElement()
-                    .getLocalName()
+                    .getPreviousNodes()
+                    .singleResult()
+                    .getName()
                     .equals(delegateExecution.getCurrentActivityName());
 
-            LOGGER.info("   boundaryEventItem.getName() : " + intermediateCatchEventItem.getName());
-            LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : " + intermediateCatchEventItem.getName());
+            LOGGER.info("   intermediateCatchEventItem.getName() : " + intermediateCatchEventItem.getName());
+            LOGGER.info("   intermediateCatchEventItem.getPreviousNodes().getName() : " + intermediateCatchEventItem
+                                                                                                            .getPreviousNodes()
+                                                                                                            .singleResult()
+                                                                                                            .getName());
             LOGGER.info("   isValidMessageEvent : " + isValidMessageEvent);
 
             if (isValidMessageEvent) return true;
@@ -157,25 +160,6 @@ public class ProcessMessageSend implements JavaDelegate {
             else return false;
 
         }).findFirst().orElseGet(() -> null);
-
-        BoundaryEvent boundaryEvent = bpmnBoundaryEventList.stream().filter((boundaryEventItem) -> {
-            LOGGER.info("  item: ");
-            LOGGER.info("   boundaryEventItem.cancelActivity() : " + boundaryEventItem.cancelActivity());
-            boolean isValidMessageEvent = boundaryEventItem
-                    .getAttachedTo()
-                    .getName()
-                    .equals(delegateExecution.getCurrentActivityName()) || boundaryEventItem.cancelActivity();
-
-            LOGGER.info("   boundaryEventItem.getName() : " + boundaryEventItem.getName());
-            LOGGER.info("   boundaryEventItem.getAttachedTo().getName() : " + boundaryEventItem.getName());
-            LOGGER.info("   isValidMessageEvent : " + isValidMessageEvent);
-            LOGGER.info(" ");
-
-            if (isValidMessageEvent) return true;
-
-            else return false;
-
-        }).findFirst().orElseGet(() ->null);
 
         CatchEvent catchEvent = intermediateCatchEvent;
 
