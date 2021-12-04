@@ -165,7 +165,7 @@ public class ProcessMessageSend implements JavaDelegate {
 
         if (Objects.nonNull(catchEvent)) {
 
-            String businessKey = delegateExecution.getCurrentActivityId();
+            String businessKey = delegateExecution.getId();
             delegateExecution.setProcessBusinessKey(businessKey);
 
             ProcessStartMessageCorrelationRequest request = ProcessStartMessageCorrelationRequest
